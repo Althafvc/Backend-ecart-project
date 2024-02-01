@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'>  
+    <link rel="stylesheet" href="/forgot-area-otp.css">
+    <style>
+      .otp_input:focus {
+        border: 2px solid rgb(13, 136, 231) !important;
+      }
+    </style>
+</head>
+<body>
+
+    <section class="container-fluid bg-body-tertiary d-block" style="height: 100vh;">
+        <div class="row justify-content-center" style="display: flex; align-content: center;">
+          <div class="col-12 col-md-6 col-lg-4 " style="min-width: 500px ;  margin-top: 100px;">
+            <div class="card bg-white mb-1 mt-5" 
+              style="box-shadow: 0 12px 15px rgba(0, 0, 0, 0.02); display: flex; align-items: center;">
+              <div  class="card-body p-5 text-center">
+                <h4>Verify</h4>
+                <p>Your code was sent to <span>
+                    
+                  </span> </p>
+                <form action="/user/forgot/otp/<%= mail %>" method="post">
+                  <div class="otp-field mb-4" > 
+                    <input  type="number" name="digit1" maxlength="1" style="border: 2px solid grey; " class="otp_input"/>
+                    <input  type="number" name="digit2" maxlength="1" style="border: 2px solid grey;"  class="otp_input"/>
+                    <input  type="number" name="digit3" maxlength="1" style="border: 2px solid grey;"  class="otp_input"/>
+                    <input  type="number" name="digit4" maxlength="1" style="border: 2px solid grey;"  class="otp_input"/>
+                  </div>
+                  <!-- <input type="text" name="userid" value="" >
+                  <input type="text" name="email" value="" style=""> -->
+                  <button type="submit" class="btn  mb-3" style="background-color: #00224e; color: white;" >
+                    Verify
+                  </button>
+                </form>
+  
+  
+                <div class="otp-timer mb-3" id="otp-timer">resend OTP in :30</div>
+                <!-- Update your form to include the Resend button -->
+                <form action="/resendOTP" method="post">
+                  <input type="text" name="userid" value="" style="display: none;">
+                  <input type="text" name="email" value="" style="display: none;">
+                  <button class="btn mb-3" id="resend" style="background-color: #00224e; color: white;" type="submit" onclick="updateTimer()">
+                    Resend OTP
+                  </button>
+  
+                </form>
+  
+  
+                <!-- <p class="resend text-muted mb-0">
+                  Didn't receive code? <a href="">Request again</a>
+                </p> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <script>
+        const otpInputs = document.querySelectorAll('.otp_input');
+      
+        otpInputs.forEach((input, index) => { 
+          input.addEventListener('input', (event) => {
+            if (event.target.value.length === 1) {
+              if (index < otpInputs.length - 1) {
+                otpInputs[index + 1].focus();
+              }
+            } else if (event.target.value.length === 0 && index > 0) {
+              otpInputs[index - 1].focus();
+            }
+          });
+        });
+      </script>
+
+      <script>
+       
+        var countdown = 60
+      function updateTimer() {
+            if (countdown > 0) {
+              window.location.href = ""
+              document.getElementById('resend').disabled = true
+              
+              setInterval(() => {
+                document.getElementById('otp-timer').innerHTML = `Resend OTP in ${countdown}s`;
+                countdown-- ;
+              },1000);
+            } else {
+                clearInterval(timerInterval);
+                resendButton.disabled = false;
+                document.getElementById('timer').innerHTML = 'Resend OTP';
+                countdown = 60;
+            }
+        }
+      </script>
+
+</body>
+</html>
