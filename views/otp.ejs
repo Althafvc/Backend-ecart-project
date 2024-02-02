@@ -81,7 +81,7 @@
         var countdown = 60
       function updateTimer() {
             if (countdown > 0) {
-              window.location.href = "http://localhost:7878/user/resendotp/<%phone%>"
+              window.location.href = "/user/resendotp/<%=phone%>"
               document.getElementById('resend').disabled = true
               
               setInterval(() => {

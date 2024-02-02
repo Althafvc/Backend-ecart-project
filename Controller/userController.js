@@ -36,7 +36,6 @@ try {
     .create({to:`+91${data}`, code:otp})
 
     if(verification_check.status === 'approved'){
-        console.log(data);
         await userModel.findOneAndUpdate({phone:data},{$set:{user:true}})
         res.redirect('/login')
     }else {
@@ -48,12 +47,29 @@ try {
 }catch (err){
 console.log('error occured', err);
 }
+
 }
 
 
-exports.resendOTP = (req,res)=>{
-    console.log(req.params.phone);
-    res.send('olakka')
+exports.resendOTP = async (req,res)=>{
+    const phone = (req.params.phone);
+    const twiliophone = phone
+    console.log(twiliophone);
+
+
+    try {
+        if(phone) {
+            const verification = await client.verify.v2.services(verifysid)
+            .verifications
+            .create({to:`+91${phone}`, channel:'sms'})
+            .then((verification) => console.log(verification.status))
+            .catch((error) => console.log((error.message)))
+        }
+
+    }catch(err) {
+        console.log(err);
+    }
+   
 }
 
 
@@ -80,7 +96,7 @@ const result = digit1+ digit2 + digit3 + digit4
 if(result == mailOTP.otp) {
     res.redirect(`/user/changepassword/${mail}`)
 }else {
-    res.send('moonji')
+    res.send('The mailOTP verification is failed')
 }
 }
 
