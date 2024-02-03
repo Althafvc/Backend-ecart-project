@@ -3,24 +3,34 @@ const adminModel = require('../Models/adminDatas')
 
 
 exports.getSignup = (req,res)=> {
-    res.render('adminsignup')
+    const error = req.flash('error')
+    res.render('adminsignup',{error})
 }
 
 exports.postSignup = async (req,res)=> {
     const { username, email, password, phone, confirmpassword } = req.body
-    try {
-        const salting = await bcrypt.genSalt(10)
-        const hashedpassword = await bcrypt.hash(password, salting)
-        const newSchema = new adminModel({
-            email, username, phone,
-            password: hashedpassword,
-            verified: false
-        })
-        await newSchema.save()
-        res.redirect(`/admin/adminkey/${email}`)
-}catch (err) {
-    console.log(`cannot post signup`, err);
-}
+
+    if(password != confirmpassword) {
+        req.flash('error', 'please confirm your password properly')
+        res.status(400).redirect('/admin/signup')
+    } else {
+
+        try {
+            const salting = await bcrypt.genSalt(10)
+            const hashedpassword = await bcrypt.hash(password, salting)
+            const newSchema = new adminModel({
+                email, username, phone,
+                password: hashedpassword,
+                verified: false
+            })
+            await newSchema.save()
+            res.redirect(`/admin/adminkey/${email}`)
+    }catch (err) {
+        console.log(`cannot post signup`, err);
+    }
+    }
+
+   
 }
 
 
@@ -49,7 +59,7 @@ exports.getAdminLogin = (req,res)=> {
 
 exports.postAdminLogin = (req,res)=>{
 
-    res.send('Adminhome')
+    res.render('Adminhome')
 
 }
 
@@ -118,7 +128,7 @@ try{
         res.status(500).redirect(`/admin/adminkey/${mail}`)
     }
 }catch(err) {
- console.log('incorrect adminkey entered',err);
+ console.log('adminkey validation failed',err);
 }
 }
 

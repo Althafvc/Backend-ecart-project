@@ -69,6 +69,9 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Create an account</h2>
 
+              <div class="error-area" style="color: red; width: 100%; display: flex ; justify-content: center; font-size: 18px;"><%=error%></div>
+
+
               <form action="/admin/signup" method="post">
 
                 <div class="form-outline mb-4">
@@ -119,5 +122,5 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
 type="text/javascript"
 src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
 ></script>
-<script src="user-signup-clientvalidation.js"></script>
+<script src="/adminsignup-clientvalidation.js"></script>
 </html>

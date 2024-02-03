@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const mongoose = require('mongoose');
 const twilio = require ('twilio')
 const nodemailer = require('nodemailer')
-const mailOTP = require('../public/mail-otp')
+const mailOTP = require('../middlewares/mail-otp')
 
 // const flash = require('connect-flash')
 

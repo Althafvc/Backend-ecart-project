@@ -1,7 +1,7 @@
 
 const twilio = require('twilio')
 const userModel = require('../Models/signupDatas')
-const mailOTP = require('../public/mail-otp')
+const mailOTP = require('../middlewares/mail-otp')
 const passwordRegex =/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
 const flash = require('connect-flash')
 const bcrypt = require('bcrypt')
