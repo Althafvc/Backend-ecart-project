@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changepassword</title>
+    <link rel="stylesheet" href="/adminkey.css">
+</head>
+<body>
+    <div class="container">
+        <form action="/admin/adminkey/<%=email%>" method="post">
+            <h3>Enter The Admin Key</h3>
+            <div class="error-area" style="color: red; font-size: 18px;"><%=error%> </div>
+            <label for="">Enter your key</label>
+    <input type="password" name="recievedAdminKey">
+
+            <div class="btn-area">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

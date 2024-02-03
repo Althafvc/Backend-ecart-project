@@ -24,12 +24,7 @@ const mongoose=require('mongoose')
         },
         user:{
             type:Boolean,default:false
-
-
-
-
         }
-    
     }
 
     const dataSchema= new mongoose.Schema(schema)

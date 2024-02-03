@@ -1,0 +1,96 @@
+
+.container{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+   
+}
+
+.inp{
+    width: 500px;
+    height: 30px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid white;
+    background: transparent;
+    padding-left: 10px;
+    color: white;
+    font-size: 15px;
+}
+
+.btn-area{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-area button{
+    width: 19%;
+    height: 70%;
+    font-size: 20px;
+    border-radius: 8px;
+    border: none;
+   
+}
+
+.form-area{
+    width: 580px;
+    height: 390px;
+    background-image: linear-gradient(to left,rgb(30, 30, 203),rgb(203, 104, 121));
+    border-radius: 25px;
+    font-family: 'Times New Roman', Times, serif;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-direction: column;
+    font-size: 22px;
+}
+ a{
+    font-size: 18px;
+    color: white;
+    margin-top: 20px;
+    text-decoration: none;
+
+    
+}
+.check a:hover{
+    color: rgba(24, 24, 194, 0.83);
+    text-decoration: underline;
+}
+.registerNow{
+    text-align: center;
+    text-decoration: none;
+}
+.registerNow:hover{
+    color: blue;
+   text-decoration: underline;
+}
+.check{
+    width: 100%;
+    display: flex;
+    align-items: start;
+}
+
+.btn-area button:hover{
+    background: lightcoral;
+    color: white;
+    cursor: pointer;
+}
+
+.red{
+color: red;
+}

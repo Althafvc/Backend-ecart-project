@@ -9,6 +9,7 @@ const commonRouter = require ('./Router/common')
 const flash = require('connect-flash')
 const userRouter = require ('./Router/user')
 const { defaultRoute } = require('./Router/common')
+const adminRouter = require('./Router/admin')
 
 
 app.use(session({
@@ -24,6 +25,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 app.use('/',commonRouter)
 app.use('/user',userRouter)
+app.use('/admin',adminRouter)
 app.set('view engine', 'ejs')
 app.set('views', 'views')
 

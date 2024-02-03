@@ -125,7 +125,7 @@ const mail = req.params.mail
         
         
     }else {
-        console.log('moonji');
+        console.log('your new password and confrmpassword does not match');
 
     }
     
