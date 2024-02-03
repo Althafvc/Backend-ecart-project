@@ -13,6 +13,10 @@ exports.postSignup = async (req,res)=> {
     if(password != confirmpassword) {
         req.flash('error', 'please confirm your password properly')
         res.status(400).redirect('/admin/signup')
+    } else if(!email){
+
+        req.flash('error', 'please enter your email properly')
+        res.status(400).redirect('/admin/signup')
     } else {
 
         try {
