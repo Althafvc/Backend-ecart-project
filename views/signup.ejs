@@ -69,6 +69,8 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Create an account</h2>
 
+              <div class="error-area" style="color: red; width: 100%; display: flex ; justify-content: center; font-size: 18px;"><%=error%></div>
+
               <form action="/signup" method="post">
 
                 <div class="form-outline mb-4">
@@ -93,7 +95,7 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="password" name="confirmpassword" id="" class="form-control form-control-lg confirmpassword" />
+                  <input type="password" name="confirmpassword" id="confirmpassword" class="form-control form-control-lg confirmpassword" />
                   <label class="form-label labeconfirmpassword" for="form3Example4cdg">Repeat your password</label>
                 </div>
 

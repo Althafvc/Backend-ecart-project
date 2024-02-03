@@ -14,7 +14,8 @@ exports.defaultRoute = (req, res) => {
 }
 
 exports.getSignup = (req, res) => {
-    res.render('signup')
+    const error = req.flash('error')
+    res.render('signup',{error})
 }
 
 exports.postSignup = async (req, res) => {
@@ -22,40 +23,52 @@ exports.postSignup = async (req, res) => {
     const { username, email, password, phone, confirmpassword } = req.body
 
 
-    try {
-        const salting = await bcrypt.genSalt(10)
-        const hashedpassword = await bcrypt.hash(password, salting)
-        const newSchema = new userModel({
-            email, username, phone,
-            password: hashedpassword,
-            user: false
-        })
-        await newSchema.save()
-        const accountSid = process.env.TWILIO_ACCOUNT_SID;
-        const authToken = process.env.TWILIO_AUTH_TOKEN;
-        const client = twilio(accountSid,authToken)
-        const verifysid = process.env.TWILIO_VERIFY_SID;
-        const twiliophone = phone
+    if(password!=confirmpassword) {
+        req.flash('error','please confirm your password properly')
+        res.status(400).redirect(`/signup`)
 
-       
+    }else {
 
 
-        if(phone) {
-            const verification = await client.verify.v2.services(verifysid)
-            .verifications
-            .create({to:`+91${twiliophone}`, channel:'sms'})
-            .then((verification) => console.log(verification.status))
-            .catch((error) => console.log((error.message)))
+        try {
+            const salting = await bcrypt.genSalt(10)
+            const hashedpassword = await bcrypt.hash(password, salting)
+            const newSchema = new userModel({
+                email, username, phone,
+                password: hashedpassword,
+                user: false
+            })
+            await newSchema.save()
+            const accountSid = process.env.TWILIO_ACCOUNT_SID;
+            const authToken = process.env.TWILIO_AUTH_TOKEN;
+            const client = twilio(accountSid,authToken)
+            const verifysid = process.env.TWILIO_VERIFY_SID;
+            const twiliophone = phone
+    
            
-            res.redirect(`/user/otp/${phone}`)
-        }else {
-            console.log('otp verification failed');
+    
+    
+            if(phone) {
+                const verification = await client.verify.v2.services(verifysid)
+                .verifications
+                .create({to:`+91${twiliophone}`, channel:'sms'})
+                .then((verification) => console.log(verification.status))
+                .catch((error) => console.log((error.message)))
+               
+                res.redirect(`/user/otp/${phone}`)
+            }else {
+                console.log('otp verification failed');
+            }
+    
+        } catch (err) {
+            console.log('error occured while sending the OTP code', err);
+            res.status(500).json({error:'failed to send verification code'})
         }
-
-    } catch (err) {
-        console.log('error occured while sending the OTP code', err);
-        res.status(500).json({error:'failed to send verification code'})
     }
+
+
+
+    
 
 }
 

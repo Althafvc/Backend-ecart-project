@@ -9,6 +9,8 @@ const username = document.getElementById('username')
 const labeusername = document.querySelector('.labeusername')
 const phone = document.getElementById('phone')
 const labephone = document.querySelector('.labephone')
+const confirmpassword = document.getElementById('confirmpassword')
+const labeconfirmpassword = document.querySelector('.labeconfirmpassword')
 
 
 
@@ -54,6 +56,19 @@ phone.onblur =()=>{
         labephone.classList.remove('red')
     }
 }
+
+confirmpassword.onblur = ()=> {
+    if(password.value!=confirmpassword.value) {
+        labeconfirmpassword.innerHTML = 'password and confirmpassword fields does not match'
+        labeconfirmpassword.classList.add('red')
+    }else {
+        labeconfirmpassword.innerHTML = 'Repeat your password'
+        labeconfirmpassword.classList.remove('red')
+
+    }
+}
+
+
 
 
 
