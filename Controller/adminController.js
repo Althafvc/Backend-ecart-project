@@ -58,12 +58,41 @@ exports.postSignup = async (req,res)=> {
 
 
 exports.getAdminLogin = (req,res)=> {
-    res.render('adminlogin')
+const error = req.flash('error')
+    res.render('adminlogin',{error})
 }
 
-exports.postAdminLogin = (req,res)=>{
+exports.postAdminLogin = async (req,res)=>{
 
-    res.render('Adminhome')
+    const {email, password} = req.body
+
+
+    try {
+        const adminDatas  = await adminModel.findOne({email})
+
+        if(!adminDatas) {
+            req.flash('error', 'admin does not exists, plase try to signup')
+            res.status(404).redirect('/admin/login')
+        
+        } else {
+
+            const passwordMatch = await bcrypt.compare(password, adminDatas.password);
+
+            if(passwordMatch) {
+                res.status(200).redirect('/admin/home')
+            } else {
+
+                req.flash('error', 'incorrect password entered')
+                res.status(401).redirect('/admin/login')
+
+            }
+
+            
+        }
+
+    }catch(err) {
+console.log('cannot complete admin login',err);
+    }
 
 }
 

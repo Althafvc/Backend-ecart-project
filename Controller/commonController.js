@@ -92,8 +92,7 @@ exports.postLogin = async (req, res) => {
 const passwordMatch = await bcrypt.compare(password, userDatas.password);
 
             if(passwordMatch) {
-                console.log('hello');
-
+                
                 res.redirect('/user/home')
             }else {
                 req.flash('error',"you have entered a wrong password")
