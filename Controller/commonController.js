@@ -87,7 +87,7 @@ exports.postLogin = async (req, res) => {
         res.redirect("/login")
     }else{
 
-        if(userDatas.user){
+        if(userDatas){
 
 const passwordMatch = await bcrypt.compare(password, userDatas.password);
 
@@ -100,7 +100,9 @@ const passwordMatch = await bcrypt.compare(password, userDatas.password);
             }
 
         }else {
-res.redirect('/user/otp/:num')
+            req.flash('error', 'user does not found')
+            res.render('login')
+
         }
     }
 }

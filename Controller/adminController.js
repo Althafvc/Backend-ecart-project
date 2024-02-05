@@ -283,5 +283,18 @@ exports.getUsersList = async (req,res)=> {
 }
 
 
-// exports.DeleteUser = (async)
+exports.DeleteUser = async (req,res)=> {
+console.log(req.params.mail);
+    const email = req.params.mail
+
+    try {
+        await userModel.deleteOne({email:email})
+
+        res.status(200).redirect('/admin/users')
+
+    }catch (err) {
+        console.log('cannot delete the user',err)
+    }
+
+}
    

@@ -27,7 +27,7 @@ router.get('/home',adminController.getAdminhome)
 
 router.get('/users',adminController.getUsersList)
 
-router.delete('/delete')
+router.get('/delete/:mail',adminController.DeleteUser)
 
 
 
