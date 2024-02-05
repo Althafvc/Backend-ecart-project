@@ -22,6 +22,14 @@ router.get('/forgotareaadminkey/:mail',adminController.getAdminForgotareaKey)
 router.post('/forgotareaadminkey/:mail',adminController.postAdminForgotareaKey)
 
 
+router.get('/home',adminController.getAdminhome)
+
+
+router.get('/users',adminController.getUsersList)
+
+router.delete('/delete')
+
+
 
 
 

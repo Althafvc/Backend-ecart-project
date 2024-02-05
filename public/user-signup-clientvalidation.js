@@ -52,7 +52,7 @@ phone.onblur =()=>{
         labephone.innerHTML='This field is mandatory'
         labephone.classList.add('red')
     }else {
-        labephone.innerHTML ='Your Name'
+        labephone.innerHTML ='Your Phone Number'
         labephone.classList.remove('red')
     }
 }

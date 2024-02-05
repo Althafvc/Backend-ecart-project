@@ -1,5 +1,6 @@
 const bcrypt= require('bcrypt')
 const adminModel = require('../Models/adminDatas')
+const userModel = require('../Models/signupDatas')
 
 
 exports.getSignup = (req,res)=> {
@@ -95,6 +96,8 @@ console.log('cannot complete admin login',err);
     }
 
 }
+
+
 
 
 
@@ -243,8 +246,6 @@ exports.postAdminForgotareaKey = async (req,res)=> {
     const {recievedAdminKey} = req.body
 
     const adminkey = process.env.adminkey
-    console.log(adminkey);
-    console.log(recievedAdminKey);
 
     try{
         if(recievedAdminKey==adminkey) {
@@ -259,4 +260,28 @@ exports.postAdminForgotareaKey = async (req,res)=> {
         console.log('error occured while comparing the adminkeuy', err);
     }
 }
+
+
+
+
+
+
+
+exports.getAdminhome = (req,res) => {
+
+    
+
+    res.render('adminhome')
+}
+
+
+
+exports.getUsersList = async (req,res)=> {
+    let datas=  await userModel.find()
+    res.render('userList',{datas})
+
+}
+
+
+// exports.DeleteUser = (async)
    

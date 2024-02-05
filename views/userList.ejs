@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/userslist.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+</head>
+<body>
+    <section id="menu">
+        <div class="logo">
+            <img src="/images/logo.png" alt="">
+            <h2>StyleSphere</h2>
+        </div>
+        <div class="items">
+            <li><i class="fa-solid fa-chart-pie"></i> <a href="#">Products</a></li>
+            <li><i class="fa-solid fa-user"></i> <a href="">Users</a></li>
+            <li> <i class="fa-regular fa-pen-to-square"></i> <a href="#">Category</a></li>
+            <li><i class="fa-solid fa-credit-card"></i> <a href="#">Orders</a></li>
+            <li><i class="fa-solid fa-burger"></i> <a href="#">Coupons</a></li>
+            <li><i class="fa-solid fa-chart-line"></i> <a href="#">Banners</a></li>
+
+        </div>
+
+    </section>
+
+
+<section id="interface">
+    <div class="navigation">
+        <div class="n1">
+            <div>
+                <i id="menu-btn" class="fa-solid fa-bars"></i>
+            </div>
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search">
+            </div>
+        </div>
+
+        <div class="profile">
+            <i class="fa-solid fa-bell"></i>
+            <!-- <img src="/images/ramees.jpeg" alt=""> -->
+        </div>
+    </div>
+
+    <h3 class="i-name">Users List</h3>
+  
+ 
+
+    <dir class="board">
+        <table width="100%"> 
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>E mail</td>
+                    <td>Status</td>
+                    <td>Phone</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <% datas.forEach((data) =>{ %>
+                <tr>
+                    <td class="people"> 
+                        
+                        <div class="people-de">
+                            <h5><%=data.username %></h5>
+                            <p>kakavayil@gmail.com</p>
+                        </div>
+                    </td>
+
+                    <td class="people-des">
+                      <h5><%=data.email %></h5>
+                      <p>web dev</p>
+                    </td>
+
+                    <td class="active"><p>Active</p></td>
+
+                    <td class="role"> <p><%=data.phone %></p></td>
+
+                    <td class="edit"> <a href="#"><i class="fa-solid fa-trash"></i></a></td>
+                </tr>
+
+
+            
+
+                <% }) %>
+
+
+                
+            </tbody>
+        </table>
+
+       
+    </dir>
+</section>
+</body>
+</html>
