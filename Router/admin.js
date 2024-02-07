@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const adminController = require('../Controller/adminController')
+const multer = require('../middlewares/multer')
 
 router.get('/signup',adminController.getSignup)
 router.post('/signup',adminController.postSignup)
@@ -27,13 +28,18 @@ router.get('/home',adminController.getAdminhome)
 
 router.get('/users',adminController.getUsersList)
 
-router.get('/delete/:mail',adminController.DeleteUser)
+router.get('/delete/:mail',adminController.DeleteUser)     
+
+router.get('/addproduct',adminController.getaddProduct)
+
+router.post('/addproduct', multer.single('product_img'), adminController.postaddProduct)
 
 
 
 
 
 
+       
 
 
 

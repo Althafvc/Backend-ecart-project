@@ -1,6 +1,9 @@
 const bcrypt= require('bcrypt')
 const adminModel = require('../Models/adminDatas')
 const userModel = require('../Models/signupDatas')
+const multer  = require('multer')
+const productsModel = require ('../Models/productDatas')
+
 
 
 exports.getSignup = (req,res)=> {
@@ -225,14 +228,6 @@ exports.postPaswordChange = async (req,res) => {
 
 
 
-
-
-
-
-
-
-
-
 exports.getAdminForgotareaKey = (req,res)=> {
     const email = req.params.mail
     const error = req.flash('error')
@@ -257,7 +252,7 @@ exports.postAdminForgotareaKey = async (req,res)=> {
 
         }
     }catch (err) {
-        console.log('error occured while comparing the adminkeuy', err);
+        console.log('error occured while comparing the adminkey', err);
     }
 }
 
@@ -296,5 +291,44 @@ console.log(req.params.mail);
         console.log('cannot delete the user',err)
     }
 
+}
+
+
+
+
+
+
+
+
+exports.getaddProduct = (req,res)=> {
+    res.render('addproduct')
+}
+
+exports.postaddProduct =async  (req,res)=> {
+
+    const {productname, oldprice, newprice, size, color, subcategory, stock, description,category} = req.body
+
+    console.log(req.body);
+    console.log(req.file);
+
+    const filepath = req.file.path
+    const product_img = req.file.filename
+
+
+    try {
+
+    
+    if(!req.file){
+        return res.send('nofile')
+      }else {
+
+        const products = new productsModel({productname, oldprice, newprice, size, color, subcategory, stock, category, description, product_img})
+        await products.save()
+        res.redirect('/')
+      }
+
+    } catch (err) {
+        console.log('file not found',err);
+    }
 }
    

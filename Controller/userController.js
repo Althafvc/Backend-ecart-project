@@ -80,6 +80,7 @@ exports.getUserHome = (req,res)=>{
 
 exports.getforgotareaotp = (req,res)=>{
     const mail = req.params.mail
+    const error = ('error')
     res.render('forgot-area-otp',{mail})
 }
 
@@ -94,7 +95,7 @@ const result = digit1+ digit2 + digit3 + digit4
 
 
 if(result == mailOTP.otp) {
-    res.redirect(`/user/changepassword/${mail}`)
+    res.status(200).redirect(`/user/changepassword/${mail}`)
 }else {
     res.send('The mailOTP verification is failed')
 }

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/addproduct.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+</head>
+<body>
+    <section id="menu">
+        <div class="logo">
+            <img src="/images/logo.png" alt="">
+            <h2>StyleSphere</h2>
+        </div>
+        <div class="items">
+            <li><i class="fa-solid fa-chart-pie"></i> <a href="#">Products</a></li>
+            <li><i class="fa-solid fa-user"></i> <a href="">Users</a></li>
+            <li> <i class="fa-regular fa-pen-to-square"></i> <a href="#">Category</a></li>
+            <li><i class="fa-solid fa-credit-card"></i> <a href="#">Orders</a></li>
+            <li><i class="fa-solid fa-burger"></i> <a href="#">Coupons</a></li>
+            <li><i class="fa-solid fa-chart-line"></i> <a href="#">Banners</a></li>
+
+        </div>
+
+    </section>
+
+
+<section id="interface">
+    <div class="navigation">
+        <div class="n1">
+            <div>
+                <i id="menu-btn" class="fa-solid fa-bars"></i>
+            </div>
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search">
+            </div>
+        </div>
+
+        <div class="profile">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+    </div>
+
+    <h3 class="i-name">Product Adding Form</h3>
+  
+ 
+
+    <dir class="board">
+
+        <div class="right_content">
+            <div class="form_frame">
+                <form spellcheck="false" class="product_form" enctype="multipart/form-data">
+                <div class="top">
+                    <div class="top_left">
+                        <label for="product_name">Product Name</label>
+                        <input type="text" name="productname">
+    
+                        <div style="display: flex; gap: 1rem; width: 100%; padding: .5rem 0;">
+                            <span style="display: flex; flex-direction: column; gap: .2rem;">
+                                <label for="product_name">Old Price</label>
+                                <input type="number" name="oldprice" style="width: 100%;" >
+                            </span>
+                            <span style="display: flex; flex-direction: column; gap: .2rem;">
+                                <label for="product_name">Discount Price</label>
+                                <input type="number" name="newprice" style="padding-left: 1rem; width: 100%; " >
+                            </span>
+                        </div>
+    
+                        <label for="product_name">Category</label>
+                        <select style="font-family: 'Poppins',sans-serif; height: 2.5rem; outline: none; font-size: .9rem; width: 100%; padding: .4rem;" name="category" id="size">
+                            <option onchange="select(e)" value="Category" style="font-size: .8rem;">Category</option>
+                                <option value="Rolex">Rolex</option>
+                        </select>
+                    </div>
+                    <div class="top_right">
+                        <img src="" id="imagePreview" class="product_img" alt="">
+                        <div class="file_div"><span class="choose_file">Choose File</span><input onchange="previewImage(this)" type="file" name="productimg" class="input_file"  multiple></div>
+                    </div>
+                </div>
+                <div class="bottom" style="padding: 0 1rem;">
+    
+                    <div style="display: flex; gap: 1rem; width: 100%;">
+                        <span style="display: flex; flex-direction: column; gap: .2rem;">
+                        <label for="size">Size</label>
+                        <div class="color_drop">
+                            <p>SIZE</p>
+                            <ul class="drop_bar">
+                            <li><input type="checkbox" name="size" id="S" value="S"><label for="S">S</label></li>
+                            <li><input type="checkbox" name="size" id="M" value="M"><label for="M" >M</label></li>
+                            <li><input type="checkbox" name="size" id="L" value="L"><label  for="L">L</label></li>
+                            <li><input type="checkbox" name="size" id="XL" value="XL"><label  for="XL">XL</label></li>
+                            <li><input type="checkbox" name="size" id="2XL" value="2XL"><label for="2XL">2XL</label></li>
+                           </ul>
+                    </div>
+                    </span>
+                    
+                    <span style="display: flex; flex-direction: column; gap: .2rem;">
+                    <label for="size">Color</label>
+                    <div class="color_drop">
+                            <p>COLOR</p>
+                            <ul class="drop_bar">
+                            <li><input type="checkbox" name="color" id="green" value="green"><label style="color: rgb(0, 195, 0);" for="green">green</label></li>
+                            <li><input type="checkbox" name="color" id="black" value="black"><label for="black" style="color: black;">black</label></li>
+                            <li><input type="checkbox" name="color" id="red" value="red"><label style="color: red;" for="red">red</label></li>
+                            <li><input type="checkbox" name="color" id="orange" value="orange"><label style="color: orange;" for="orange">orange</label></li>
+                            <li><input type="checkbox" name="color" id="pink" value="pink"><label style="color: rgb(216, 118, 135);" for="pink">pink</label></li>
+                           </ul>
+                    </div>
+                    </span>
+    
+    
+                    <span style="display: flex; flex-direction: column; gap: .2rem; font-size: 14px;" >
+                    <label for="size">Sub Category</label>
+                    <select style="font-family: 'Poppins', sans-serif; height: 2.5rem; outline: none; font-size: .9rem; width: 9rem; padding: .4rem;" name="subcategory" id="subcategory" onchange="selectSubcategory(this)">
+                        <option value="">Sub Category</option>
+                            <option value=""></option>
+                    </select>
+                    </span>
+    
+    
+                    <span style="display: flex; flex-direction: column; width: 9%; padding-left: 0; gap: .2rem;">
+                        <label for="size">Stock</label>
+                        <input type="number" value='true' name="stock">
+                    </span>
+    
+                    </div>
+    
+                    <span style="display: flex; flex-direction: column; gap: .2rem; margin-top: .5rem;">
+                        <label for="size">Product Description</label>
+                        <textarea name="description" id="text_area"></textarea>
+                    </span>
+                    <p class="error_msg"></p>
+                    <div style="width: 100%; display: flex; justify-content: center; padding: .1rem; padding-bottom: 10px;">
+                        <button type="submit" class="add_btn">Add Product</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>   
+    </dir>
+</section>
+</body>
+</html>
