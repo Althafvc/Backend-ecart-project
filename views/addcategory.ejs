@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/addcategory.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+    <section id="menu">
+        <div class="logo">
+            <img src="/images/logo.png" alt="">
+            <h2>StyleSphere</h2>
+        </div>
+        <div class="items">
+            <li><i class="fa-solid fa-chart-line"></i> <a href="#">Analysis</a></li>
+            <li><i class="fa-solid fa-gift"></i><a href="/admin/products">Products</a></li>
+            <li> <i class="fa-solid fa-user"></i> <a href="/admin/users">Users</li>
+            <li> <i class="fa-regular fa-pen-to-square"></i> <a href="#">Category</a></li>
+            <li><i class="fa-solid fa-truck"></i> <a href="#">Orders</a></li>
+            <li><i class="fa-solid fa-credit-card"></i> <a href="#">Coupons</a></li>
+            <li><i class="fa-regular fa-file"></i> <a href="#">Banners</a></li>
+            <li><i class="fa-solid fa-arrow-right-from-bracket"></i> <a href="#">logout</a></li>
+
+        </div>
+
+    </section>
+
+
+<section id="interface">
+    <div class="navigation">
+        <div class="n1">
+            <div>
+                <i id="menu-btn" class="fa-solid fa-bars"></i>
+            </div>
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search">
+            </div>
+        </div>
+
+        <div class="profile">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+    </div>
+
+    <h3 class="i-name">Product Adding Form</h3>
+  
+ 
+
+    <dir class="board">
+
+        <div class="right_content">
+            <div class="form_frame">
+                <form spellcheck="false" class="product_form" enctype="multipart/form-data" id="form">
+                <div class="top">
+                    <div class="top_left">
+                    
+                        <label for="product_name">Category</label>
+                        <input type="text" style="width: calc(100% - 5.5rem);" name="category" id="category">                                   
+
+                        </select>
+
+                        <label for="size" style="margin: 1rem 0 .4rem 0;">Sub Category</label>
+                        <div class="sub-area">
+
+                                <div class="sub-area-sub1" style="display: flex; flex-direction: row; font-size: 14px;" >
+                                    <input type="text" name="subcategory" style="width: calc(100% - 5.5rem);" id="sub">                                    
+                                    
+                                    <button type="button" class="add_btn" onclick="subcategoryAdding(datas)" >Add</button>
+                                </div>
+
+
+                        </div>
+                    </div>
+                    <div class="top_right">
+                        <img src="" id="imagePreview" class="product_img" alt="">
+                        <div class="file_div"><span class="choose_file">Choose File</span><input id="imageInput" onchange="previewImage(this)" type="file" name="category_img" class="input_file"  multiple></div>
+                    </div>
+                </div>
+                <div class="bottom" style="padding: 0 1rem;">
+    
+                    <div style="display: flex; gap: 1rem; width: 100%;">
+                    
+    
+    
+                    <span style="display: flex; flex-direction: column; width: 9%; padding-left: 0; gap: .2rem;">
+                       
+                    </span>
+    
+                    </div>
+
+                    <p class="error_msg"></p>
+                    <div style="width: 100%; display: flex; justify-content: center; padding: .1rem; padding-bottom: 10px;">
+                        <button type="submit" class="add_btn" id="submit">Add Product</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>   
+    </dir>
+</section>
+<script>
+
+function previewImage(input) {  
+    var file = input.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('imagePreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+</script>
+<script>
+    
+
+  
+</script>
+<script src="/addcategory-axios.js"></script>
+
+</body>
+</html>
+
+

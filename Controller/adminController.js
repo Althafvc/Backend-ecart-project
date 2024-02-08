@@ -3,6 +3,8 @@ const adminModel = require('../Models/adminDatas')
 const userModel = require('../Models/signupDatas')
 const multer  = require('multer')
 const productsModel = require ('../Models/productDatas')
+const categoryDatas = require('../Models/categoryDatas')
+const categoryModel = require('../Models/categoryDatas')
 
 
 
@@ -40,6 +42,8 @@ exports.postSignup = async (req,res)=> {
 
    
 }
+
+
 
 
 
@@ -331,4 +335,52 @@ exports.postaddProduct =async  (req,res)=> {
         console.log('file not found',err);
     }
 }
+
+
+exports.getAdminProductsList = (req,res)=> {
+
+    res.render ('productsList')
+
+}
+
+
+exports.getAddCategory = (req,res)=> {
+    res.render('addcategory')
+}
+
+exports.postAddCategory = async (req,res)=> {
+
+
+    const {subcategory, category} = req.body
+
+
+
+    try {
+
+    if(!req.file) {
+        return res.status(298).json({success:false})
+    }
+
+    else {
+        
+        const categoryparser = JSON.parse(category)
+        const subcategoryparser = JSON.parse(subcategory)
+      const category_img = req.file.filename
+
+        const categories = new categoryModel({category_img, category, subcategory:subcategoryparser})
+
+        await categories.save()
+
+      return res.status(200).json({success:true})
+    }
+
+
+  }catch (err) {
+    console.log('catch is working',err);
+  }
+   
+
+}
+
+
    

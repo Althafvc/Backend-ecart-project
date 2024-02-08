@@ -7,7 +7,7 @@
     <title>Dashboard</title>
    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/userslist.css">
+    <link rel="stylesheet" href="/productsList.css">
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
 </head>
 <body>
@@ -48,7 +48,10 @@
         </div>
     </div>
 
-    <h3 class="i-name">Users List</h3>
+    <div style="width: 100%; height: 4rem; margin-top: 4.6rem;  display:  flex;  align-items: center; justify-content: space-between; background: lightblue; padding: 0 1rem;">
+    <h3 class="i-name" style="margin-bottom: 1.9rem;" >Produts List</h3>
+    <button class="product_add_btn" style="width: 7rem; height:2.4rem;" onclick="window.location.href='/admin/addproduct'">ADD PRODUCT</button>
+    </div>
   
  
 
@@ -64,38 +67,27 @@
                 </tr>
             </thead>
             <tbody>
-                <% datas.forEach((data) =>{ %>
                 <tr>
                     <td class="people"> 
                         
                         <div class="people-de">
-                            <h5><%=data.username %></h5>
+                            <h5>Data</h5>
                         </div>
                     </td>
 
                     <td class="people-des">
-                      <h5><%=data.email %></h5>
+                      <h5>Data</h5>
                      
                     </td>
 
                     <td class="active"><p>Active</p></td>
 
-                    <td class="role"> <p><%=data.phone %></p></td>
+                    <td class="role"> <p>Data</p></td>
 
-                    <td class="edit"> <a href="/admin/delete/<%=data.email%>"><i class="fa-solid fa-trash"></i></a></td>
-                </tr>
-
-
-            
-
-                <% }) %>
-
-
-                
+                    <td class="edit"> <a href=""><i class="fa-solid fa-trash"></i></a></td>
+                </tr> 
             </tbody>
         </table>
-
-       
     </dir>
 </section>
 </body>

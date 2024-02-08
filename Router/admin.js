@@ -34,6 +34,11 @@ router.get('/addproduct',adminController.getaddProduct)
 
 router.post('/addproduct', multer.single('product_img'), adminController.postaddProduct)
 
+router.get('/products',adminController.getAdminProductsList)
+
+router.get('/addcategory',adminController.getAddCategory)
+
+router.post('/addcategory', multer.single('category_img'),adminController.postAddCategory)
 
 
 

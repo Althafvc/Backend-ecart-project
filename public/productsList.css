@@ -143,7 +143,18 @@ font-size: 14px;
     padding: 30px 30px 0 30px;
     font-size: 24px;
     font-weight: 700;
-    margin-top: 70px;
+}
+.product_add_btn{
+    border: none;
+    background-color: #253047;
+    color: white;
+    border-radius: .1rem;
+    cursor: pointer;
+    transition: all .5s;
+    border-radius: 7px;
+}
+.product_add_btn:active{
+    transform: scale(.95);
 }
 
 .values {
@@ -207,7 +218,6 @@ background: #74daec;
     overflow: auto;
     background-color: #fff;
     border-radius: 8px;
-    background: #e5e7eb;
 }
 
 .board img {
@@ -356,9 +366,7 @@ tbody tr td {
     width: 150px;
     }
 
-    .i-name {
-        padding: 30px 15px 0 15px;
-    }
+
 
     .values {
         padding: 15px 15px 0 15px;
@@ -381,182 +389,4 @@ tbody tr td {
 
 
 }
-
-
-
-.right_content{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.form_frame{
-    width: 40rem;
-    height: 32rem;
-    box-sizing: content-box;
-    padding: 1rem;
-    border-radius: .2rem;
-    box-shadow: 0px 0px 9px 6px rgba(0, 0, 0, 0.202); 
-    background-color: #2e3444;
-    color: white !important;
-    margin-top: 10px;
- }
-.top{
-    display: flex;
-    width: 100%;
-    height: 40%;
-}
-
-.error_msg{
-    text-align: center;
-    font-family: 'Poppins',sans-serif;
-    color: red;
-    font-size: .91rem;
-    margin-top: 1rem;
-}
-.success{
-    color: rgb(0, 179, 0);
-}
-.top_right{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    width: 35% !important;
-    height: 100% !important;
-}
-.product_img{
-    margin-top: 2.3rem;
-    width: 8rem !important;
-    height: 8rem !important;
-    border-radius: 0 !important;
-    background-color: white;
-}
-.file_div{
-    display: flex;
-    position: relative;
-    cursor: pointer;
-    
-}
-.choose_file{
-    padding: .5rem .9rem;
-    /* border-radius: .2rem; */
-    color: white;
-    font-size: .9rem;
-    cursor: pointer;
-    background-color:#04173e;  
-    
-  }
-.input_file{
-    color: transparent;
-    position: absolute;
-    opacity: 0;
-    height: 2rem;
-    cursor: pointer;
-}
-.top_left{
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    gap: .2rem;
-}
-.top_left label{
-  font-family: 'Poppins',sans-serif;
-  font-size: .7rem;
-}
-.top_left input{
-  font-family: 'Poppins',sans-serif;
-  height: 2.5rem;
-  outline: none;
-  padding-left: 1rem;
-}
-.bottom{
-    display: flex;
-    flex-direction: column;
-    gap: .2rem;
-}
-.bottom label{
-    font-family: 'Poppins',sans-serif;
-    font-size: .7rem;
-}
-.bottom input{
-    font-family: 'Poppins',sans-serif;
-    height: 2.5rem;
-    outline: none;
-    padding-left: 1rem;
-}
-#text_area{
-    width: 94%;
-    height: 7rem;
-    resize: none;
-    outline: none;
-    padding: 1rem;
-    font-family: 'Poppins',sans-serif;
-}
-.add_btn{
-    padding: .7rem 1rem;
-    font-family: 'Poppins', sans-serif;
-    background: none;
-    outline: none;
-    border: none;
-    color: white;
-    transition: transform .5s;
-    border-radius: .2rem;
-    cursor: pointer;
-    background-color:#04173e;
-}
-.add_btn:active{
-    transform: scale(.95);
-}
-.color_drop{
-    position: relative;
-    display: block;
-    text-align: center;
-    width: 9rem;
-    height: 2.5rem;
-    background-color: white !important;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-.color_drop p{
-    color: black;
-    font-family: 'Poppins',sans-serif;
-    width: 100%;
-    font-size: .9rem;
-}
-.color_drop ul{
-    display: none;
-    position: absolute;  
-    width: 100%;
-    height: 100%;
-    bottom: .001rem;
-    right: .3rem;
-}
-.color_drop ul li{
-    color: black;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    padding-left: .3rem;
-    width: 100%;
-    height: 2rem;
-    z-index: 999;
-    background-color: white;
-}
-.color_drop ul li:hover{
-    background-color: rgb(207, 206, 206);
-}
-.color_drop:hover  .drop_bar{
-    display: block !important;
-}
-.drop_bar label{
-    display: flex;
-    align-items: center;
-    padding-left: 1rem;
-    width: 100%;
-    height: 100%;
-    font-family: 'Poppins',sans-serif;
-    font-size: .9rem;
-}
-
 
