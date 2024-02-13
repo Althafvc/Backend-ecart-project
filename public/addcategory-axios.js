@@ -5,15 +5,13 @@ function subcategoryAdding () {
 
     const subValue =document.getElementById('sub').value
     datas.push(subValue)
-    console.log(datas);
+
     document.getElementById('sub').value=''
 }
-
 submitbutton.addEventListener('click',async (event)=>{
     event.preventDefault()
 const category = document.getElementById('category').value
 const image = document.getElementById('imageInput').files[0]
-console.log(image);
 
     const form = new FormData()
     form.append('category',JSON.stringify(category))
@@ -29,10 +27,9 @@ console.log(image);
             }
         })
         const result = response.data
-
+         console.log(result);
         if(!result.success) {
-            console.log(result);
-
+            
             console.log('image not found')
 
         } else {
@@ -40,10 +37,7 @@ console.log(image);
     }
         }
 
-
     catch(err) {
         console.log('axios error',err);
     }
-
-
 })

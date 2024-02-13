@@ -1,17 +1,13 @@
 const mongoose =  require('mongoose')
 
 
-
 const productDatas = new mongoose.Schema({
+  
     productname: {
       type: String,
       required: true
     },
     oldprice: {
-      type: Number,
-      required: true
-    },
-    newprice: {
       type: Number,
       required: true
     },
@@ -33,7 +29,7 @@ const productDatas = new mongoose.Schema({
       type: Array
     },
     subcategory: {
-      type: String,
+      type: Array,
       required: true
     },
 

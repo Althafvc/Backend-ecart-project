@@ -32,7 +32,8 @@ router.get('/delete/:mail',adminController.DeleteUser)
 
 router.get('/addproduct',adminController.getaddProduct)
 
-router.post('/addproduct', multer.single('product_img'), adminController.postaddProduct)
+router.post('/addproduct', multer.array('product_img',999), adminController.postaddProduct);
+
 
 router.get('/products',adminController.getAdminProductsList)
 

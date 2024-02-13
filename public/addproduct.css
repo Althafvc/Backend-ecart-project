@@ -209,7 +209,6 @@ background: #74daec;
     border-radius: 8px;
     background: #e5e7eb;
 }
-
 .board img {
     width: 45px;
     height: 45px;
@@ -284,6 +283,10 @@ tbody tr td {
     font-size: 20px;
     cursor: pointer;
     margin-right: 20px;
+}
+
+.red {
+    color: red;
 }
 
 @media (max-width:769px) {
@@ -405,7 +408,18 @@ tbody tr td {
     width: 100%;
     height: 40%;
 }
-
+.err_div{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.err_p{
+    margin-top: 7rem;
+    margin-right: 3rem;
+    color: red !important;
+}
 .error_msg{
     text-align: center;
     font-family: 'Poppins',sans-serif;
