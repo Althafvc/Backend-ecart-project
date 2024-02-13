@@ -14,56 +14,46 @@ document.getElementById('submitBtn').addEventListener('click', async (event) => 
     try {
 
             if (!stock) {
-                console.log(1);
                 errorArea.innerHTML = 'Stock field is mandatory'
                 errorArea.classList.add('red')
                 return
             } else {
-                console.log(2);
                 errorArea.innerHTML = ''
                 errorArea.classList.remove('red')
             }
             
             if(!productname) {
-                console.log(3);
                 errorArea.innerHTML = 'Productname is mandatory'
                 errorArea.classList.add('red')
                 return
             }else {
-                console.log(4);
                 errorArea.innerHTML = ''
                 errorArea.classList.remove('red')
             }
             
             if(!image) {
-                console.log(5);
                 errorArea.innerHTML = 'images are mandatory'
                 errorArea.classList.add('red')
                 return
             } else {
-                console.log(6);
                 errorArea.innerHTML = ''
                 errorArea.classList.remove('red')
             }
             
             if (!subcategory) {
-                console.log(7);
                 errorArea.innerHTML = 'please provide a subcategory'
                 errorArea.classList.add('red')
                 return
             }else {
-                console.log(8);
                 errorArea.innerHTML = 'jayichu'
                 errorArea.classList.remove('red')
             }
             
             if(!category) {
-                console.log(9);
                 errorArea.innerHTML = 'please provide a valid category'
                 errorArea.classList.add('red')
                 return
             }else {
-                console.log(10);
                 errorArea.innerHTML = ''
                 errorArea.classList.remove('red')
             }
@@ -93,8 +83,6 @@ document.getElementById('submitBtn').addEventListener('click', async (event) => 
     const formData = new FormData(document.getElementById('formID'))
     
     const response = await axios.post('/admin/addproduct', formData)
-    console.log(11);
     const result = response.data
-    console.log(12);
     
 })
