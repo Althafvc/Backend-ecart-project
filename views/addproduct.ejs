@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/addproduct.css">
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <section id="menu">
@@ -50,32 +51,36 @@
   
  
 
-    <dir class="board">
+    <div class="board">
 
         <div class="right_content">
             <div class="form_frame">
-                <form spellcheck="false" class="product_form" enctype="multipart/form-data">
+                <form spellcheck="false" class="product_form" enctype="multipart/form-data" id="formID" method="post">
                 <div class="top">
                     <div class="top_left">
                         <label for="product_name">Product Name</label>
-                        <input type="text" name="productname">
+                        <input type="text" name="productname" id="productname">
     
                         <div style="display: flex; gap: 1rem; width: 100%; padding: .5rem 0;">
                             <span style="display: flex; flex-direction: column; gap: .2rem;">
                                 <label for="product_name">Price</label>
-                                <input type="number" name="oldprice" style="width: 100%;" >
+                                <input type="number" name="oldprice" style="width: 100%;" id="price">
                             </span>
                         </div>
-    
+                        
                         <label for="product_name">Category</label>
-                        <select style="font-family: 'Poppins',sans-serif; height: 2.5rem; outline: none; font-size: .9rem; width: 100%; padding: .4rem;" name="category" id="size">
+                        
+                        <select style="font-family: 'Poppins',sans-serif; height: 2.5rem; outline: none; font-size: .9rem; width: 100%; padding: .4rem;" name="category" id="category">
                             <option onchange="select(e)" value="Category" style="font-size: .8rem;">Category</option>
-                                <option value="Rolex">Rolex</option>
+                            <% categoryDatas.forEach((data) =>{ %>
+                                <option value="<%=data.category%>"><%=data.category%></option>
+                                <% }) %>
+
                         </select>
                     </div>
                     <div class="top_right">
                         <img src="" id="imagePreview" class="product_img" alt="">
-                        <div class="file_div"><span class="choose_file">Choose File</span><input onchange="previewImage(this)" type="file" name="productimg" class="input_file"  multiple></div>
+                        <div class="file_div"><span class="choose_file">Choose File</span><input onchange="previewImage(this)" type="file" name="product_img" class="input_file"  multiple></div>
                     </div>
                 </div>
                 <div class="bottom" style="padding: 0 1rem;">
@@ -112,16 +117,21 @@
     
                     <span style="display: flex; flex-direction: column; gap: .2rem; font-size: 14px;" >
                     <label for="size">Sub Category</label>
-                    <select style="font-family: 'Poppins', sans-serif; height: 2.5rem; outline: none; font-size: .9rem; width: 9rem; padding: .4rem;" name="subcategory" id="subcategory" onchange="selectSubcategory(this)">
+                    <select style="font-family: 'Poppins', sans-serif; height: 2.5rem; outline: none; font-size: .9rem; width: 9rem; padding: .4rem;" name="subcategory" id="subcategory" >
                         <option value="">Sub Category</option>
-                            <option value=""></option>
+                        <% categoryDatas.forEach((data) =>{ %>
+                            <%data.subcategory.forEach((sub)=>{%>
+                            <option value="<%=sub%>"><%=sub%></option>
+                            <%})%>
+                            <% }) %>
+
                     </select>
                     </span>
     
     
                     <span style="display: flex; flex-direction: column; width: 9%; padding-left: 0; gap: .2rem;">
                         <label for="size">Stock</label>
-                        <input type="number" value='true' name="stock">
+                        <input type="number"  name="stock" id="stock">
                     </span>
     
                     </div>
@@ -130,15 +140,34 @@
                         <label for="size">Product Description</label>
                         <textarea name="description" id="text_area"></textarea>
                     </span>
-                    <p class="error_msg"></p>
+                    <p class="error_msg" id="error_area" style="color: red;"></p>
                     <div style="width: 100%; display: flex; justify-content: center; padding: .1rem; padding-bottom: 10px;">
-                        <button type="submit" class="add_btn">Add Product</button>
+
+                        <button type="button" id="submitBtn" class="add_btn">Add Product</button>
                     </div>
                 </div>
             </form>
+           
             </div>
         </div>   
-    </dir>
+    </div>
 </section>
+<script src="/addproduct-axios.js"></script>
+
+<script>
+    function previewImage(input) {  
+    var file = input.files[0];
+    console.log(input.files)
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('imagePreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+</script>
+
+
 </body>
 </html>

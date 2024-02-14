@@ -300,12 +300,14 @@ exports.DeleteUser = async (req, res) => {
 
 
 exports.getaddProduct = async (req, res) => {
-    let categoryDatas = await categoryModel.find()
-    res.render('addproduct', { categoryDatas })
+    try {
+        let categoryDatas = await categoryModel.find()
+        res.render('addproduct', { categoryDatas })
+    }catch (err) {console.log('cannot find categoryDatas',err);}
+   
 }
 
 exports.postaddProduct = async (req, res) => {
-
     const product_img = req.files.map(file => file.filename);
 
     const { productname, oldprice, size, color, subcategory, stock, description, category } = req.body
@@ -318,7 +320,6 @@ exports.postaddProduct = async (req, res) => {
             
         } else {
             const products = new productsModel({ productname, oldprice, size, color, subcategory, stock, category, description, product_img })
-            console.log('here');
             await products.save()
             return res.status(200).json({ success: true })
 
@@ -366,6 +367,11 @@ exports.postAddCategory = async (req, res) => {
         console.log('catch is working', err);
     }
 
+}
+
+
+exports.getEditProduct = (req,res)=> {
+    
 }
 
 

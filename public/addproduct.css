@@ -40,6 +40,10 @@ margin-right: 15px;
 margin-top: 40px;
 }
 
+.red {
+    color: red;
+}
+
 #menu .items li{
 list-style: none;
 padding: 15px 0;
