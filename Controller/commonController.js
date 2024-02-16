@@ -1,11 +1,9 @@
 const userModel = require('../Models/signupDatas')
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose');
-const twilio = require ('twilio')
+const twilio = require('twilio')
 const nodemailer = require('nodemailer')
 const mailOTP = require('../middlewares/mail-otp')
-
-// const flash = require('connect-flash')
 
 
 
@@ -15,7 +13,7 @@ exports.defaultRoute = (req, res) => {
 
 exports.getSignup = (req, res) => {
     const error = req.flash('error')
-    res.render('signup',{error})
+    res.render('signup', { error })
 }
 
 exports.postSignup = async (req, res) => {
@@ -23,11 +21,11 @@ exports.postSignup = async (req, res) => {
     const { username, email, password, phone, confirmpassword } = req.body
 
 
-    if(password!=confirmpassword) {
-        req.flash('error','please confirm your password properly')
+    if (password != confirmpassword) {
+        req.flash('error', 'please confirm your password properly')
         res.status(400).redirect(`/signup`)
 
-    }else {
+    } else {
 
 
         try {
@@ -41,65 +39,65 @@ exports.postSignup = async (req, res) => {
             await newSchema.save()
             const accountSid = process.env.TWILIO_ACCOUNT_SID;
             const authToken = process.env.TWILIO_AUTH_TOKEN;
-            const client = twilio(accountSid,authToken)
+            const client = twilio(accountSid, authToken)
             const verifysid = process.env.TWILIO_VERIFY_SID;
             const twiliophone = phone
-    
-           
-    
-    
-            if(phone) {
+
+
+
+
+            if (phone) {
                 const verification = await client.verify.v2.services(verifysid)
-                .verifications
-                .create({to:`+91${twiliophone}`, channel:'sms'})
-                .then((verification) => console.log(verification.status))
-                .catch((error) => console.log((error.message)))
-               
+                    .verifications
+                    .create({ to: `+91${twiliophone}`, channel: 'sms' })
+                    .then((verification) => console.log(verification.status))
+                    .catch((error) => console.log((error.message)))
+
                 res.redirect(`/user/otp/${phone}`)
-            }else {
+            } else {
                 console.log('otp verification failed');
             }
-    
+
         } catch (err) {
             console.log('error occured while sending the OTP code', err);
-            res.status(500).json({error:'failed to send verification code'})
+            res.status(500).json({ error: 'failed to send verification code' })
         }
     }
 
 
 
-    
+
 
 }
 
 
 exports.getLogin = (req, res) => {
     const error = req.flash("error")
-    res.render('login',{error})
+    res.render('login', { error })
 }
 
 exports.postLogin = async (req, res) => {
-    const {email, password} = req.body 
-    const userDatas = await userModel.findOne({email})
-   
-    if(!userDatas){
-        req.flash("error","User doesn't exists, please try to Signup")
+    const { email, password } = req.body
+    const userDatas = await userModel.findOne({ email })
+
+    if (!userDatas) {
+        req.flash("error", "User doesn't exists, please try to Signup")
         res.redirect("/login")
-    }else{
+    } else {
 
-        if(userDatas){
+        if (userDatas) {
 
-const passwordMatch = await bcrypt.compare(password, userDatas.password);
+            const passwordMatch = await bcrypt.compare(password, userDatas.password);
 
-            if(passwordMatch) {
-                
+            if (passwordMatch) {
+
                 res.redirect('/user/home')
-            }else {
-                req.flash('error',"you have entered a wrong password")
+            } else {
+                req.flash('error', "you have entered a wrong password")
                 res.redirect('/login',)
             }
 
-        }else {
+        } else {
             req.flash('error', 'user does not found')
             res.render('login')
 
@@ -116,33 +114,33 @@ exports.getForgotPassword = (req, res) => {
 
 exports.postForgotPassword = (req, res) => {
 
-    const {email} = req.body
+    const { email } = req.body
 
 
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'althafvellanchola46@gmail.com',
-    pass: 'ppjf wyqm lzbm gtri'
-  }
-});
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'althafvellanchola46@gmail.com',
+            pass: 'ppjf wyqm lzbm gtri'
+        }
+    });
 
 
 
 
-var mailOptions = {
-  from: 'althafvellanchola46@gmai.com',
-  to: email,
-  subject: 'Sending Email using Node.js',
-  text:` The OTP for you is ${mailOTP.otp} `
-};
+    var mailOptions = {
+        from: 'althafvellanchola46@gmai.com',
+        to: email,
+        subject: 'Sending Email using Node.js',
+        text: ` The OTP for you is ${mailOTP.otp} `
+    };
 
-transporter.sendMail(mailOptions, function(error, info){
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Email has sent: ' + info.response);
-  }
-});
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email has sent: ' + info.response);
+        }
+    });
     res.redirect(`/user/forgot/otp/${email}`)
 }

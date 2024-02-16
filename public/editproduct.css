@@ -25,38 +25,42 @@ body {
 }
 
 #menu .logo {
-    display: flex;
-    align-items: center;
-    color: #fff;
-    padding: 30px 0 0 30px;
+display: flex;
+align-items: center;
+color: #fff;
+padding: 30px 0 0 30px;
 }
 
-#menu .logo img {
-    width: 40px;
-    margin-right: 15px;
+#menu .logo img{
+width: 40px;
+margin-right: 15px;
 }
 
-#menu .items {
-    margin-top: 40px;
+#menu .items{
+margin-top: 40px;
 }
 
-#menu .items li {
-    list-style: none;
-    padding: 15px 0;
-    transition: 0.3s ease;
+.red {
+    color: red;
 }
 
-#menu .items li:hover {
-    background: #253047;
-    cursor: pointer;
+#menu .items li{
+list-style: none;
+padding: 15px 0;
+transition: 0.3s ease;
 }
 
-#menu .items li:nth-child(1) {
-    border-left: 4px solid #fff;
+#menu .items li:hover{
+background: #253047;
+cursor: pointer;
 }
 
-#menu .items li i {
-    color: rgb(134, 141, 151);
+#menu .items li:nth-child(1){
+border-left: 4px solid #fff;
+}
+
+#menu .items li i{
+    color:  rgb(134, 141, 151) ;
     width: 30px;
     height: 30px;
     line-height: 30px;
@@ -66,22 +70,22 @@ body {
 }
 
 #menu .items li:hover i,
-#menu .items li:hover a {
-    color: #F3F4F6;
+#menu .items li:hover a{
+color: #F3F4F6;
 }
 
 #menu .items li a {
-    text-decoration: none;
-    color: rgb(134, 141, 151);
-    font-weight: 300px;
-    transition: 0.3s ease;
+text-decoration: none;
+color: rgb(134, 141, 151);
+font-weight: 300px;
+transition: 0.3s ease;
 }
 
 #interface {
     width: 1236px;
-    width: calc(100%-300px);
-    margin-left: 300px;
-    position: relative;
+width: calc(100%-300px);
+margin-left: 300px;
+position: relative;
 
 }
 
@@ -98,7 +102,7 @@ body {
 }
 
 
-#interface .navigation .search {
+#interface .navigation .search{
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -109,17 +113,17 @@ body {
 }
 
 
-#interface .navigation .search input {
-    border: none;
-    outline: none;
-    font-size: 14px;
+#interface .navigation .search input{
+border: none;
+outline: none;
+font-size: 14px;
 }
 
 #interface .navigation .search i {
     margin-right: 14px;
 }
 
-#interface .navigation .profile {
+#interface .navigation .profile{
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -164,31 +168,31 @@ body {
     align-items: center;
 }
 
-.values .val-box i {
-    font-size: 25px;
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    border-radius: 50%;
-    text-align: center;
-    color: #fff;
-    margin-right: 15px;
+.values .val-box i{
+font-size: 25px;
+width: 60px;
+height: 60px;
+line-height: 60px;
+border-radius: 50%;
+text-align: center;
+color: #fff;
+margin-right: 15px;
 }
 
 .values .val-box:nth-child(1) i {
-    background: #7B74EC;
+background: #7B74EC;
 }
 
 .values .val-box:nth-child(2) i {
-    background: #5C8AF0;
+background: #5C8AF0;
 }
 
 .values .val-box:nth-child(3) i {
-    background: #E45D99;
+background: #E45D99;
 }
 
 .values .val-box:nth-child(4) i {
-    background: #74daec;
+background: #74daec;
 }
 
 .values .val-box h3 {
@@ -196,9 +200,9 @@ body {
     font-weight: 600;
 }
 
-.values .val-box span {
+.values .val-box span{
     font-size: 15px;
-    color: #828997;
+   color: #828997;
 }
 
 .board {
@@ -218,7 +222,7 @@ body {
     margin-right: 15px;
 }
 
-.board h5 {
+.board h5{
     font-weight: 600;
     font-size: 14px;
 }
@@ -298,7 +302,7 @@ tbody tr td {
         left: 0px;
     }
 
-
+  
 
     #menu-btn {
         display: initial;
@@ -306,15 +310,15 @@ tbody tr td {
 
     #interface {
         width: 100%;
-        margin-left: 0px;
-        display: inline-block;
-        transition: 0.8s ease;
+    margin-left: 0px;
+    display: inline-block;
+    transition: 0.8s ease;
     }
 
-    #menu.active~#interface {
-        width: calc(100% - 270px);
-        margin-left: 270px;
-        transition: 0.8s ease;
+    #menu.active ~ #interface {
+    width: calc(100% - 270px);
+    margin-left: 270px;
+    transition: 0.8s ease;
     }
 
     #interface .navigation {
@@ -329,13 +333,13 @@ tbody tr td {
     .values .val-box {
         padding: 16px 20px;
         margin: 10px 20px 10px 0;
-
+        
     }
 
     .board {
         width: 88%;
-        padding: 0;
-        overflow-x: auto;
+       padding: 0;
+       overflow-x: auto;
     }
 
     table {
@@ -349,11 +353,11 @@ tbody tr td {
 @media (max-width:477px) {
 
     #interface .navigation {
-        padding: 15px;
-    }
+        padding: 15px;   
+}
 
-    #interface .navigation .search input {
-        width: 150px;
+#interface .navigation .search input{
+    width: 150px;
     }
 
     .i-name {
@@ -362,63 +366,61 @@ tbody tr td {
 
     .values {
         padding: 15px 15px 0 15px;
-
+        
     }
 
     .values .val-box {
-        width: 100%;
-        margin: 8px 0;
+    width: 100%;
+    margin: 8px 0;
     }
 
     .board {
-        margin: 30px 15px 30px 15px;
+       margin: 30px 15px 30px 15px;
     }
+
+
+
+
+
+
+
 }
 
 
 
-.right_content {
+.right_content{
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-.form_frame {
+.form_frame{
     width: 40rem;
-    height: 18rem;
+    height: 32rem;
     box-sizing: content-box;
     padding: 1rem;
     border-radius: .2rem;
-    box-shadow: 0px 0px 9px 6px rgba(0, 0, 0, 0.202);
+    box-shadow: 0px 0px 9px 6px rgba(0, 0, 0, 0.202); 
     background-color: #2e3444;
     color: white !important;
     margin-top: 10px;
-}
-
-.top {
+ }
+.top{
     display: flex;
     width: 100%;
     height: 40%;
 }
 
-.top_left {
-    width: 65%;
-    height: 100%;
-}
-
-.error_msg {
+.error_msg{
     text-align: center;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins',sans-serif;
     color: red;
     font-size: .91rem;
     margin-top: 1rem;
 }
-
-.success {
+.success{
     color: rgb(0, 179, 0);
 }
-
-.top_right {
+.top_right{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -426,87 +428,75 @@ tbody tr td {
     width: 35% !important;
     height: 100% !important;
 }
-
-.product_img {
+.product_img{
     margin-top: 2.3rem;
     width: 8rem !important;
     height: 8rem !important;
     border-radius: 0 !important;
     background-color: white;
 }
-
-.file_div {
+.file_div{
     display: flex;
     position: relative;
     cursor: pointer;
-
+    
 }
-
-.choose_file {
+.choose_file{
     padding: .5rem .9rem;
     /* border-radius: .2rem; */
     color: white;
     font-size: .9rem;
     cursor: pointer;
-    background-color: #04173e;
-
-}
-
-.input_file {
+    background-color:#04173e;  
+    
+  }
+.input_file{
     color: transparent;
     position: absolute;
     opacity: 0;
     height: 2rem;
     cursor: pointer;
 }
-
-.top_left {
+.top_left{
     display: flex;
     flex-direction: column;
     padding: 1rem;
     gap: .2rem;
 }
-
-.top_left label {
-    font-family: 'Poppins', sans-serif;
-    font-size: .7rem;
+.top_left label{
+  font-family: 'Poppins',sans-serif;
+  font-size: .7rem;
 }
-
-.top_left input {
-    font-family: 'Poppins', sans-serif;
-    height: 2.5rem;
-    outline: none;
-    padding-left: 1rem;
+.top_left input{
+  font-family: 'Poppins',sans-serif;
+  height: 2.5rem;
+  outline: none;
+  padding-left: 1rem;
 }
-
-.bottom {
+.bottom{
     display: flex;
     flex-direction: column;
     gap: .2rem;
 }
-
-.bottom label {
-    font-family: 'Poppins', sans-serif;
+.bottom label{
+    font-family: 'Poppins',sans-serif;
     font-size: .7rem;
 }
-
-.bottom input {
-    font-family: 'Poppins', sans-serif;
+.bottom input{
+    font-family: 'Poppins',sans-serif;
     height: 2.5rem;
     outline: none;
     padding-left: 1rem;
 }
-
-#text_area {
+#text_area{
     width: 94%;
     height: 7rem;
     resize: none;
     outline: none;
     padding: 1rem;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins',sans-serif;
 }
-
-.add_btn {
+.add_btn{
     padding: .7rem 1rem;
     font-family: 'Poppins', sans-serif;
     background: none;
@@ -516,14 +506,12 @@ tbody tr td {
     transition: transform .5s;
     border-radius: .2rem;
     cursor: pointer;
-    background-color: #04173e;
+    background-color:#04173e;
 }
-
-.add_btn:active {
+.add_btn:active{
     transform: scale(.95);
 }
-
-.color_drop {
+.color_drop{
     position: relative;
     display: block;
     text-align: center;
@@ -534,24 +522,21 @@ tbody tr td {
     display: flex;
     align-items: center;
 }
-
-.color_drop p {
+.color_drop p{
     color: black;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins',sans-serif;
     width: 100%;
     font-size: .9rem;
 }
-
-.color_drop ul {
+.color_drop ul{
     display: none;
-    position: absolute;
+    position: absolute;  
     width: 100%;
     height: 100%;
     bottom: .001rem;
     right: .3rem;
 }
-
-.color_drop ul li {
+.color_drop ul li{
     color: black;
     list-style: none;
     display: flex;
@@ -562,41 +547,20 @@ tbody tr td {
     z-index: 999;
     background-color: white;
 }
-
-.color_drop ul li:hover {
+.color_drop ul li:hover{
     background-color: rgb(207, 206, 206);
 }
-
-.color_drop:hover .drop_bar {
+.color_drop:hover  .drop_bar{
     display: block !important;
 }
-
-.drop_bar label {
+.drop_bar label{
     display: flex;
     align-items: center;
     padding-left: 1rem;
     width: 100%;
     height: 100%;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins',sans-serif;
     font-size: .9rem;
 }
 
-.sub-area {
-    display: flex;
-    gap: 30px;
 
-}
-
-.sub-area-sub1 {
-    width: 100%;
-    height: 4rem;
-}
-
-.sub-area button {
-
-    height: 40px;
-    width: 5rem;
-    margin-left: .5rem;
-
-
-}

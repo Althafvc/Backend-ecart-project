@@ -101,8 +101,6 @@ if(result == mailOTP.otp) {
 }
 }
 
-
-
 exports.getChangePassword = (req,res)=>{
 
     const mail = req.params.mail

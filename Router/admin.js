@@ -41,6 +41,9 @@ router.get('/addcategory',adminController.getAddCategory)
 
 router.post('/addcategory', multer.single('category_img'),adminController.postAddCategory)
 
+router.get('/editproduct/:id',adminController.getEditProduct)
+router.post('/editproduct/:id',multer.array('product_img',999),adminController.postEditProduct)
+
 
 
 

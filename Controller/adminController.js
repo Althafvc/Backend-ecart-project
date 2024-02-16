@@ -5,6 +5,9 @@ const multer = require('multer')
 const productsModel = require('../Models/productDatas')
 const categoryDatas = require('../Models/categoryDatas')
 const categoryModel = require('../Models/categoryDatas')
+const path = require('path')
+const fs = require('fs')
+const { log } = require('console')
 
 
 
@@ -42,28 +45,6 @@ exports.postSignup = async (req, res) => {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 exports.getAdminLogin = (req, res) => {
     const error = req.flash('error')
@@ -104,21 +85,6 @@ exports.postAdminLogin = async (req, res) => {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 exports.getAdminVerify = (req, res) => {
     res.render('adminverify')
 }
@@ -142,10 +108,6 @@ exports.postAdminVerify = async (req, res) => {
     }
 
 }
-
-
-
-
 
 exports.getAdminKey = (req, res) => {
     const email = (req.params.mail);
@@ -174,17 +136,6 @@ exports.postAdminKey = async (req, res) => {
         console.log('adminkey validation failed', err);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -303,36 +254,47 @@ exports.getaddProduct = async (req, res) => {
     try {
         let categoryDatas = await categoryModel.find()
         res.render('addproduct', { categoryDatas })
-    }catch (err) {console.log('cannot find categoryDatas',err);}
-   
+    } catch (err) { console.log('cannot find categoryDatas', err); }
+
 }
 
 exports.postaddProduct = async (req, res) => {
     const product_img = req.files.map(file => file.filename);
 
     const { productname, oldprice, size, color, subcategory, stock, description, category } = req.body
-    
-    try {
-        
-        if (!req.files) {
-            
-            return res.status(298).json(({ success: false }))
-            
-        } else {
-            const products = new productsModel({ productname, oldprice, size, color, subcategory, stock, category, description, product_img })
-            await products.save()
-            return res.status(200).json({ success: true })
 
+    const productExists = await productsModel.findOne({productname:req.body.productname})
+
+    if(productExists) {
+        console.log('product already exists');
+    }else {
+        try {
+
+            if (!req.files) {
+    
+                return res.status(298).json(({ success: false }))
+    
+            } else {
+                const products = new productsModel({ productname, oldprice, size, color, subcategory, stock, category, description, product_img })
+                await products.save()
+                return res.status(200).json({ success: true })
+    
+            }
+    
+        } catch (err) {
+            console.log('file not found', err);
         }
 
-    } catch (err) {
-        console.log('file not found', err);
     }
+     
 }
 
-exports.getAdminProductsList = (req, res) => {
+exports.getAdminProductsList = async (req, res) => {
+    try {
+        let productDatas = await (productsModel.find())
+        res.render('productsList', { productDatas })
+    } catch (err) { console.log('cannot find productDatas', err) }
 
-    res.render('productsList')
 }
 
 exports.getAddCategory = (req, res) => {
@@ -370,8 +332,64 @@ exports.postAddCategory = async (req, res) => {
 }
 
 
-exports.getEditProduct = (req,res)=> {
-    
+exports.getEditProduct = async (req, res) => {
+    const id = req.params.id
+    try {
+        let categoryDatas = await categoryModel.find()
+        const productDatas = await productsModel.findOne({ _id: id })
+        res.render('editproduct', { categoryDatas, productDatas, id })
+    } catch (error) { console.log('cannot find categoryDatas properly', error) };
 }
 
 
+
+exports.postEditProduct = async (req, res) => {
+    const id = req.params.id
+    const { productname, oldprice, size, color, subcategory, stock, description, category } = req.body
+
+    try {
+        const product = await productsModel.findOne({ _id: id })
+
+        const productObj =
+        {
+            productname,
+            oldprice,
+            size,
+            color,
+            subcategory,
+            stock,
+            description,
+            category,
+            product_img: []
+        }
+
+        if (req.files.length > 0) {
+
+            product.product_img.forEach(img => {
+                const imagePath = './public/' + 'uploads/' + img
+                if (fs.existsSync(imagePath)) {
+
+                    fs.unlinkSync(imagePath)
+                }
+            });
+
+            let images = req.files.map((file) => file.filename)
+            productObj.product_img = images
+        } else {
+            productObj.product_img = product.product_img
+        }
+
+
+
+        await productsModel.updateOne({ _id: id }, productObj),
+
+
+
+            res.status(200).redirect('/admin/products')
+
+
+
+
+    } catch (err) { console.log('cannot access imaged', err) }
+
+}
