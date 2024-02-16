@@ -89,7 +89,7 @@ submitButton.addEventListener('click', async (event) => {
 
             setTimeout(() => {
                window.location.href = "/admin/products"
-              }, 3000);
+              }, 2000);
             Swal.fire({
                 position: "center",
                 icon: "success",

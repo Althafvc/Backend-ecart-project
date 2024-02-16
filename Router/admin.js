@@ -10,7 +10,7 @@ router.get('/adminkey/:mail',adminController.getAdminKey)
 router.post('/adminkey/:mail',adminController.postAdminKey)
 
 router.get('/login',adminController.getAdminLogin)
-router.post('/login',adminController.postAdminLogin)
+router.post('/login',adminController.postAdminLogin) 
 
 router.get('/verify',adminController.getAdminVerify)
 router.post('/verify',adminController.postAdminVerify)
@@ -40,8 +40,8 @@ router.get('/products',adminController.getAdminProductsList)
 router.get('/addcategory',adminController.getAddCategory)
 
 router.post('/addcategory', multer.single('category_img'),adminController.postAddCategory)
-
 router.get('/editproduct/:id',adminController.getEditProduct)
 router.post('/editproduct/:id',multer.array('product_img',999),adminController.postEditProduct)
+router.delete('/products/delete/:id',adminController.DeleteProduct)
 
 module.exports = router

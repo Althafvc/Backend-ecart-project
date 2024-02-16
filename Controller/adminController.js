@@ -384,13 +384,23 @@ exports.postEditProduct = async (req, res) => {
 
         await productsModel.updateOne({ _id: id }, productObj),
 
-
-
             res.status(200).redirect('/admin/products')
 
-
-
-
     } catch (err) { console.log('cannot access images', err) }
+
+}
+
+exports.DeleteProduct = async (req,res)=> {
+ const id = req.params.id
+
+ try {
+    const deletedProduct = await productsModel.deleteOne({_id:id})
+    if(deletedProduct){
+        return res.status(200).json({ success: true })
+    }else{
+        return res.status(290).json({ success: false })
+    }
+
+ }catch (err) {console.log('product not found'.err)}
 
 }

@@ -9,12 +9,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/productsList.css">
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </head>
 
 <body>
     <section id="menu">
         <div class="logo">
-            <img src="/images/logo.png" alt="">
+            <img src="" alt="">
             <h2>StyleSphere</h2>
         </div>
         <div class="items">
@@ -50,7 +52,7 @@
         </div>
 
         <div
-            style="width: 100%; height: 4rem; margin-top: 4.6rem;  display:  flex;  align-items: center; justify-content: space-between; background: lightblue; padding: 0 1rem;">
+            style="width: 100%; height: 4rem; margin-top: 4.6rem;  display:  flex;  align-items: center; justify-content: space-between;  padding: 0 1rem;">
             <h3 class="i-name" style="margin-bottom: 1.9rem;">Produts List</h3>
             <button class="product_add_btn" style="width: 7rem; height:2.4rem;"
                 onclick="window.location.href='/admin/addproduct'">ADD PRODUCT</button>
@@ -116,17 +118,41 @@
                             </td>
 
 
-                            <td class="edit"> <a href=""><i class="fa-solid fa-trash"></i></a>
+                            <td class="edit"> <a href="" product-id="<%=data._id%>" id="deleteBtn" class="delete_product_button"><i class="fa-solid fa-trash"></i></a>
                                 <a href="/admin/editproduct/<%=data._id%>"><i class="fa-solid fa-pen-to-square"
                                         style="margin-left: 20px;"></i></a>
+                                        <div id="errorMessage" style="color: brown;"></div>
                             </td>
                         </tr>
                         <% }) %>
+
 
                 </tbody>
             </table>
         </div>
     </section>
+    <script>
+        console.log(1);
+        document.querySelectorAll('.delete_product_button').forEach(deleteButton =>{
+            deleteButton.addEventListener('click', async (event)=> {
+            event.preventDefault()  
+            const id = deleteButton.getAttribute("product-id")
+
+            try {
+                console.log(2);
+                const response = await axios.delete(`/admin/products/delete/${id}`)
+                const result = response.data
+                // console.log(result);
+                if(result.success){
+                    deleteButton.closest("tr").remove() 
+                }else{
+                    document.getElementById("errorMessage").innerHTML = "error"
+                }
+            }catch(err) {console.log('deletion failed',err)};
+        })
+        })
+        
+    </script> 
 </body>
 
 </html>
