@@ -1,4 +1,3 @@
-console.log(1);
 const submitButton = document.getElementById('submitBtn')
 submitButton.addEventListener('click', async (event) => {
     event.preventDefault()
@@ -13,7 +12,6 @@ submitButton.addEventListener('click', async (event) => {
 
 
     try {
-        console.log(3);
 
         if (!stock) {
             errorArea.innerHTML = 'Stock field is mandatory'
@@ -86,6 +84,25 @@ submitButton.addEventListener('click', async (event) => {
     try {
         const response = await axios.post('/admin/addproduct', formData)
         const result = response.data
+
+        if(result.success){
+
+            setTimeout(() => {
+               window.location.href = "/admin/products"
+              }, 3000);
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Your product has been saved",
+                showConfirmButton: false,
+                timer: 2000
+              });
+
+            }else{
+            document.getElementById("error_area").innerHTML = "This product already exists"
+        }
+        
+
     } catch (error) {
         console.log("Error while adding product", error)
     }

@@ -267,6 +267,7 @@ exports.postaddProduct = async (req, res) => {
 
     if(productExists) {
         console.log('product already exists');
+        return res.status(298).json(({ success: false }))
     }else {
         try {
 
@@ -390,6 +391,6 @@ exports.postEditProduct = async (req, res) => {
 
 
 
-    } catch (err) { console.log('cannot access imaged', err) }
+    } catch (err) { console.log('cannot access images', err) }
 
 }
