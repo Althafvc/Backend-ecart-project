@@ -23,7 +23,12 @@ const schema = {
         required: [true, 'password is required']
     },
     user: {
-        type: Boolean, default: false
+        type: Boolean, 
+        default: false
+    },
+
+    isBlocked: {
+        type: String
     }
 }
 

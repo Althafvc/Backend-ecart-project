@@ -34,7 +34,8 @@ exports.postSignup = async (req, res) => {
             const newSchema = new userModel({
                 email, username, phone,
                 password: hashedpassword,
-                user: false
+                user: false,
+                isBlocked: "Unblocked"
             })
             await newSchema.save()
             const accountSid = process.env.TWILIO_ACCOUNT_SID;

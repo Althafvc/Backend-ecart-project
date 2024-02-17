@@ -28,7 +28,7 @@ router.get('/home',adminController.getAdminhome)
 
 router.get('/users',adminController.getUsersList)
 
-router.get('/delete/:mail',adminController.DeleteUser)     
+router.delete('/delete/users/:mail',adminController.DeleteUser)     
 
 router.get('/addproduct',adminController.getaddProduct)
 
@@ -43,5 +43,6 @@ router.post('/addcategory', multer.single('category_img'),adminController.postAd
 router.get('/editproduct/:id',adminController.getEditProduct)
 router.post('/editproduct/:id',multer.array('product_img',999),adminController.postEditProduct)
 router.delete('/products/delete/:id',adminController.DeleteProduct)
+router.get('/blockedusers',adminController.getBlockedUsers)
 
 module.exports = router

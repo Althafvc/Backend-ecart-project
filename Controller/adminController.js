@@ -234,16 +234,22 @@ exports.getUsersList = async (req, res) => {
 
 
 exports.DeleteUser = async (req, res) => {
-    console.log(req.params.mail);
     const email = req.params.mail
 
     try {
-        await userModel.deleteOne({ email: email })
+        let selectedUser = await userModel.findOne({email})
+        if(selectedUser.isBlocked == "Unblocked") {
+            await userModel.updateOne({email},{$set:{isBlocked:"Blocked"}})
+            return res.status(200).json({ success: true ,block:true})
 
-        res.status(200).redirect('/admin/users')
+        }else{
+            await userModel.updateOne({email},{$set:{isBlocked:"Unblocked"}})
+            return res.status(200).json({ success: true ,unblock:true})
+            
+        }
 
     } catch (err) {
-        console.log('cannot delete the user', err)
+        console.log('error occured while deleting the user', err)
     }
 
 }
@@ -393,14 +399,29 @@ exports.postEditProduct = async (req, res) => {
 exports.DeleteProduct = async (req,res)=> {
  const id = req.params.id
 
+ 
+
  try {
-    const deletedProduct = await productsModel.deleteOne({_id:id})
+    const deletedProduct = await productsModel.findByIdAndDelete(id);
     if(deletedProduct){
+let imagearray = deletedProduct.product_img
+    imagearray.forEach(img => {
+        const imagePath = './public/' + 'uploads/' + img
+            fs.unlinkSync(imagePath)
+        });
         return res.status(200).json({ success: true })
     }else{
-        return res.status(290).json({ success: false })
+        return res.status(404).json({ success: false })
     }
 
- }catch (err) {console.log('product not found'.err)}
+ }catch (err) {console.log('product not found',err)}
 
+}
+
+
+exports.getBlockedUsers = async (req,res)=> {
+
+    const userDatas = await userModel.find({isBlocked:'Blocked'})
+
+    res.render('blockedusers',{userDatas})
 }
