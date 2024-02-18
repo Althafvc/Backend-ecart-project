@@ -436,8 +436,7 @@ exports.getAddCoupons = (req,res)=> {
 exports.postAddCoupons = async (req,res)=> {
  const {couponcode, minimumpurchaseamount, discountpercentage, beginningdate, expirydate} = req.body
 
- const duplicateCoupon = couponsModel.findOne({couponcode:req.body.couponcode})
-
+ const duplicateCoupon = await couponsModel.findOne({couponcode:req.body.couponcode})
 
  if(!couponcode || !minimumpurchaseamount || !discountpercentage || !beginningdate || !expirydate) {
     
@@ -462,13 +461,42 @@ exports.postAddCoupons = async (req,res)=> {
             expirydate
         })
         await newSchema.save()
+
+        res.status(200).redirect('/admin/coupons')
     } catch(err) {
 console.log('Coupons saving failed',err);
 
     }
  }
-
-
-
 }
+
+
+
+exports.getCouponsList = async (req,res)=> {
+
+    const couponDatas = await couponsModel.find()
+
+    res.render('couponsList',{couponDatas})
+}
+
+
+exports.deleteCoupons = async(req,res)=> {
+    const id = req.params.id
+
+    try {
+        const deletedCoupon = await couponsModel.findByIdAndDelete({_id:id});
+
+        if(deletedCoupon) {
+                return res.status(200).json({ success: true })
+        }  else {
+            return res.status(500).json({ success: false })
+    
+        }
+    } 
+ catch(err) {console.log('error in deleting the coupon',err)}
+
+
+    }
+
+
 

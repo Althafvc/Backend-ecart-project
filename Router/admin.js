@@ -45,8 +45,9 @@ router.post('/editproduct/:id',multer.array('product_img',999),adminController.p
 router.delete('/products/delete/:id',adminController.DeleteProduct)
 router.get('/blockedusers',adminController.getBlockedUsers)
 
-
+router.get('/coupons',adminController.getCouponsList)
 router.get('/addcoupons',adminController.getAddCoupons)
 router.post('/addcoupons',adminController.postAddCoupons)
+router.delete('/deletecoupons/:id',adminController.deleteCoupons)
 
 module.exports = router
