@@ -49,5 +49,7 @@ router.get('/coupons',adminController.getCouponsList)
 router.get('/addcoupons',adminController.getAddCoupons)
 router.post('/addcoupons',adminController.postAddCoupons)
 router.delete('/deletecoupons/:id',adminController.deleteCoupons)
+router.get('/editcoupons/:id',adminController.getEditCoupons)
+router.post('/editcoupons/:id',adminController.postEditCoupons)
 
 module.exports = router

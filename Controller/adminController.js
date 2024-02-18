@@ -238,15 +238,15 @@ exports.DeleteUser = async (req, res) => {
     const email = req.params.mail
 
     try {
-        let selectedUser = await userModel.findOne({email})
-        if(selectedUser.isBlocked == "Unblocked") {
-            await userModel.updateOne({email},{$set:{isBlocked:"Blocked"}})
-            return res.status(200).json({ success: true ,block:true})
+        let selectedUser = await userModel.findOne({ email })
+        if (selectedUser.isBlocked == "Unblocked") {
+            await userModel.updateOne({ email }, { $set: { isBlocked: "Blocked" } })
+            return res.status(200).json({ success: true, block: true })
 
-        }else{
-            await userModel.updateOne({email},{$set:{isBlocked:"Unblocked"}})
-            return res.status(200).json({ success: true ,unblock:true})
-            
+        } else {
+            await userModel.updateOne({ email }, { $set: { isBlocked: "Unblocked" } })
+            return res.status(200).json({ success: true, unblock: true })
+
         }
 
     } catch (err) {
@@ -270,31 +270,31 @@ exports.postaddProduct = async (req, res) => {
 
     const { productname, oldprice, size, color, subcategory, stock, description, category } = req.body
 
-    const productExists = await productsModel.findOne({productname:req.body.productname})
+    const productExists = await productsModel.findOne({ productname: req.body.productname })
 
-    if(productExists) {
+    if (productExists) {
         console.log('product already exists');
         return res.status(298).json(({ success: false }))
-    }else {
+    } else {
         try {
 
             if (!req.files) {
-    
+
                 return res.status(298).json(({ success: false }))
-    
+
             } else {
                 const products = new productsModel({ productname, oldprice, size, color, subcategory, stock, category, description, product_img })
                 await products.save()
                 return res.status(200).json({ success: true })
-    
+
             }
-    
+
         } catch (err) {
             console.log('file not found', err);
         }
 
     }
-     
+
 }
 
 exports.getAdminProductsList = async (req, res) => {
@@ -397,106 +397,140 @@ exports.postEditProduct = async (req, res) => {
 
 }
 
-exports.DeleteProduct = async (req,res)=> {
- const id = req.params.id
-
- 
-
- try {
-    const deletedProduct = await productsModel.findByIdAndDelete(id);
-    if(deletedProduct){
-let imagearray = deletedProduct.product_img
-    imagearray.forEach(img => {
-        const imagePath = './public/' + 'uploads/' + img
-            fs.unlinkSync(imagePath)
-        });
-        return res.status(200).json({ success: true })
-    }else{
-        return res.status(404).json({ success: false })
-    }
-
- }catch (err) {console.log('product not found',err)}
-
-}
+exports.DeleteProduct = async (req, res) => {
+    const id = req.params.id
 
 
-exports.getBlockedUsers = async (req,res)=> {
-
-    const userDatas = await userModel.find({isBlocked:'Blocked'})
-
-    res.render('blockedusers',{userDatas})
-}
-
-
-exports.getAddCoupons = (req,res)=> {
-    const error = req.flash('error')
-    res.render('addcoupons',{error})
-}
-
-exports.postAddCoupons = async (req,res)=> {
- const {couponcode, minimumpurchaseamount, discountpercentage, beginningdate, expirydate} = req.body
-
- const duplicateCoupon = await couponsModel.findOne({couponcode:req.body.couponcode})
-
- if(!couponcode || !minimumpurchaseamount || !discountpercentage || !beginningdate || !expirydate) {
-    
-
-    req.flash('error','All fields are mandatory')
-    res.status(404).redirect('/admin/addcoupons')
- }
-
- else if(duplicateCoupon) {
-    req.flash('error','Coupon already exists')
-    res.status(500).redirect('/admin/addcoupons')
-
- }  else {
 
     try {
+        const deletedProduct = await productsModel.findByIdAndDelete(id);
+        if (deletedProduct) {
+            let imagearray = deletedProduct.product_img
+            imagearray.forEach(img => {
+                const imagePath = './public/' + 'uploads/' + img
+                fs.unlinkSync(imagePath)
+            });
+            return res.status(200).json({ success: true })
+        } else {
+            return res.status(404).json({ success: false })
+        }
 
-        const newSchema = new couponsModel({
-            couponcode,
-            minimumpurchaseamount,
-            discountpercentage,
-            beginningdate,
-            expirydate
-        })
-        await newSchema.save()
+    } catch (err) { console.log('product not found', err) }
 
-        res.status(200).redirect('/admin/coupons')
-    } catch(err) {
-console.log('Coupons saving failed',err);
+}
 
+
+exports.getBlockedUsers = async (req, res) => {
+
+    const userDatas = await userModel.find({ isBlocked: 'Blocked' })
+
+    res.render('blockedusers', { userDatas })
+}
+
+
+exports.getAddCoupons = (req, res) => {
+    const error = req.flash('error')
+    res.render('addcoupons', { error })
+}
+
+exports.postAddCoupons = async (req, res) => {
+    const { couponcode, minimumpurchaseamount, discountpercentage, beginningdate, expirydate } = req.body
+
+    const duplicateCoupon = await couponsModel.findOne({ couponcode: req.body.couponcode })
+
+    if (!couponcode || !minimumpurchaseamount || !discountpercentage || !beginningdate || !expirydate) {
+
+
+        req.flash('error', 'All fields are mandatory')
+        res.status(404).redirect('/admin/addcoupons')
     }
- }
+
+    else if (duplicateCoupon) {
+        req.flash('error', 'Coupon already exists')
+        res.status(500).redirect('/admin/addcoupons')
+
+    } else {
+
+        try {
+
+            const newSchema = new couponsModel({
+                couponcode,
+                minimumpurchaseamount,
+                discountpercentage,
+                beginningdate,
+                expirydate
+            })
+            await newSchema.save()
+
+            res.status(200).redirect('/admin/coupons')
+        } catch (err) {
+            console.log('Coupons saving failed', err);
+
+        }
+    }
 }
 
 
 
-exports.getCouponsList = async (req,res)=> {
+exports.getCouponsList = async (req, res) => {
 
     const couponDatas = await couponsModel.find()
 
-    res.render('couponsList',{couponDatas})
+    res.render('couponsList', { couponDatas })
 }
 
 
-exports.deleteCoupons = async(req,res)=> {
+exports.deleteCoupons = async (req, res) => {
     const id = req.params.id
 
     try {
-        const deletedCoupon = await couponsModel.findByIdAndDelete({_id:id});
+        const deletedCoupon = await couponsModel.findByIdAndDelete({ _id: id });
 
-        if(deletedCoupon) {
-                return res.status(200).json({ success: true })
-        }  else {
+        if (deletedCoupon) {
+            return res.status(200).json({ success: true })
+        } else {
             return res.status(500).json({ success: false })
-    
+
         }
-    } 
- catch(err) {console.log('error in deleting the coupon',err)}
-
-
     }
+    catch (err) { console.log('error in deleting the coupon', err) }
+
+}
+
+
+
+
+exports.getEditCoupons = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const couponDatas = await couponsModel.findOne({ _id: id })
+        res.render('editcoupon', { couponDatas, id })
+    } catch (error) { console.log('cannot find couponDatas properly', error) };
+
+}
+
+
+exports.postEditCoupons = async (req, res) => {
+    const id = req.params.id
+
+    const { couponcode, minimumpurchaseamount, discountpercentage, beginningdate, expirydate } = req.body
+
+    try {
+        const coupon = await couponsModel.findOneAndUpdate({ _id: id }, {
+            $set: {
+                couponcode,
+                minimumpurchaseamount,
+                discountpercentage,
+                beginningdate,
+                expirydate
+            }
+        },)
+
+     
+      } catch (err) { console.log('cannot access images', err) }
+
+}
 
 
 
