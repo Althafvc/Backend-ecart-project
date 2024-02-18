@@ -5,6 +5,7 @@ const multer = require('multer')
 const productsModel = require('../Models/productDatas')
 const categoryDatas = require('../Models/categoryDatas')
 const categoryModel = require('../Models/categoryDatas')
+const couponsModel = require('../Models/couponDatas')
 const path = require('path')
 const fs = require('fs')
 const { log } = require('console')
@@ -425,3 +426,49 @@ exports.getBlockedUsers = async (req,res)=> {
 
     res.render('blockedusers',{userDatas})
 }
+
+
+exports.getAddCoupons = (req,res)=> {
+    const error = req.flash('error')
+    res.render('addcoupons',{error})
+}
+
+exports.postAddCoupons = async (req,res)=> {
+ const {couponcode, minimumpurchaseamount, discountpercentage, beginningdate, expirydate} = req.body
+
+ const duplicateCoupon = couponsModel.findOne({couponcode:req.body.couponcode})
+
+
+ if(!couponcode || !minimumpurchaseamount || !discountpercentage || !beginningdate || !expirydate) {
+    
+
+    req.flash('error','All fields are mandatory')
+    res.status(404).redirect('/admin/addcoupons')
+ }
+
+ else if(duplicateCoupon) {
+    req.flash('error','Coupon already exists')
+    res.status(500).redirect('/admin/addcoupons')
+
+ }  else {
+
+    try {
+
+        const newSchema = new couponsModel({
+            couponcode,
+            minimumpurchaseamount,
+            discountpercentage,
+            beginningdate,
+            expirydate
+        })
+        await newSchema.save()
+    } catch(err) {
+console.log('Coupons saving failed',err);
+
+    }
+ }
+
+
+
+}
+

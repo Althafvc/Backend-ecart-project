@@ -84,7 +84,14 @@ exports.postLogin = async (req, res) => {
     if (!userDatas) {
         req.flash("error", "User doesn't exists, please try to Signup")
         res.redirect("/login")
-    } else {
+        
+    } else if(userDatas.isBlocked=='Blocked'){
+        req.flash('error', "your account is blocked")
+        res.redirect("/login")
+
+
+    }
+    else {
 
         if (userDatas) {
 
