@@ -60,4 +60,5 @@ router.post('/addbanner',multer.single('bannerImg'),adminController.postAddBanne
 
 router.get('/editbanner/:id',adminController.getEditBanner)
 router.post('/editbanner/:id',multer.single('bannerImg'),adminController.postEditBanner)
+router.delete('/deletebanner/:id',adminController.getDeleteBanner)
 module.exports = router

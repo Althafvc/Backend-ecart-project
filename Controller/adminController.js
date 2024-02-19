@@ -643,6 +643,23 @@ res.status(404).redirect(`/admin/editbanner/${id}`)
     }catch(err) {console.log('error in editing the banner',err)}
 }
 
+exports.getDeleteBanner = async (req,res)=> {
+    const id  = req.params.id;
+
+    try {
+        const deleteBanner = await bannersModel.findOne({_id:id})
+
+        if(deleteBanner) {
+            return res.status(200).json({ success: true })
+
+        }else {
+            return res.status(500).json({ success: false })
+
+        }
+    } catch(err) {console.log('error occured while deleting the banner ');}
+
+}
+
 
 
 

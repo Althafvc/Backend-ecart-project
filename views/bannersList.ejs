@@ -120,7 +120,7 @@
                             </td>
 
 
-                            <td class="edit"> <a href="" product-id="<%=data._id%>" id="deleteBtn" class="delete_product_button"><i class="fa-solid fa-trash"></i></a>
+                            <td class="edit"> <a href="" banner-id="<%=data._id%>" id="deleteBtn" class="delete_banner_button"><i class="fa-solid fa-trash"></i></a>
 
                                 <a href="/admin/editbanner/<%=data._id%>"><i class="fa-solid fa-pen-to-square"
                                         style="margin-left: 20px;"></i></a>
@@ -135,10 +135,10 @@
         </div>
     </section>
     <script>
-        document.querySelectorAll('.delete_product_button').forEach(deleteButton =>{
+        document.querySelectorAll('.delete_banner_button').forEach(deleteButton =>{
             deleteButton.addEventListener('click', async (event)=> {
             event.preventDefault()  
-            const id = deleteButton.getAttribute("product-id")
+            const id = deleteButton.getAttribute("banner-id")
             Swal.fire({
   title: "Are you sure?",
   text: "This action can't be replaced!",
@@ -150,9 +150,10 @@
 }).then(async (result) => {
   if (result.isConfirmed) {
     try {
-                const response = await axios.delete(`/admin/products/delete/${id}`)
+                const response = await axios.delete(`/admin/deletebanner/${id}`)
                 const result = response.data
                 if(result.success){
+                    console.log(result);
                     deleteButton.closest("tr").remove() 
                 }else{
                     document.getElementById("errorMessage").innerHTML = "error"
