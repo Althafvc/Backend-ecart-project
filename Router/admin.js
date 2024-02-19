@@ -52,4 +52,9 @@ router.delete('/deletecoupons/:id',adminController.deleteCoupons)
 router.get('/editcoupons/:id',adminController.getEditCoupons)
 router.post('/editcoupons/:id',adminController.postEditCoupons)
 
+
+
+router.get('/banners',adminController.getBannersList)
+router.get('/addbanner',adminController.getAddBanner)
+router.post('/addbanner',multer.single('bannerImg'),adminController.postAddBanner)
 module.exports = router

@@ -2,7 +2,7 @@ const submitButton = document.getElementById('submitBtn')
 submitButton.addEventListener('click', async (event) => {
     event.preventDefault()
     const errorArea = document.getElementById('error_area')
-    const stock = document.getElementById('stock').value.trim()
+    const stock = document.getElementById('stock').value
     const productname = document.getElementById('productname').value.trim()
     const image = document.querySelector('.input_file').value.trim()
     const subcategory = document.getElementById('subcategory').value

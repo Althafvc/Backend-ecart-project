@@ -9,6 +9,7 @@ const couponsModel = require('../Models/couponDatas')
 const path = require('path')
 const fs = require('fs')
 const { log } = require('console')
+const bannersModel = require('../Models/bannerDatas')
 
 
 
@@ -527,10 +528,73 @@ exports.postEditCoupons = async (req, res) => {
             }
         },)
 
-     
-      } catch (err) { console.log('cannot access images', err) }
+
+    } catch (err) { console.log('cannot access images', err) }
 
 }
+
+
+exports.getAddBanner = (req, res) => {
+    const error = req.flash('error')
+    res.render('addbanner', { error })
+}
+
+exports.postAddBanner = async (req, res) => {
+    const { bannername, heading, offerprice, startingdate, endingdate } = req.body
+    const file = req.file? req.file.filename : false
+    const duplicatebanner = await bannersModel.findOne({ bannername: req.body.bannername })
+
+
+    if (!bannername || !heading || !offerprice || !startingdate || !endingdate) {
+        req.flash('error', 'All fields are mandatory')
+        res.status(404).redirect('/admin/addbanner')
+
+    } else if (duplicatebanner) {
+        req.flash('error', 'Banner already exists')
+        res.status(404).redirect('/admin/addbanner')
+
+
+    }
+    else if (!file) {
+
+        console.log('image not found');
+
+    }
+
+    else {
+        try {
+
+            const newSchema = new bannersModel({
+                bannername,
+                heading,
+                offerprice,
+                startingdate,
+                endingdate,
+                image: file
+            })
+            await newSchema.save()
+
+            res.status(200).redirect('/admin/addbanner')
+        } catch (err) {
+            console.log('Banner saving failed', err);
+
+        }
+
+
+    }
+}
+
+exports.getBannersList = async(req,res)=> {
+
+    try {
+        const bannerDatas = await bannersModel.find()
+        res.render('bannersList',{bannerDatas})
+    }catch (err) {
+        console.log('cannot find bannerdatas properly');
+    }
+   
+}
+
 
 
 
