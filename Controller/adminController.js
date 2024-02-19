@@ -596,5 +596,53 @@ exports.getBannersList = async(req,res)=> {
 }
 
 
+exports.getEditBanner = async (req,res)=> {
+
+    try {
+        const error = req.flash('error')
+        const id = req.params.id
+        const bannerDatas = await bannersModel.findOne({_id:id})
+        res.render('editbanner',{error,id,bannerDatas})
+    }catch(err) {
+        console.log('cannot find bannerdatas',err);
+    }
+   
+}
+
+exports.postEditBanner = async (req,res)=> {
+    const id = req.params.id;
+    const {bannername, heading, offerprice, startingdate, endingdate}=req.body
+
+    try {
+        const banner = await bannersModel.findOne({_id:id})
+        const file = req.file ? req.file.filename: banner.image;
+
+        if(!bannername || !heading || !offerprice || !startingdate || !endingdate) {
+            req.flash('error', 'All fields are mandatory')
+res.status(404).redirect(`/admin/editbanner/${id}`)
+
+        }else {
+            const updatedbanner = await bannersModel.findOneAndUpdate({_id:id},{
+                $set: {
+                    bannername,
+                    heading,
+                    offerprice,
+                    startingdate,
+                    endingdate,
+                    image:file
+                }
+            })
+
+            const imagepath = './public/' + 'uploads/' + banner.image
+
+            if(req.file) {
+                fs.unlinkSync(imagepath)
+            }
+            res.status(200).redirect(`/admin/banners`)
+        }
+    }catch(err) {console.log('error in editing the banner',err)}
+}
+
+
 
 

@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/addcoupons.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
     margin: 0;
@@ -114,6 +99,11 @@ position: relative;
     width: 1236px;
     position: fixed;
     width: calc(100%-300px);
+}
+
+#submitBtn {
+    margin-top: 20px;
+    margin-left: 50px;
 }
 
 
@@ -221,8 +211,9 @@ background: #74daec;
 }
 
 .board {
-    width: 44%;
+    width: 94%;
     margin: 30px 0 30px 30px;
+    overflow: auto;
     background-color: #fff;
     border-radius: 8px;
     background: #e5e7eb;
@@ -304,14 +295,6 @@ tbody tr td {
     margin-right: 20px;
 }
 
-
-
-.board-area {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
 @media (max-width:769px) {
     #menu {
         width: 270px;
@@ -361,6 +344,7 @@ tbody tr td {
     .board {
         width: 88%;
        padding: 0;
+       overflow-x: auto;
     }
 
     table {
@@ -399,15 +383,7 @@ tbody tr td {
        margin: 30px 15px 30px 15px;
     }
 
-
-
-
-
-
-
 }
-
-
 
 .right_content{
     display: flex;
@@ -415,10 +391,8 @@ tbody tr td {
     align-items: center;
 }
 .form_frame{
-    display: flex;
-    flex-direction: column;
-    width: 26rem;
-    height: 31rem;
+    width: 27rem;
+    height: 27rem;
     box-sizing: content-box;
     padding: 1rem;
     border-radius: .2rem;
@@ -429,9 +403,8 @@ tbody tr td {
  }
 .top{
     display: flex;
-    flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: 40%;
 }
 
 .error_msg{
@@ -449,6 +422,9 @@ tbody tr td {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    width: 35% !important;
+    height: 100% !important;
+    margin-left: 50px;
 }
 .product_img{
     margin-top: 2.3rem;
@@ -465,6 +441,7 @@ tbody tr td {
 }
 .choose_file{
     padding: .5rem .9rem;
+    /* border-radius: .2rem; */
     color: white;
     font-size: .9rem;
     cursor: pointer;
@@ -481,9 +458,8 @@ tbody tr td {
 .top_left{
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: 1rem;
-    gap: 1rem;
+    gap: .2rem;
 }
 .top_left label{
   font-family: 'Poppins',sans-serif;
@@ -498,7 +474,7 @@ tbody tr td {
 .bottom{
     display: flex;
     flex-direction: column;
-    gap: .3rem;
+    gap: .2rem;
 }
 .bottom label{
     font-family: 'Poppins',sans-serif;
@@ -520,7 +496,6 @@ tbody tr td {
 }
 .add_btn{
     padding: .7rem 1rem;
-    margin-top: 1.2rem;
     font-family: 'Poppins', sans-serif;
     background: none;
     outline: none;
@@ -570,11 +545,6 @@ tbody tr td {
     z-index: 999;
     background-color: white;
 }
-.label-area{
-    display: flex;
-    flex-direction: column;
-    gap: .2rem;
-}
 .color_drop ul li:hover{
     background-color: rgb(207, 206, 206);
 }
@@ -591,108 +561,4 @@ tbody tr td {
     font-size: .9rem;
 }
 
-</style>
 
-<body>
-    <section id="menu">
-        <div class="logo">
-            <img src="" alt="">
-            <h2>StyleSphere</h2>
-        </div>
-        <div class="items">
-            <li><i class="fa-solid fa-chart-line"></i> <a href="#">Analysis</a></li>
-            <li><i class="fa-solid fa-gift"></i><a href="/admin/products">Products</a></li>
-            <li> <i class="fa-solid fa-user"></i> <a href="/admin/users">Users</li>
-            <li> <i class="fa-regular fa-pen-to-square"></i> <a href="#">Category</a></li>
-            <li><i class="fa-solid fa-truck"></i> <a href="#">Orders</a></li>
-            <li><i class="fa-solid fa-credit-card"></i> <a href="#">Coupons</a></li>
-            <li><i class="fa-regular fa-file"></i> <a href="#">Banners</a></li>
-            <li><i class="fa-solid fa-arrow-right-from-bracket"></i> <a href="#">logout</a></li>
-
-        </div>
-
-    </section>
-
-
-    <section id="interface">
-        <div class="navigation">
-            <div class="n1">
-                <div>
-                    <i id="menu-btn" class="fa-solid fa-bars"></i>
-                </div>
-                <div class="search">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search">
-                </div>
-            </div>
-
-            <div class="profile">
-                <i class="fa-solid fa-bell"></i>
-            </div>
-        </div>
-
-        <h3 class="i-name">Coupons Editing Form</h3>
-
-
-        <div class="board-area">
-            <div class="board" style="height: 300px;">
-
-                <div class="right_content">
-                    <div class="form_frame">
-                        <form class="product_form" id="formID" action="/admin/editcoupons/<%=id%>" method="post">
-
-
-                            <div class="top">
-                                <div class="top_left">
-
-
-                                    <div class="label-area">
-                                        <label for="product_name">Coupon code</label>
-                                        <input type="text" name="couponcode" value="<%=couponDatas.couponcode%>" id="productname" style="width: 340px;">
-                                    </div>
-                                    <div class="label-area">
-                                        <label for="product_name">Minimum purchase amount</label>
-                                        <input type="number" name="minimumpurchaseamount" id="productname" value="<%=couponDatas.minimumpurchaseamount%>"
-                                            style="width: 340px;">
-                                    </div>
-
-                                    <div class="label-area">
-                                        <label for="product_name">Discount percentage</label>
-                                        <input type="number" name="discountpercentage" id="productname" value="<%=couponDatas.discountpercentage%>"
-                                            style="width: 340px;">
-                                    </div>
-
-
-                                    <div class="label-area">
-                                        <label for="product_name">Beginning date</label>
-                                        <input type="date"value="<%=couponDatas.beginningdate.toISOString().substring(0,10) %>"  name="beginningdate" id="productname" style="width: 340px;">
-                                    </div>
-
-
-                                    <div class="label-area">
-                                        <label for="product_name">Expiry date</label>
-                                        <input type="date" name="expirydate"  value="<%=couponDatas.expirydate.toISOString().substring(0,10) %>" id="productname" style="width: 340px;">
-                                    </div>
-
-
-                                </div>
-
-
-                                <div class="button-area">
-                                    <div
-                                        style="width: 100%; display: flex; justify-content: center; padding: .1rem; padding-bottom: 10px;">
-
-                                        <button type="submit" id="submitBtn" class="add_btn">Edit Coupon</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</body>
-
-</html>

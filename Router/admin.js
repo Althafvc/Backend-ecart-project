@@ -57,4 +57,7 @@ router.post('/editcoupons/:id',adminController.postEditCoupons)
 router.get('/banners',adminController.getBannersList)
 router.get('/addbanner',adminController.getAddBanner)
 router.post('/addbanner',multer.single('bannerImg'),adminController.postAddBanner)
+
+router.get('/editbanner/:id',adminController.getEditBanner)
+router.post('/editbanner/:id',multer.single('bannerImg'),adminController.postEditBanner)
 module.exports = router

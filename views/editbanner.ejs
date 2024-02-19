@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/editbanner.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <section id="menu">
+        <div class="logo">
+            <img src="" alt="">
+            <h2>StyleSphere</h2>
+        </div>
+        <div class="items">
+            <li><i class="fa-solid fa-chart-line"></i> <a href="#">Analysis</a></li>
+            <li><i class="fa-solid fa-gift"></i><a href="/admin/products">Products</a></li>
+            <li> <i class="fa-solid fa-user"></i> <a href="/admin/users">Users</li>
+            <li> <i class="fa-regular fa-pen-to-square"></i> <a href="#">Category</a></li>
+            <li><i class="fa-solid fa-truck"></i> <a href="#">Orders</a></li>
+            <li><i class="fa-solid fa-credit-card"></i> <a href="#">Coupons</a></li>
+            <li><i class="fa-regular fa-file"></i> <a href="#">Banners</a></li>
+            <li><i class="fa-solid fa-arrow-right-from-bracket"></i> <a href="#">logout</a></li>
+
+        </div>
+
+    </section>
+
+
+<section id="interface">
+    <div class="navigation">
+        <div class="n1">
+            <div>
+                <i id="menu-btn" class="fa-solid fa-bars"></i>
+            </div>
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search">
+            </div>
+        </div>
+
+        <div class="profile">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+    </div>
+
+    <h3 class="i-name">Banner Editing Form</h3>
+  
+ 
+
+    <div class="board">
+
+        <div class="right_content">
+            <div class="form_frame">
+                <form action="/admin/editbanner/<%=id%>" spellcheck="false" class="product_form" enctype="multipart/form-data" id="formID"    method="post">
+                    <div style="color: whitesmoke; margin-left: 100px;"> <%= error %></div>
+                <div class="top">
+                    <div class="top_left">
+                        <label for="product_name">Banner Name</label>
+                        <input type="text" name="bannername" id="productname" value="<%=bannerDatas.bannername%>">
+    
+                        <div style="display: flex; gap: 1rem; width: 100%; padding: .5rem 0;">
+                            <span style="display: flex; flex-direction: column; gap: .2rem;">
+                                <label for="product_name">Banner Heading</label>
+                                <input type="text" name="heading" style="width: 100%;" id="price" value="<%=bannerDatas.heading%>">
+                            </span>
+                        </div>
+                        
+                        <label for="product_name">Offer Price</label>
+                        
+                      <input type="number" name="offerprice" value="<%=bannerDatas.offerprice%>">
+
+
+                        <label for="product_name">Starting Date</label>
+                        
+                        <input type="date" name="startingdate" value="<%=bannerDatas.startingdate.toISOString().substring(0,10)%>">
+
+                        
+                        <label for="product_name">Ending Date</label>
+                        
+                        <input type="date" name="endingdate" value="<%=bannerDatas.endingdate.toISOString().substring(0,10)%>">
+
+                        <div style="width: 100%; display: flex; justify-content: center; padding: .1rem; padding-bottom: 10px;">
+
+                            <button type="submit" id="submitBtn" class="add_btn">Edit Banner</button>
+                        </div>
+
+                    </div>
+                    <div class="top_right">
+                        <img src="/uploads/<%=bannerDatas.image%>" id="imagePreview" class="product_img" alt="">
+                        <div class="file_div"><span class="choose_file">Choose File</span><input onchange="previewImage(this)" type="file" name="bannerImg" class="input_file"></div>
+                    </div>
+                </div>
+
+            </form>
+           
+            </div>
+        </div>   
+    </div>
+</section>
+
+<script>
+    function previewImage(input) {  
+    var file = input.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('imagePreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+</script>
+</body>
+</html>
