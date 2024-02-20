@@ -1,18 +1,34 @@
-const multer = require('multer')
-const fs = require('fs')
-const path  = require('path')
+const multer = require('multer');
 
 const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    let uploadPath = 'public/uploads';
+    if (req.uploadType === 'products') {
+      if (req.files.length > 5) {
+        uploadPath = 'public/uploads/dump';
+      } else
+        uploadPath = 'public/uploads/products';
+    } else if (req.uploadType === 'categories') {
+      uploadPath = 'public/uploads/categories';
+    } else if (req.uploadType === 'banners') {
+      uploadPath = 'public/uploads/banners';
+    }
 
-  destination: function (req, file, cb) {
-    cb(null, 'public/uploads')
+    cb(null, uploadPath);
   },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname)
-  }
-})
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname );
+  },
+});
 
-const upload = multer({ storage: storage })
+const setUploadType = (type) => {
+  return (req, res, next) => {
+    req.uploadType = type;
+    next();
+  };
+};
 
-module.exports = upload
+const upload = multer({ storage: storage });
+
+module.exports = { upload, setUploadType };
 

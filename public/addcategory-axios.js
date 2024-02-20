@@ -8,6 +8,7 @@ function subcategoryAdding() {
 
     document.getElementById('sub').value = ''
 }
+
 submitbutton.addEventListener('click', async (event) => {
     event.preventDefault()
     const category = document.getElementById('category').value
@@ -27,13 +28,12 @@ submitbutton.addEventListener('click', async (event) => {
             }
         })
         const result = response.data
-        console.log(result);
         if (!result.success) {
 
             console.log('image not found')
 
         } else {
-            console.log('Done');
+           window.location.href='/admin/home'
         }
     }
 

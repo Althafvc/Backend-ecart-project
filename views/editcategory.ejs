@@ -7,7 +7,7 @@
     <title>Dashboard</title>
    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/addcategory.css">
+    <link rel="stylesheet" href="/editcategory.css">
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -15,7 +15,7 @@
 <body>
     <section id="menu">
         <div class="logo">
-            <img src="/images/logo.png" alt="">
+            <img src="" alt="">
             <h2>StyleSphere</h2>
         </div>
         <div class="items">
@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <h3 class="i-name">Category Adding Form</h3>
+    <h3 class="i-name">Category Editing Form</h3>
   
  
 
@@ -58,30 +58,37 @@
 
         <div class="right_content">
             <div class="form_frame">
-                <form spellcheck="false" class="product_form" enctype="multipart/form-data" id="form">
+                <form spellcheck="false" class="product_form" enctype="multipart/form-data" id="form" method="post" action="/admin/editcategory/<%=id%>">
                 <div class="top">
                     <div class="top_left">
                     
                         <label for="product_name">Category</label>
-                        <input type="text" style="width: calc(100% - 5.5rem);" name="category" id="category">                                   
+                        <input type="text" style="width: calc(100% - 5.5rem);" name="category" id="category" value="<%=categoryDatas.category%>">                                   
 
                         </select>
 
-                        <label for="size" style="margin: 1rem 0 .4rem 0;">Sub Category</label>
+                        <label for="size" style="margin: 1rem 0 .4rem 0; display: none;">Sub Category</label>
                         <div class="sub-area">
 
                                 <div class="sub-area-sub1" style="display: flex; flex-direction: row; font-size: 14px;" >
-                                    <input type="text" name="subcategory" style="width: calc(100% - 5.5rem);" id="sub">                                    
+                                    <input type="text"  name="subcategory" style="width: calc(100% - 5.5rem); display: none;" id="sub" >
                                     
-                                    <button type="button" class="add_btn" onclick="subcategoryAdding(datas)" >Add</button>
+                                    <ul>
+                                        <% categoryDatas.subcategory.forEach((data) =>{ %>
+
+                                        <li style="position: relative; right: -60px; bottom: -60px;"><%=data%></li> <br>
+                                        <% }) %>
+                                    </ul>
+                                    
+                                    <button type="button"  class="add_btn" style="display: none;" onclick="subcategoryAdding()">Add</button>
                                 </div>
 
 
                         </div>
                     </div>
                     <div class="top_right">
-                        <img src="" id="imagePreview" class="product_img" alt="">
-                        <div class="file_div"><span class="choose_file">Choose File</span><input id="imageInput" onchange="previewImage(this)" type="file" name="category_img" class="input_file"  multiple></div>
+                        <img src="/uploads/categories/<%=categoryDatas.category_img%>" id="imagePreview" class="product_img" alt="">
+                        <div class="file_div"><span class="choose_file">Choose File</span><input id="imageInput" onchange="previewImage(this)" type="file" name="category_img" class="input_file"></div>
                     </div>
                 </div>
                 <div class="bottom" style="padding: 0 1rem;">
@@ -95,10 +102,9 @@
                     </span>
     
                     </div>
-
                     <p class="error_msg"></p>
                     <div style="width: 100%; display: flex; justify-content: center; padding: .1rem; padding-bottom: 10px;">
-                        <button type="submit" class="add_btn" id="submit">Add Category</button>
+                        <button type="submit" class="add_btn" id="submit">Edit Category</button>
                     </div>
                 </div>
             </form>
@@ -118,7 +124,17 @@ function previewImage(input) {
     }
 }
 </script>
-<script src="/addcategory-axios.js"></script>
+<script>
+ async function subcategoryAdding() {
+    console.log('Done');
+        const subValue = document.getElementById('sub').value
+
+
+
+    document.getElementById('sub').value = ''
+
+}
+</script>
 </body>
 </html>
 

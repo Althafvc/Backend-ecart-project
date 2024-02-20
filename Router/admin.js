@@ -32,16 +32,26 @@ router.delete('/delete/users/:mail',adminController.DeleteUser)
 
 router.get('/addproduct',adminController.getaddProduct)
 
-router.post('/addproduct', multer.array('product_img',999), adminController.postaddProduct);
+router.post('/addproduct', multer.setUploadType('products'),multer.upload.array('product_img',999),adminController.postaddProduct);
 
 
 router.get('/products',adminController.getAdminProductsList)
 
 router.get('/addcategory',adminController.getAddCategory)
 
-router.post('/addcategory', multer.single('category_img'),adminController.postAddCategory)
+router.post('/addcategory', multer.setUploadType('categories'),multer.upload.single('category_img'),adminController.postAddCategory)
+router.get('/categories',adminController.getCategoriesList)
+router.delete('/deletecategory/:id',adminController.DeleteCategory)
+
+router.get('/editcategory/:id',adminController.getEditCategory)
+router.post('/editcategory/:id',adminController.postEditCategory)
+
+
+
+
 router.get('/editproduct/:id',adminController.getEditProduct)
-router.post('/editproduct/:id',multer.array('product_img',999),adminController.postEditProduct)
+
+router.post('/editproduct/:id',multer.setUploadType('products'),multer.upload.array('product_img',999),adminController.postEditProduct)
 router.delete('/products/delete/:id',adminController.DeleteProduct)
 router.get('/blockedusers',adminController.getBlockedUsers)
 
@@ -56,9 +66,9 @@ router.post('/editcoupons/:id',adminController.postEditCoupons)
 
 router.get('/banners',adminController.getBannersList)
 router.get('/addbanner',adminController.getAddBanner)
-router.post('/addbanner',multer.single('bannerImg'),adminController.postAddBanner)
+router.post('/addbanner',multer.setUploadType('banners'),multer.upload.single('bannerImg'),adminController.postAddBanner)
 
 router.get('/editbanner/:id',adminController.getEditBanner)
-router.post('/editbanner/:id',multer.single('bannerImg'),adminController.postEditBanner)
+router.post('/editbanner/:id',multer.setUploadType('banners'),multer.upload.single('bannerImg'),adminController.postEditBanner)
 router.delete('/deletebanner/:id',adminController.getDeleteBanner)
 module.exports = router

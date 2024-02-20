@@ -311,23 +311,42 @@ exports.getAddCategory = (req, res) => {
 }
 
 exports.postAddCategory = async (req, res) => {
-
-
-    const { subcategory, category } = req.body
-
     try {
-
+        
         if (!req.file) {
+            console.log('image file is compulsory');
             return res.status(298).json({ success: false })
+        }
+        
+        
+            const { subcategory, category } = req.body
+            const subcat = JSON.parse(subcategory)
+            console.log(subcat);
+
+        const sameCategory = await categoryModel.findOne({category:JSON.parse(category)})
+        console.log(sameCategory);
+         if (sameCategory) {
+
+                const updation = await categoryModel.findOneAndUpdate({category:JSON.parse(category)},{$push:{subcategory:{$each:subcat
+                  }}}) 
+            
+
+            return res.status(200).json({ success: true })
+
+            console.log('subcategory added succefully');
+
         }
 
         else {
 
-            const categoryparser = JSON.parse(category)
-            const subcategoryparser = JSON.parse(subcategory)
             const category_img = req.file.filename
 
-            const categories = new categoryModel({ category_img, category: categoryparser, subcategory: subcategoryparser })
+            const categories = new categoryModel(
+                {
+                  category_img,
+                  category:JSON.parse(category),
+                  subcategory:JSON.parse(subcategory),
+                })
 
             await categories.save()
 
@@ -340,7 +359,54 @@ exports.postAddCategory = async (req, res) => {
 
 }
 
+exports.getCategoriesList = async (req, res) => {
 
+    try {
+        const categoryDatas = await categoryModel.find()
+        res.render('categorylist', { categoryDatas })
+
+    } catch (err) {
+        console.log('cannot find categoryDatas properly', err);
+    }
+}
+
+exports.DeleteCategory = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const deleteCategory = await categoryModel.findOneAndDelete({ _id: id })
+
+        if (deleteCategory) {
+
+
+            return res.status(200).json({ success: true })
+
+        } else {
+            return res.status(500).json({ success: false })
+
+        }
+    } catch (err) { console.log('error occured while deleting the category ') }
+
+}
+
+
+exports.getEditCategory = async (req, res) => {
+    const id = req.params.id
+
+    try {
+        const categoryDatas = await categoryModel.findOne({ _id: id })
+        console.log(categoryDatas);
+        res.render('editcategory', { categoryDatas, id })
+
+    } catch (err) { console.log('cannot find your category properly'), err }
+}
+
+
+exports.postEditCategory = (req, res) => {
+    console.log(req.params.id);
+    console.log(req.body);
+    console.log(req.file);
+}
 exports.getEditProduct = async (req, res) => {
     const id = req.params.id
     try {
@@ -375,7 +441,7 @@ exports.postEditProduct = async (req, res) => {
         if (req.files.length > 0) {
 
             product.product_img.forEach(img => {
-                const imagePath = './public/' + 'uploads/' + img
+                const imagePath = './public/' + 'uploads/' + 'products/' + img
                 if (fs.existsSync(imagePath)) {
 
                     fs.unlinkSync(imagePath)
@@ -408,7 +474,7 @@ exports.DeleteProduct = async (req, res) => {
         if (deletedProduct) {
             let imagearray = deletedProduct.product_img
             imagearray.forEach(img => {
-                const imagePath = './public/' + 'uploads/' + img
+                const imagePath = './public/' + 'uploads/' + 'products/' + img
                 fs.unlinkSync(imagePath)
             });
             return res.status(200).json({ success: true })
@@ -541,7 +607,7 @@ exports.getAddBanner = (req, res) => {
 
 exports.postAddBanner = async (req, res) => {
     const { bannername, heading, offerprice, startingdate, endingdate } = req.body
-    const file = req.file? req.file.filename : false
+    const file = req.file ? req.file.filename : false
     const duplicatebanner = await bannersModel.findOne({ bannername: req.body.bannername })
 
 
@@ -584,79 +650,81 @@ exports.postAddBanner = async (req, res) => {
     }
 }
 
-exports.getBannersList = async(req,res)=> {
+exports.getBannersList = async (req, res) => {
 
     try {
         const bannerDatas = await bannersModel.find()
-        res.render('bannersList',{bannerDatas})
-    }catch (err) {
+        res.render('bannersList', { bannerDatas })
+    } catch (err) {
         console.log('cannot find bannerdatas properly');
     }
-   
+
 }
 
 
-exports.getEditBanner = async (req,res)=> {
+exports.getEditBanner = async (req, res) => {
 
     try {
         const error = req.flash('error')
         const id = req.params.id
-        const bannerDatas = await bannersModel.findOne({_id:id})
-        res.render('editbanner',{error,id,bannerDatas})
-    }catch(err) {
-        console.log('cannot find bannerdatas',err);
+        const bannerDatas = await bannersModel.findOne({ _id: id })
+        res.render('editbanner', { error, id, bannerDatas })
+    } catch (err) {
+        console.log('cannot find bannerdatas', err);
     }
-   
+
 }
 
-exports.postEditBanner = async (req,res)=> {
+exports.postEditBanner = async (req, res) => {
     const id = req.params.id;
-    const {bannername, heading, offerprice, startingdate, endingdate}=req.body
+    const { bannername, heading, offerprice, startingdate, endingdate } = req.body
 
     try {
-        const banner = await bannersModel.findOne({_id:id})
-        const file = req.file ? req.file.filename: banner.image;
+        const banner = await bannersModel.findOne({ _id: id })
+        const file = req.file ? req.file.filename : banner.image;
 
-        if(!bannername || !heading || !offerprice || !startingdate || !endingdate) {
+        if (!bannername || !heading || !offerprice || !startingdate || !endingdate) {
             req.flash('error', 'All fields are mandatory')
-res.status(404).redirect(`/admin/editbanner/${id}`)
+            res.status(404).redirect(`/admin/editbanner/${id}`)
 
-        }else {
-            const updatedbanner = await bannersModel.findOneAndUpdate({_id:id},{
+        } else {
+            const updatedbanner = await bannersModel.findOneAndUpdate({ _id: id }, {
                 $set: {
                     bannername,
                     heading,
                     offerprice,
                     startingdate,
                     endingdate,
-                    image:file
+                    image: file
                 }
             })
 
-            const imagepath = './public/' + 'uploads/' + banner.image
+            const imagepath = './public/' + 'uploads/' + 'banners/' + banner.image
 
-            if(req.file) {
+            if (req.file) {
                 fs.unlinkSync(imagepath)
             }
             res.status(200).redirect(`/admin/banners`)
         }
-    }catch(err) {console.log('error in editing the banner',err)}
+    } catch (err) { console.log('error in editing the banner', err) }
 }
 
-exports.getDeleteBanner = async (req,res)=> {
-    const id  = req.params.id;
+exports.getDeleteBanner = async (req, res) => {
+    const id = req.params.id;
 
     try {
-        const deleteBanner = await bannersModel.findOne({_id:id})
+        const deleteBanner = await bannersModel.findOneAndDelete({ _id: id })
 
-        if(deleteBanner) {
+        if (deleteBanner) {
+
+
             return res.status(200).json({ success: true })
 
-        }else {
+        } else {
             return res.status(500).json({ success: false })
 
         }
-    } catch(err) {console.log('error occured while deleting the banner ');}
+    } catch (err) { console.log('error occured while deleting the banner ') }
 
 }
 

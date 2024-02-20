@@ -55,9 +55,9 @@
 
         <div
             style="width: 100%; height: 4rem; margin-top: 4.6rem;  display:  flex;  align-items: center; justify-content: space-between;  padding: 0 1rem;">
-            <h3 class="i-name" style="margin-bottom: 1.9rem;">Banners List</h3>
+            <h3 class="i-name" style="margin-bottom: 1.9rem;">Categories List</h3>
             <button class="product_add_btn" style="width: 7rem; height:2.4rem;"
-                onclick="window.location.href='/admin/addbanner'">ADD BANNER</button>
+                onclick="window.location.href='/admin/addcategory'">ADD Category</button>
         </div>
 
 
@@ -66,63 +66,41 @@
             <table width="100%">
                 <thead>
                     <tr>
-                        <td>banner name</td>
+                        <td>category name</td>
                         <td>image</td>
-                        <td>heading</td>
-                        <td>offerprice</td>
-                        <td>startingdate</td>
-                        <td>endingdate</td>
-
-
+                        <td>subcategory</td>
                         <td>manage</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <% bannerDatas.forEach((data)=>{ %>
+                    <% categoryDatas.forEach((data)=>{ %>
 
                         <tr class="tr">
                             <td class="people">
 
                                 <div class="people-de">
                                     <h5 style="margin-top: 15px;">
-                                        <%=data.bannername%>
+                                        <%=data.category%>
                                     </h5>
                                 </div>
                             </td>
 
                             <td class="people-des">
-                                <img src="/uploads//banners/<%=data.image%>" alt="" width="100px">
+                                <img src="/uploads/categories/<%=data.category_img%>" alt="" width="100px">
 
                             </td>
 
                             <td class="">
                                 <h5>
-                                    <%=data.heading%>
+                                    <%=data.subcategory%>
                                 </h5>
                             </td>
 
-                            <td class="role">
-                                <h5>
-                                    <%=data.offerprice%>
-                                </h5>
-                            </td>
+                           
 
-                            <td class="role">
-                                <h5>
-                                    <%=data.startingdate.toISOString().substring(0,10)%>
-                                </h5>
-                            </td>
+                            <td class="edit"> <a href="" category-id="<%=data._id%>" id="deleteBtn" class="delete_category_button"><i class="fa-solid fa-trash"></i></a>
 
-                            <td class="role">
-                                <h5>
-                                    <%=data.endingdate.toISOString().substring(0,10)%>
-                                </h5>
-                            </td>
-
-
-                            <td class="edit"> <a href="" banner-id="<%=data._id%>" id="deleteBtn" class="delete_banner_button"><i class="fa-solid fa-trash"></i></a>
-
-                                <a href="/admin/editbanner/<%=data._id%>"><i class="fa-solid fa-pen-to-square"
+                                <a href="/admin/editcategory/<%=data._id%>"><i class="fa-solid fa-pen-to-square"
                                         style="margin-left: 20px;"></i></a>
             
                             </td>
@@ -135,10 +113,10 @@
         </div>
     </section>
     <script>
-        document.querySelectorAll('.delete_banner_button').forEach(deleteButton =>{
+        document.querySelectorAll('.delete_category_button').forEach(deleteButton =>{
             deleteButton.addEventListener('click', async (event)=> {
             event.preventDefault()  
-            const id = deleteButton.getAttribute("banner-id")
+            const id = deleteButton.getAttribute("category-id")
             Swal.fire({
   title: "Are you sure?",
   text: "This action can't be replaced!",
@@ -150,7 +128,7 @@
 }).then(async (result) => {
   if (result.isConfirmed) {
     try {
-                const response = await axios.delete(`/admin/deletebanner/${id}`)
+                const response = await axios.delete(`/admin/deletecategory/${id}`)
                 const result = response.data
                 if(result.success){
                     console.log(result);
