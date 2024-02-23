@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product View</title>
+    <link rel="stylesheet" href="/productview.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"></head>
+<body>
+  
+<div class="wrapper productopen_wrapper">
+   
+                    
+    
+    <form action="" style="width: 100%;">
+        <div class="content productopen_content">
+            <div class="main_frame" style="background-color: #4485ed; box-shadow: 2px 2px 5px 2px rgb(86, 85, 85);">
+                    <div class="product_frame">
+                        <div class="img_frame">
+                            <button type="button" class="prev_next_btn">
+                                <i class="bi left_right_icon bi-caret-left"  onclick="minImg('<%=JSON.stringify(productDatas.product_img)%>')" style="width: 5rem; height: 5rem;"></i>
+                            </button>
+                            <div>
+                                <img  id="photo" src="/uploads/products/<%=productDatas.product_img[0]%> " class="product_image_img" alt="">
+                            </div>
+                            <button type="button" class="prev_next_btn">
+                                <i class="bi left_right_icon bi-caret-right" onclick="addImg('<%=JSON.stringify(productDatas.product_img)%>')"  style="width: 5rem; height: 5rem;"></i>
+                            </button>
+                        </div>
+                        <div class="img_position" style="display: flex; width: 100%; justify-content: space-evenly; margin-bottom: 1rem;">
+                            
+                            <% productDatas.product_img.forEach((img)=> { %>
+                            <div style="width: 5rem; border-radius: 0%; cursor: pointer; border: 1px solid rgba(115, 115, 115, 0.277); border-radius: .2rem; overflow: hidden;" onmouseover="setImg('<%=img%>')">
+                                <img class="pro_img_loop" id="small" src="/uploads/products/<%=img%>" style="width: 100%; height: 100%; object-fit: cover;" alt="">
+                            </div>
+                            
+                            <% }) %>
+                        </div>
+                    </div>
+                    <div class="product_detail_frame">
+                        <ul>
+
+                            <li style="font-size: 1.3rem; font-family: 'Poppins',sans-serif; font-weight: 600; color: white; margin-bottom:     10px;">
+                                <%=productDatas.productname%>
+                            </li>
+                            <li style="display: flex; gap: .7rem; align-items: center;">
+                                <p class="old_price">
+                                  
+                                </p>
+                                <p class="new_price" style="font-size: 20px;  background:  #ff9f00;; border: 2px solid gray;  color: white ; padding: 8px; border-radius: 12px; font-weight: bold;">
+                                    <i class="bi bi-currency-rupee"></i>
+                                    <%=productDatas.oldprice%>
+                                </p>
+                                <p class="discount">
+                                  
+                                </p>
+                            </li>
+
+                            <!-- ========================================== -->
+                    
+                            <li style="display: flex; gap: .7rem; align-items: center; height: 2rem;">
+                                <div style="display: flex; align-items: center; font-family: 'sans-serif'; ">Return
+                                    <i class="bi bi-check"></i>
+                                    <i class="bi bi-x"></i>
+                                </div>
+                            </li>
+
+                            <!-- ===================================== -->
+
+                            <div class="top_rating">
+                                <span style="font-size: 1.3rem;">5</span>
+                                <i class="bi top_star bi-star-fill"></i>
+                                <span style="font-size: .7rem; font-family: 'Poppins',sans-serif;">
+                                    Out of 
+                                    <span>4</span> 
+                                    Reviews
+                                </span>
+                            </div>
+                            
+                            <!-- =========================================================== -->
+                    
+                            <li class="size_li">
+                                <p style="font-family: 'Poppins',sans-serif; font-weight: 600; color: rgb(255, 255, 255);">
+                                    SIZE :
+                                </p>
+                                <% productDatas.size.forEach((size)=> { %>
+
+
+                                    <span class="label_spans">
+                                        <input  id="" name="color" value="" type="radio" >
+                                        <label for="" ><%= size %></label>
+                                    </span>
+    
+                                    <% }) %>
+                            </li>
+
+                            <!-- ======================================== -->
+
+                            <li class="color_li">
+                                <p style="font-family: 'Poppins',sans-serif; font-weight: 600; color: rgba(255, 255, 255, 0.947);">
+                                    COLOR :
+                                </p>
+
+                                <% productDatas.color.forEach((color)=> { %>
+
+
+                                <span style="background-color:white;" class="label_span_color">
+                                    <input  id="" name="color" value="" type="radio" >
+                                    <label for="" ><%= color %></label>
+                                </span>
+
+                                <% }) %>
+
+                            </li>
+                            
+                            <!-- =================================================== -->
+                            
+                            <li>
+                                <div style="display: flex; gap: 1rem; align-items: center;">
+                                    <select  name="quantity" style="outline: none; padding: .3rem;">
+                                        <option value="1">Qty:1</option>
+                                        <option value="2">Qty:2</option>
+                                        <option value="3">Qty:3</option>
+                                        <option value="4">Qty:4</option>
+                                        <option value="5">Qty:5</option>
+                                    </select>
+                                    <!-- <div class="stock_left">Hurry only a few LEFT</div> -->
+                                    <div class="wish_btn_div">
+                                        <button class="wish_btn">
+                                            <i class="bi wish_white wish_icon bi-heart;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- ======================================= -->
+
+                            <li style="height: 10rem; flex-direction: column; align-items: start; gap: .3rem;">
+                                <p class="disc_p">Description</p>
+                                <div class="discription_frame" style="font-size: 14px; background: whitesmoke; border: 2px solid gray; color: rgba(0, 0, 0, 0.796);">
+                                  <%=productDatas.description%>
+                                </div>
+                            </li>
+
+                    
+
+                            <li class="btn_li" style="display: flex; height: 3rem; justify-content: space-between; width: 90%; margin-top: 4rem;">
+                                <button type="button" class="addto_cart_btn addto_cart_btn" style="background-color: #ff9f00;">
+                                    ADD TO CART
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                                <button type="button" style="background-color: #fb641b;">BUY NOW</button>
+                            </li>
+                        
+                        </ul>
+
+                    </div>
+                </form>
+
+            </div>                  
+        </div>
+
+        <!-- ============================================================================================================================ -->
+
+        <div class="product_frame_related">
+
+            <div class="product_top">RELATED PRODUCTS</div>
+            <div class="product_bottom">
+                <% relatedProducts.forEach((data)=> { %>
+               <div class="product_frame_grid">
+                   <div class="top">
+                       <button class="wish_btn_related">
+                           <i class="bi wish_related_pro_icon wish_icon bi-heart"></i>
+                        </button>
+                        <img src="/uploads/products/<%=data.product_img[0]%>" style="width: 85%; height: 90%;" alt="">
+                    </div>
+                    <div class="center">
+                        <div class="name_div">
+                            <p class="product_name"><%=data.productname%></p>
+                        </div>
+                        <div class="price_div">
+                            <p class="new_price" style="font-weight: bold; background: rgb(4, 33, 24); padding: 5px; border-radius: 6px; color: white;"><i class="bi bi-currency-rupee"></i><%=data.oldprice%></p>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <button class="addto_cart_btn addto_cart_btn">
+                            ADD TO CART 
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+
+
+        <div class="product_frame_related">
+            <div class="product_top">Ratings & Reviews</div>
+            <h4 class="rating_number">4.5</h4>
+            <h6 class="basedon_tex">Based on <span>23</span> Reviews</h6>
+            <div class="product_bottom product_review">
+                <div class="review_frame">
+                    <div class="user_img_div">
+                        <img class="user_img" src="#" alt="">
+                    </div>
+                    <div class="user_review">
+                        <span class="star_rating"><span>5</span><i class="bi bi-star-fill"></i></span>
+                        <p class="rating_para">good Product</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+
+    
+</div>
+
+</body>
+
+<script>
+function setImg (img) {
+document.getElementById('photo').src = `/uploads/products/${img}`
+    }
+
+let  count = 1
+function addImg (imageArray) {
+    
+    
+    let array = JSON.parse(imageArray)
+    
+    document.getElementById('photo').src = `/uploads/products/${array[count]}`
+    count++
+    if(count>array.length-1) {
+        count=0
+    }
+}
+function minImg (imageArray) {
+    
+    
+    let array = JSON.parse(imageArray)
+    
+    document.getElementById('photo').src = `/uploads/products/${array[count]}`
+    count--
+
+    if(count<0) {
+        count=array.length-1
+    }
+}
+
+
+</script>
+</html>

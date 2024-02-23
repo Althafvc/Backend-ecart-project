@@ -33,7 +33,7 @@ submitbutton.addEventListener('click', async (event) => {
             console.log('image not found')
 
         } else {
-           window.location.href='/admin/home'
+           window.location.href='/admin/categories'
         }
     }
 

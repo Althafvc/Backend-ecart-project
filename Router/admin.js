@@ -31,7 +31,6 @@ router.get('/users',adminController.getUsersList)
 router.delete('/delete/users/:mail',adminController.DeleteUser)     
 
 router.get('/addproduct',adminController.getaddProduct)
-
 router.post('/addproduct', multer.setUploadType('products'),multer.upload.array('product_img',999),adminController.postaddProduct);
 
 
@@ -45,9 +44,6 @@ router.delete('/deletecategory/:id',adminController.DeleteCategory)
 
 router.get('/editcategory/:id',adminController.getEditCategory)
 router.post('/editcategory/:id',adminController.postEditCategory)
-
-
-
 
 router.get('/editproduct/:id',adminController.getEditProduct)
 

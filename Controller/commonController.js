@@ -8,7 +8,7 @@ const mailOTP = require('../middlewares/mail-otp')
 
 
 exports.defaultRoute = (req, res) => {
-    res.send('defaultRoute')
+    res.status(200).redirect('/user/home')
 }
 
 exports.getSignup = (req, res) => {
@@ -43,8 +43,7 @@ exports.postSignup = async (req, res) => {
             const client = twilio(accountSid, authToken)
             const verifysid = process.env.TWILIO_VERIFY_SID;
             const twiliophone = phone
-
-
+    
 
 
             if (phone) {
@@ -64,11 +63,6 @@ exports.postSignup = async (req, res) => {
             res.status(500).json({ error: 'failed to send verification code' })
         }
     }
-
-
-
-
-
 }
 
 

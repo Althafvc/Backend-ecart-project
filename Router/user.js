@@ -20,6 +20,12 @@ router.get('/changepassword/:mail',userController.getChangePassword)
 router.post('/changepassword/:mail',userController.postChangePassword)
 
 
+router.get('/allproducts',userController.getAllProducts)
+router.get('/productview/:id',userController.getProductView)
+router.get('/categories',userController.getCategoryPage)
+router.get('/subcategories',userController.getSubcategoryPage)
+
+
 
 
 

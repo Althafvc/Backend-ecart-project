@@ -378,6 +378,9 @@ exports.DeleteCategory = async (req, res) => {
 
         if (deleteCategory) {
 
+            const imagePath =  './public/' + 'uploads/' + 'categories/' + deleteCategory.category_img
+
+            fs.unlinkSync(imagePath)
 
             return res.status(200).json({ success: true })
 

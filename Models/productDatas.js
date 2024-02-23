@@ -15,7 +15,6 @@ const productDatas = new mongoose.Schema({
     type: String,
     required: true
   },
-
   product_img: {
     type: Array,
     required: true
@@ -30,13 +29,10 @@ const productDatas = new mongoose.Schema({
     type: Array,
     required: true
   },
-
   stock: {
     type: Number,
     required: true
   },
-
-
   description: {
     type: String,
     required: true
