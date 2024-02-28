@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/cart.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
+
+</head>
+<body>
+<div class="wrapper cart_wrapper">
+
+    <div class="p-3 text-center bg-info border-bottom">
+        <div class="container">
+          <div class="row gy-3">
+            <!-- Left elements -->
+            <div class="col-lg-2 col-sm-4 col-4" >
+              <a href="https://mdbootstrap.com/" target="_blank" class="float-start">
+                <img src="/Logo/Stylesphere-logos.png" height="35" style="object-fit: contain; border-radius: 4px;"/>
+              </a>
+            </div>
+            <!-- Left elements -->
+    
+            <!-- Center elements -->
+            <div class="order-lg-last col-lg-5 col-sm-8 col-8">
+              <div class="d-flex float-end">
+                <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="me-1 ms-4 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-heart m-1 me-md-2 "></i><p class="d-none d-md-block mb-0 text-white">Wishlist</p> </a>
+              </div>
+            </div>
+            <!-- Center elements -->
+    
+            <!-- Right elements -->
+            <div class="col-lg-5 col-md-12 col-12">
+             
+            </div>
+            <!-- Right elements -->
+          </div>
+        </div>
+      </div>
+
+    <div class="cart_content">    
+
+        <div class="product_frame" >
+           
+                    <div id="empty-cart" style="padding-left: 42%;width: 100%;padding-top: 1%;padding-bottom: 1%;font-size:large;font-weight: bolder;border-bottom: 2px solid rgba(145, 144, 144, 0.229);">
+                     <%=cartCount>0 ? "Your Products" :  "Your Cart is Empty"%>
+                    </div>
+           
+               <% cartDatas.productId.forEach((data)=> { %>
+
+                <div class="row row<%=data.id._id%>">
+            <div class="product">
+                <div class="image_sec">
+                    <img src="/uploads/products/<%=data.id.product_img[0]%>" style="width: 6rem; height: 7.2rem;" alt="">
+                </div>
+                <div class="discription_sec">
+                    <p class="product_name" style="font-weight: bold;"><%=data.id.productname%></p>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <select class="quantity" name="quantity"  onchange="addQuantity(event,'<%=data.id._id%>') " style="outline: none; padding:.3rem;">
+                            <option value="<%=data.quantity%>"><%=data.quantity%></option>
+                            <option value="1">Qty:1</option>
+                            <option value="2">Qty:2</option>
+                            <option value="3">Qty:3</option>
+                            <option value="4">Qty:4</option>
+                            <option value="5">Qty:5</option>
+                        </select>
+                        <div class="stock_left"> <%=data.id.stock%> Stocks Left</div>
+                    </div>
+                    <div style="display: flex; gap: .7rem; align-items: center;">
+                        <p class="old_price"></p>
+                        <p class="new_price"></p>
+                        <p class="discount"></p>
+                    </div>
+                    
+                </div>
+                <div class="delete_section">
+                    <div style="margin-bottom: 1rem;">
+                        <button>
+                            <a onclick="confirmDelete(`<%=data.id._id%>`)">
+                            <i class="bi bi-trash"></i></a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+        </div>
+                
+        <div class="price_frame">
+            <div class="price_sub_frame">
+                <div class="cart_details"> 
+                    <p>Cart Items</p>
+                    <p class="cartCount" id="cartCount"><%=cartCount%> </p>
+                </div>
+                <div class="cart_details">
+                    <p>Cart Total</p>
+                    <p>
+                        <i class="bi bi-currency-rupee"></i>
+                        <span class="cart_total"><%=cartTotal%></span>
+                    </p>
+                </div>
+                <div class="cart_details"> 
+                    <p>Discount</p>
+                    <p>
+                        <i class="bi bi-currency-rupee"></i>-
+                        <span class="productDiscount">5%</span>
+                    </p>
+                </div>
+                <div class="cart_details"> 
+                    <p>GST</p>
+                    <p>
+                        <i class="bi bi-currency-rupee"></i>
+                        <span class="gst"> <%=gst%> </span>
+                    </p>
+                </div>
+                <div class="cart_details"> 
+                    <p>Delivery Charge</p>
+                    <p style="color: rgb(0, 158, 0); font-weight: 600;">FREE DELIVERY</p>
+                </div>
+            </div>
+            <div class="total_amount"> 
+                <p><%=totalAmount%></p>
+                <p>
+                    <i class="bi bi-currency-rupee"></i>
+                    <span class="cartTotalAmount"><%=cartTotal%> - 5%</span>
+                </p>
+            </div>
+            <div class="btn_div">
+                <button class="place_order_btn">PLACE ORDER</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        
+        async function confirmDelete(id) {
+            try {
+                const array = document.getElementById('cartCount')
+
+                const response = await axios.delete(`/user/deletecartproduct?id=${id}`);
+
+                const result = response.data
+                
+
+                if (!result.success) {
+                    throw new Error("Error deleting product: " + response.data);
+                }
+                
+                else {
+                    document.querySelector(`.row${id}`).remove();
+                    console.log("Product deleted successfully");
+                    window.location.reload();   
+                    if(array.innerHTML==1) {
+                        document.getElementById('empty-cart').innerHTML = "Your Cartis Empty"
+                    }
+                    else{
+                        document.getElementById('empty-cart').innerHTML = "Your Products"
+                    }
+
+                 }
+
+            } catch (error) {
+                console.error('Error deleting product:', error);
+            }
+        }
+
+        async function addQuantity (event,productId) {
+
+            const newQuantity = event.target.value
+
+
+
+            window.location.href =`/user/addquantity?id=${productId}&quantity=${newQuantity}`
+
+        }
+    
+       
+    </script>
+  </body>
+</html>
+
+
+
+   

@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product View</title>
     <link rel="stylesheet" href="/productview.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"></head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+   
+</head>
 <body>
   
 <div class="wrapper productopen_wrapper">
@@ -142,12 +144,15 @@
                                 </div>
                             </li>
 
-                    
-
                             <li class="btn_li" style="display: flex; height: 3rem; justify-content: space-between; width: 90%; margin-top: 4rem;">
-                                <button type="button" class="addto_cart_btn addto_cart_btn" style="background-color: #ff9f00;">
-                                    ADD TO CART
-                                    <i class="bi bi-plus-lg"></i>
+                               
+                                <button type="button" id="cartBtn" onclick="addToCart(event,'<%=productDatas._id%>')" class="addto_cart_btn addto_cart_btn" data-product-id="<%=productDatas._id%>" style="background-color: #ff9f00;">
+                                    <%= (()=>{
+                                        const productId = productDatas._id
+                                        const cartList = cart ? cart.productId : []
+                                        const exist = cartList.some(product => product.id.equals(productId))
+                                        return exist ? 'GO TO CART' : 'ADD TO CART'
+                                    })() %>
                                 </button>
                                 <button type="button" style="background-color: #fb641b;">BUY NOW</button>
                             </li>
@@ -156,7 +161,6 @@
 
                     </div>
                 </form>
-
             </div>                  
         </div>
 
@@ -247,7 +251,8 @@ function minImg (imageArray) {
         count=array.length-1
     }
 }
-
-
 </script>
+
+<script src="/addToCart-axios.js"></script>
+
 </html>

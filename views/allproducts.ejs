@@ -43,7 +43,7 @@ rel="stylesheet"
             <div class="d-flex float-end">
               <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-user-alt m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">Sign in</p> </a>
               <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="me-1 ms-4 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-heart m-1 me-md-2 "></i><p class="d-none d-md-block mb-0 text-white">Wishlist</p> </a>
-              <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="border ms-4 rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-shopping-cart m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">My cart</p> </a>
+              <a href="/user/cart" class="border ms-4 rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-shopping-cart m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">My cart</p> </a>
             </div>
           </div>
           <!-- Center elements -->
@@ -116,12 +116,9 @@ rel="stylesheet"
               <!-- Dropdown menu -->
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <% categoryDatas.forEach((data)=> { %>
-
-                
                 <li>
                   <a class="dropdown-item"  href="/user/categories?element=<%=data.category%>"><%=data.category%></a>
                 </li>
-
              <% }) %>
               </ul>
             </li>
@@ -150,7 +147,7 @@ rel="stylesheet"
                 <h5 class="card-title" style="font-size: 18px;"><%=data.productname%></h5>
                 <p class="card-text" style="background-color: rgb(212, 171, 35); width: 30%; border-radius: 6px; color: rgba(0, 0, 0, 0.777); display: flex; justify-content: center; height: 30px; align-items: center; font-weight: bold;" >  ₹  <%=data.oldprice%></p>
                 <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto" >
-                  <a href="#!" class="btn btn-primary shadow-0 me-1">Add to cart</a>
+                  <a href="" class="btn btn-primary shadow-0 me-1" >Buy Now</a>
                   <a href="#!"  style="margin-left: 20px; background-color: lightgray;" class="btn btn-light border px-2 pt-2 icon-hover"><i class="fas fa-heart fa-lg text-dark px-1"></i></a>
                 </div>
              

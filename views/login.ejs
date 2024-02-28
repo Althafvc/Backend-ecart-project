@@ -21,13 +21,13 @@
     <div class="form-area">  
     <form action="/login" method="post">
 
-      <div style="color: white; margin-left: 160px;">  <%= error %></div>
+      <div style="color: white; margin-left: 160px;" id="err">  <%= error %></div>
           <label class="labemail">E mail</label>
                 <input type="email" class="inp" name="email" id="email">
 
                 <label class="labepassword">password</label>
 
-                    <input type="password" class="inp" name="password" id="password">
+                    <input type="password" class="inp" name="password" id="password" value="Althaf@20">
                     <div class="check">
                         <a href="http://localhost:7878/forgotpassword"><span>Forgot Password</span></a>
                     </div>

@@ -93,6 +93,7 @@ exports.postLogin = async (req, res) => {
 
             if (passwordMatch) {
 
+                req.session.user= userDatas._id
                 res.redirect('/user/home')
             } else {
                 req.flash('error', "you have entered a wrong password")

@@ -20,7 +20,6 @@ app.use(session({
 
 app.use(flash())
 
-
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 app.use('/',commonRouter)

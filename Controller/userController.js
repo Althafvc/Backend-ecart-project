@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt')
 const productsModel = require('../Models/productDatas')
 const CategoryModel = require('../Models/categoryDatas')
 const categoryModel = require('../Models/categoryDatas')
+const cartModel = require('../Models/cartDatas')
 
 const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -167,8 +168,10 @@ try {
     const productDatas = await productsModel.findById(id) 
 
     const relatedProducts = await productsModel.find({category:productDatas.category})
+
+    const cart = await cartModel.findOne({userId:req.session.user})
     
-    res.render('productview',{productDatas,relatedProducts})
+    res.render('productview',{productDatas,relatedProducts,cart})
 
 } catch (err){
     console.log('cannot render product viewpage properly', err);
@@ -181,17 +184,27 @@ try {
 
 exports.getCategoryPage = async(req,res)=> {
     const category = req.query.element;
-    const productDatas = await productsModel.find({category:category})
-    const categoryDatas = await categoryModel.find()
-    res.status(200).render('categories',{productDatas,categoryDatas})
+
+    try {
+        const productDatas = await productsModel.find({category:category})
+        const categoryDatas = await categoryModel.find()
+        res.status(200).render('categories',{productDatas,categoryDatas})
+
+    }catch(err){ console.log('cannot render category page properly',err)}
+   
 }
 
 exports.getSubcategoryPage = async(req,res)=> {
     const subcategory = req.query.element;
-    const productDatas = await productsModel.find({subcategory:subcategory})
-    const categoryDatas = await categoryModel.find()
 
-    res.render('subcategories',{productDatas,categoryDatas})
+    try {
+        const productDatas = await productsModel.find({subcategory:subcategory})
+        const categoryDatas = await categoryModel.find()
+    
+        res.status(200).render('subcategories',{productDatas,categoryDatas})
+
+    }catch(err) {console.log('cannot render subcategory page properly',err)}
+    
 }
 
 
