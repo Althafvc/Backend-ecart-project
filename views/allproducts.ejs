@@ -15,6 +15,7 @@ href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swa
 rel="stylesheet"
 />
 <!-- MDB -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
 <link
 href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
 rel="stylesheet"
@@ -41,8 +42,8 @@ rel="stylesheet"
           <!-- Center elements -->
           <div class="order-lg-last col-lg-5 col-sm-8 col-8">
             <div class="d-flex float-end">
-              <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-user-alt m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">Sign in</p> </a>
-              <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="me-1 ms-4 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-heart m-1 me-md-2 "></i><p class="d-none d-md-block mb-0 text-white">Wishlist</p> </a>
+              <a href="/signup" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-user-alt m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">Sign in</p> </a>
+              <a class="me-1 ms-4 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i class="fas fa-heart m-1 me-md-2 "></i><p class="d-none d-md-block mb-0 text-white">Wishlist</p> </a>
               <a href="/user/cart" class="border ms-4 rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-shopping-cart m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">My cart</p> </a>
             </div>
           </div>
@@ -128,8 +129,9 @@ rel="stylesheet"
       </div>
       <!-- Container wrapper -->
     </nav>
+
     <!-- Navbar -->
-   
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </header>
   <!-- Products -->
   <section>
@@ -148,9 +150,15 @@ rel="stylesheet"
                 <p class="card-text" style="background-color: rgb(212, 171, 35); width: 30%; border-radius: 6px; color: rgba(0, 0, 0, 0.777); display: flex; justify-content: center; height: 30px; align-items: center; font-weight: bold;" >  ₹  <%=data.oldprice%></p>
                 <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto" >
                   <a href="" class="btn btn-primary shadow-0 me-1" >Buy Now</a>
-                  <a href="#!"  style="margin-left: 20px; background-color: lightgray;" class="btn btn-light border px-2 pt-2 icon-hover"><i class="fas fa-heart fa-lg text-dark px-1"></i></a>
+                  <a onclick="addTowish(event,'<%=data._id%>')"  href="" style="margin-left: 20px; background-color: lightgray;" class="btn btn-light border p-1 px-2 icon-hover"><i style="font-size: 1.15rem; color: red;" id="icon" class="bi icon<%=data._id%>
+                    
+                    <%= (()=> {
+                      const productId = data._id
+                      const wishlist = wishlistDatas ? wishlistDatas : []
+                      const exist = wishlist.some(product=> product.equals(productId))
+                      return exist ? 'bi-heart-fill' : 'bi-heart'
+                    })() %>"></i></a>
                 </div>
-             
               </div>
             </div>
             </a>
@@ -174,6 +182,6 @@ rel="stylesheet"
   type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js">
 </script>
-  
+<script src="/addToWishlist-axios.js"></script>
 </body>
 </html>

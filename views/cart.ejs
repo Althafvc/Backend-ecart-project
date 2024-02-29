@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/cart.css">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
 
 </head>
@@ -138,8 +137,6 @@
     </div>
 
     <script>
-
-        
         async function confirmDelete(id) {
             try {
                 const array = document.getElementById('cartCount')
@@ -170,18 +167,10 @@
                 console.error('Error deleting product:', error);
             }
         }
-
         async function addQuantity (event,productId) {
-
             const newQuantity = event.target.value
-
-
-
             window.location.href =`/user/addquantity?id=${productId}&quantity=${newQuantity}`
-
         }
-    
-       
     </script>
   </body>
 </html>

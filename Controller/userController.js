@@ -9,6 +9,7 @@ const productsModel = require('../Models/productDatas')
 const CategoryModel = require('../Models/categoryDatas')
 const categoryModel = require('../Models/categoryDatas')
 const cartModel = require('../Models/cartDatas')
+const wishlistModel = require('../Models/wishlistDatas')
 
 const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -123,7 +124,6 @@ exports.postChangePassword = async (req, res) => {
     if (newpassword === confirmpassword) {
         const email = mail
         const user = await userModel.updateOne({ email }, { $set: { password: hashedpassword } })
-        console.log(user);
 
 
 
@@ -152,7 +152,9 @@ exports.getAllProducts = async (req,res)=> {
     try {
         const productDatas= await productsModel.find()
         const categoryDatas = await categoryModel.find()
-        res.render('allproducts',{productDatas, categoryDatas})
+        const wishlistDatasMain = await wishlistModel.findOne({userId : req.session.user})
+        const wishlistDatas = wishlistDatasMain ? wishlistDatasMain.productId : []
+        res.render('allproducts',{productDatas, categoryDatas,wishlistDatas})
     }catch (err) {
         console.log('cannot find productDatas properly',err);
     }

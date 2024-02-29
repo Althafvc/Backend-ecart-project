@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/wishlist.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
+
+</head>
+<body>
+<div class="wrapper cart_wrapper">
+
+    <div class="p-3 text-center bg-info border-bottom">
+        <div class="container">
+          <div class="row gy-3">
+            <!-- Left elements -->
+            <div class="col-lg-2 col-sm-4 col-4" >
+              <a href="https://mdbootstrap.com/" target="_blank" class="float-start">
+                <img src="/Logo/Stylesphere-logos.png" height="35" style="object-fit: contain; border-radius: 4px;"/>
+              </a>
+            </div>
+            <!-- Left elements -->
+    
+            <!-- Center elements -->
+            <div class="order-lg-last col-lg-5 col-sm-8 col-8">
+              <div class="d-flex float-end">
+                 <p class="d-none d-md-block mb-0 text-white border 1.5px solid" ><%=count%> items</p>
+              </div>
+            </div>
+            <!-- Center elements -->
+    
+            <!-- Right elements -->
+            <div class="col-lg-5 col-md-12 col-12">
+             
+            </div>
+            <!-- Right elements -->
+          </div>
+        </div>
+      </div>
+
+    <div class="cart_content">    
+
+        <div class="product_frame"  style="width: 95%;">
+           
+            <div id="empty-cart" style="padding-left: 42%;width: 100%;padding-top: 1%;padding-bottom: 1%;font-size:large;font-weight: bolder;border-bottom: 2px solid rgba(145, 144, 144, 0.229);">
+                <% if (wishlistDatas && wishlistDatas.productId && wishlistDatas.productId.length > 0) { %>
+                    Your Products
+                <% } else { %>
+                    Your Cart is Empty
+                <% } %>
+            </div>
+            
+            <% if (wishlistDatas && wishlistDatas.productId && wishlistDatas.productId.length > 0) { %>
+                <% wishlistDatas.productId.forEach((data) => { %>
+                <div class="row">
+            <div class="product">
+                <div class="image_sec">
+                    <img src="/uploads/products/<%=data.product_img[0]%>" style="width: 6rem; height: 7.2rem;" alt="">
+                </div>
+                <div class="discription_sec" style="display: flex; justify-content: center;">
+                    <p class="product_name" style="font-weight: bold; font-size: 26px;"><%= data.productname%></p>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                      
+                    </div>
+                    <div style="display: flex; gap: .7rem; align-items: center;">
+                        <p class="old_price"></p>
+                        <p class="new_price"></p>
+                        <p class="discount"></p>
+                    </div>
+                    
+                </div>
+                <div class="delete_section">
+                    <div style="margin-bottom: 1rem;">
+                        <button>
+                            <a onclick="confirmDelete('<%=data._id%>')">
+                                <i class="bi bi-x"></i>  
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+        <% } %>
+        </div>
+    </div>
+    <script>
+        async function confirmDelete(productId) {
+            console.log(productId);
+            try {
+                
+                const response = await axios.get(`/user/addtowishlist?productid=${productId}`);
+
+                const result = response.data
+                console.log(result);
+                
+
+                if (!result.success) {
+                    throw new Error("Error deleting product: ",result);
+                }
+                
+                else {
+                    document.querySelector(`.row`).remove();
+                    console.log("Product deleted successfully");
+                    window.location.reload();   
+                 }
+            } catch (error) {
+                console.error('Error deleting product:', error);
+            }
+        }
+       
+    </script>
+  </body>
+</html>
+
+
+
+   
