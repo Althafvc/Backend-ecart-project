@@ -56,7 +56,7 @@ exports.getWishlistPage = async (req,res)=> {
     try {
 
         if(!req.session.user) {
-            req.flash('error',"your session has expired")
+            req.flash('error',"please try to login first")
             res.redirect('/login')
         }else {
             const wishlistDatas = await wishlistModel.findOne({userId:req.session.user}).populate('productId')

@@ -60,7 +60,8 @@ exports.getCartPage = async (req,res)=> {
     const cartTotal = cartProducts.reduce((acc,currentvalue)=> {
         
       return acc += parseInt(currentvalue.id.oldprice*currentvalue.quantity)
-    },0);       
+    },0);     
+      
 const cartCount = cartDatas.productId.length
 
 

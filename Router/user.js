@@ -35,6 +35,14 @@ router.get('/addtowishlist',wishlistController.getAddToWishlist)
 router.get('/wishlist',wishlistController.getWishlistPage)
 
 
+router.get('/profile',userController.getAddUserprofile)
+router.post('/profile',userController.postAddUserprofile)
+
+
+router.get('/updatepassword',userController.getuserPasswordChange)
+router.post('/updatepassword',userController.postuserPasswordChange)
+
+
 
 
 

@@ -10,6 +10,7 @@ const CategoryModel = require('../Models/categoryDatas')
 const categoryModel = require('../Models/categoryDatas')
 const cartModel = require('../Models/cartDatas')
 const wishlistModel = require('../Models/wishlistDatas')
+const profileModel = require('../Models/profileDatas')
 
 const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -208,6 +209,90 @@ exports.getSubcategoryPage = async(req,res)=> {
     }catch(err) {console.log('cannot render subcategory page properly',err)}
     
 }
+
+exports.getAddUserprofile= (req,res)=> {
+    const error = req.flash('error')
+    res.render('userprofile',{error})
+}
+
+exports.postAddUserprofile= async (req,res)=> {
+const {email, phone, housename, housenumber, city, district, state} = req.body
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+if(!req.session.user) {
+    req.flash('error', 'please try to login first')
+    res.redirect('/login')
+  
+
+}else if(!emailRegex.test(email)) {
+    req.flash('error', 'invalid email address')
+    res.redirect('/user/profile')
+
+}else if (!email || !phone || !housename || !housenumber || !city || !district || !state) {
+
+req.flash('error', 'All fields are mandatory')
+res.redirect('/user/profile')
+
+}else {
+ try {
+    const newSchema = new profileModel({
+        email, phone, housename,
+        housenumber,city, district, state
+    })
+      await  newSchema.save()
+
+      const findingUser = await userModel.findOneAndUpdate({_id:req.session.user}, {$set:{email:email}})
+
+
+ }catch (err) {console.log('error in posting profile datas'),err}
+}
+
+}
+
+exports.getuserPasswordChange = (req,res)=> {
+    const error = req.flash('error')
+    res.render('profilechangepasssword',{error})
+}
+
+exports.postuserPasswordChange = async (req,res)=> {
+    const {oldpassword, newpassword, confirmpassword} = req.body
+    const passwordRegex =/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
+    if(!req.session.user) {
+        req.flash('error', 'please try to login first')
+        res.redirect('/login')
+    
+    }else if (!oldpassword || !newpassword || !confirmpassword) {
+        req.flash('error', 'All fields are mandatory')
+        res.redirect('/user/updatepassword')
+
+    }else if(passwordRegex.test(!newpassword)) {
+        req.flash('error', 'Invalid password format')
+        res.redirect('/user/updatepassword')
+    } else if(newpassword!=confirmpassword) {
+        req.flash('error', 'Both fields are not matching')
+        res.redirect('/user/updatepassword')
+
+        }else {
+          const existingUser = await userModel.findOne({_id:req.session.user})
+
+          if(!existingUser) {
+            req.flash('error', 'usernot found')
+            res.redirect('/login')
+          }else {
+            const checkPass = await  bcrypt.compare(oldpassword,existingUser.password)
+
+            if(checkPass){
+                const salt = await bcrypt.genSalt(10)
+                const newhashedPassword = await bcrypt.hash(newpassword,salt)
+                
+                await userModel.updateOne({_id:existingUser._id},{$set:{password:newhashedPassword}})
+            }
+          }
+        }
+    }
+
+
+
+
 
 
 

@@ -1,0 +1,172 @@
+*{
+    overflow-x: hidden;
+}
+.container{
+    width: 1535px;
+    height: 100vh;
+    background: lightcoral;
+}
+
+.nav{
+    height: 15%;
+    width: 100%;
+    background: #232f3e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 570px;
+}
+
+.nav h2{
+    color:  #d9dcdd;
+    font-size: 40px;
+    font-family: 'Times New Roman', Times, serif;
+    
+}
+
+.expansion{
+    width: 100%;
+    height:auto ;
+    background: #bad787;
+    font-family: 'Times New Roman', Times, serif;
+   
+    
+}
+
+.user-area{
+width: 100%;
+height: 10rem;
+border-bottom: 1px solid;
+display: flex;
+}
+
+
+.img-area{
+    width: 25%;
+    height: 100%;
+    border-right: 1px solid;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.details-area{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 50px;
+   
+}
+
+.edit-area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    height: 100%;
+}
+.btn-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 10rem;
+}
+
+.img-area img{
+    width: 100px;
+    height: 100px;
+    border: 1px solid;
+}
+
+.img-area input{
+color: transparent;
+margin-left: 10.2rem;
+
+}
+
+.edit-area button{
+    width: 130px;
+    height: 50px;
+    border-radius: 8px;
+    border: none;
+    background: rgb(51, 161, 51);
+    color: white;
+    font-size: large;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.form-area{
+    width: 100%;
+    height: 70%;
+   padding-left: 50px;
+   padding-top: 50px;
+   
+    
+}
+
+form{
+    position: relative;
+    left: 7%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 20px;
+    overflow-x: hidden;
+    font-family: 'Times New Roman', Times, serif;  
+   
+}
+
+form input{
+    width: 80%;
+    height: 40px;
+    padding-left: 30px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+}
+
+.submit-btn{
+    position: relative;
+    left: 32%;
+    width: 130px;
+    height: 50px;
+    border-radius: 8px;
+    border: none;
+    background: rgb(51, 161, 51);
+    color: white;
+    font-size: large;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.btn{
+    width: 130px;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    background: rgb(51, 161, 51);
+    color: white;
+    font-size: large;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

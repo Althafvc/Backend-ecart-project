@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/userprofile.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="nav">
+            <h2>Complete your profile</h2>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn" style="font-size: .9rem;">Set Password</button>
+            <button class="btn" onclick="window.location.href= '/user/logout'">Logout</button>
+        </div>
+        </div>
+
+        <div class="expansion">
+
+            <div class="form-area">
+                <form action="/user/profile" method="post">
+                 <div class="error"><%=error%></div>
+                    <label for="">E mail:</label>
+                    <input type="email" name="email" value=""><br>
+
+                    <label for="">Phone:</label>
+                    <input type="number" name="phone" value=""><br>
+
+                    <label >House name:</label>
+                    <input type="text" name="housename" value=""><br>
+
+                    <label for="">House number:</label>
+                    <input type="number" name="housenumber" value=""><br>
+
+                    <label for="">City:</label>
+                    <input type="text" name="city" value=""><br>
+
+                    <label for="">District:</label>
+                    <input type="text" name="district"value=""><br>
+
+                    <label for="">State:</label>
+                    <input type="text" name="state" value=""><br>
+
+                    <input class="submit-btn" type="submit"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
