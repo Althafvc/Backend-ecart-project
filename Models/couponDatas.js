@@ -11,8 +11,14 @@ const couponDatas = new mongoose.Schema({
     type: Number,
     required: true
   },
-  discountpercentage: {
+  discountprice: {
     type: Number,
+    required: true
+  },
+
+
+  availability: {
+    type: String,
     required: true
   },
 
@@ -25,9 +31,6 @@ const couponDatas = new mongoose.Schema({
   }
  
 });
-
-
-
 
 const couponsModel = new mongoose.model('coupons', couponDatas)
 module.exports = couponsModel

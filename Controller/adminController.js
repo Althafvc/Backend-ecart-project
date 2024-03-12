@@ -504,11 +504,12 @@ exports.getAddCoupons = (req, res) => {
 }
 
 exports.postAddCoupons = async (req, res) => {
-    const { couponcode, minimumpurchaseamount, discountpercentage, beginningdate, expirydate } = req.body
+
+    const { couponcode, minimumpurchaseamount, discountprice, beginningdate, expirydate, availability} = req.body
 
     const duplicateCoupon = await couponsModel.findOne({ couponcode: req.body.couponcode })
 
-    if (!couponcode || !minimumpurchaseamount || !discountpercentage || !beginningdate || !expirydate) {
+    if (!couponcode || !minimumpurchaseamount || !discountprice || !beginningdate || !expirydate || !availability) {
 
 
         req.flash('error', 'All fields are mandatory')
@@ -526,9 +527,10 @@ exports.postAddCoupons = async (req, res) => {
             const newSchema = new couponsModel({
                 couponcode,
                 minimumpurchaseamount,
-                discountpercentage,
+                discountprice,
                 beginningdate,
-                expirydate
+                expirydate,
+                availability,
             })
             await newSchema.save()
 
@@ -584,7 +586,7 @@ exports.getEditCoupons = async (req, res) => {
 exports.postEditCoupons = async (req, res) => {
     const id = req.params.id
 
-    const { couponcode, minimumpurchaseamount, discountpercentage, beginningdate, expirydate } = req.body
+    const { couponcode, minimumpurchaseamount, discountpercentage, beginningdate, expirydate, availability} = req.body
 
     try {
         const coupon = await couponsModel.findOneAndUpdate({ _id: id }, {
@@ -593,7 +595,8 @@ exports.postEditCoupons = async (req, res) => {
                 minimumpurchaseamount,
                 discountpercentage,
                 beginningdate,
-                expirydate
+                expirydate,
+                availability
             }
         },)
 

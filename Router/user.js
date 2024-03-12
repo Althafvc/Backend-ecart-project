@@ -42,11 +42,11 @@ router.post('/profile',userController.postAddUserprofile)
 router.get('/updatepassword',userController.getuserPasswordChange)
 router.post('/updatepassword',userController.postuserPasswordChange)
 
+router.post('/buynow',userController.postBuyNow)
+router.get('/checkout',userController.getCheckout)
 
+router.get('/checkout/quantitychange',userController.getChangeQuantity)
 
-
-
-
-
+router.post('/setCoupon',userController.setCoupon)
 
 module.exports = router

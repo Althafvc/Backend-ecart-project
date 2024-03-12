@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- include header -->
+  <header>
+    <!-- Jumbotron -->
+    <div class="p-3 text-center bg-info border-bottom">
+      <div class="container">
+        <div class="row gy-3">
+          <!-- Left elements -->
+          <div class="col-lg-2 col-sm-4 col-4">
+            <a href="https://mdbootstrap.com/" target="_blank" class="float-start">
+              <img src="/Logo/Stylesphere-logos.png" height="35" style="object-fit: contain; border-radius: 4px;" />
+            </a>
+          </div>
+          <!-- Left elements -->
+
+          <!-- Center elements -->
+          <div class="order-lg-last col-lg-5 col-sm-8 col-8">
+            <div class="d-flex float-end">
+              <a href="/user/wishlist" class="me-1 ms-4 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i
+                  class="fas fa-heart m-1 me-md-2 "></i>
+                <p class="d-none d-md-block mb-0 text-white">Wishlist</p>
+              </a>
+              <a href="/user/cart" class="border ms-4 rounded py-1 px-3 nav-link d-flex align-items-center"
+                target="_blank"> <i class="fas fa-shopping-cart m-1 me-md-2"></i>
+                <p class="d-none d-md-block mb-0 text-white">My cart</p>
+              </a>
+            </div>
+          </div>
+          <!-- Center elements -->
+
+          <!-- Right elements -->
+          <div class="col-lg-5 col-md-12 col-12">
+            <div class="input-group float-center">
+              <!-- <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" />
+                    <label class="form-label" for="form1">Search</label>
+                  </div> -->
+              <!-- <button type="button" class="btn btn-primary shadow-0">
+                    <i class="fas fa-search"></i>
+                  </button> -->
+            </div>
+          </div>
+          <!-- Right elements -->
+        </div>
+      </div>
+    </div>
+    <!-- Jumbotron -->
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <!-- Container wrapper -->
+      <div class="container justify-content-center justify-content-md-between ">
+        <!-- Toggle button -->
+        <button class="navbar-toggler border py-2 text-dark" type="button" data-mdb-toggle="collapse"
+          data-mdb-target="#navbarLeftAlignExample" aria-controls="navbarLeftAlignExample" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+  </header>
+  <!-- /include header -->
+  <section class=" py-5" style="background-color:#f5f5f7;">
+    <div class="container" style="background-color:#f5f5f7;">
+      <div class="row">
+        <div class="col-xl-8 col-lg-8 mb-4">
+          <div class="card shadow-0 ">
+            <div class="p-4" style="background-color:#f5f5f7;">
+              <h5 class="card-title mb-3">checkout</h5>
+              <div class="row">
+                <form id="checkout-form" action="/checkout" method="post">
+                  <p class="error-msg"></p>
+                  <div class="col-6">
+                    <p class="mb-0">Full name</p>
+                    <div class="form-outline">
+                      <input name="name" type="text" id="typeText" class="username" value="<%=user.username%>"
+                        class="form-control" required />
+                    </div>
+                  </div>
+
+                  <div class="col-6 mb-3">
+                    <p class="mb-0">Phone</p>
+                    <div class="form-outline">
+                      <input type="number" name="phone" id="typePhone" value="<%=user.phone%>" class="form-control"
+                        required />
+                    </div>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <input type="hidden" id="typeNumber" value="" name="address_Id" class="form-control address_id"
+                      required />
+                    <p class="mb-0">Email</p>
+                    <div class="form-outline">
+                      <input type="email" id="typeEmail" value="<%=user.email%>" name="email" class="form-control"
+                        required />
+                    </div>
+                  </div>
+              </div>
+              <p class="errorAddress"></p>
+              <div class="row">
+                <div class="col-sm-8 mb-3">
+                  <p class="mb-0">House Name</p>
+                  <div class="form-outline">
+                    <input type="text" id="typeText" placeholder="Type here" name="address"
+                      value="<%=address.housename%>" class="form-control address-field housename" required />
+                  </div>
+                </div>
+
+                <div class="col-sm-4 mb-3">
+                  <p class="mb-0">City</p>
+                  <div class="form-outline">
+                    <input type="text" id="typeText" value="<%=address.city%>" name="city" placeholder="city"
+                      class="form-control city-field city" required />
+                  </div>
+                </div>
+
+                <div class="col-sm-4 mb-3">
+                  <p class="mb-0">House NO.</p>
+                  <div class="form-outline">
+                    <input name="houseNo" type="text" id="typeText" placeholder="Type here"
+                      value="<%=address.housenumber%>" class="form-control house_no-field houseno
+                      " required />
+                  </div>
+                </div>
+
+                <div class="col-sm-4 col-6 mb-3">
+                  <p class="mb-0">Postal code</p>
+                  <div class="form-outline">
+                    <input type="text" id="typeText" name="postalCode" class="form-control postalcode-field pin"
+                      value="<%=address.pincode%>" required />
+                  </div>
+                </div>
+
+              </div>
+
+
+              <div class=" mb-3">
+
+                <p class="text-dark  mb-5 h">
+
+                  <a href="#" data-bs-toggle="modal" data-bs-target="#changeAddressModal"
+                    style="color: #232F3E;text-decoration: underline;">Change Address</a>
+
+                </p>
+
+              </div>
+
+
+              <!-- <div class="address-area">
+                <p class="errorAddress" style="color: red; text-align: center;">Please add address</p>
+                <p class="mt-4 mb-4"><a href="/user/profile" class="button p-3"
+                    style="background-color: black; color: white;">Add Address</a></p>
+                    
+                  </div> -->
+
+              <div class="mb-3">
+                <h5>Select Payment Method</h5>
+
+                <!-- Credit Card Payment -->
+                <div class="form-check mb-3">
+                  <input class="form-check-input " type="radio" name="payment" id="creditCardPayment"
+                    value="Online_Payment">
+                  <label class="form-check-label d-flex align-items-center" for="creditCardPayment">
+                    Online Payment
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="payment" id="payment2" value="COD">
+                  <label class="form-check-label d-flex align-items-center" for="payment2">
+                    Cash On Delivery (COD)
+                  </label>
+                </div>
+              </div>
+
+              <div class="float-end">
+                <div class="container">
+                  <div class="row">
+
+
+                    <input type="text" id="totalsum" hidden name="totalsum" value="">
+                    <button type="submit" class="btn shadow-0 border"
+                      style="color: antiquewhite; background-color: #232F3E;" id="continueBtn">Continue</button>
+                  </div>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Checkout -->
+        </div>
+        <div class="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
+          <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: max-content; margin-left: 9px;">
+            <div>
+              <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Your Products</span>
+
+              </h4>
+              <ul class="list-group mb-3 sticky-top">
+
+
+                <% cartedOnes.forEach((data)=>{ %>
+                  <li class="list-group-item d-flex justify-content-between lh-condensed" style="height: 100px;">
+                    <div>
+                      <img src="/uploads/products/<%=data.id.product_img[0]%>" alt="" width="60px" height="60px">
+                    </div>
+                    <div>
+                      <h6 class="my-0">
+                        <%=data.id.productname%>
+                      </h6>
+                      <small class="text-muted">Qty:</small>
+                      <select name="color" id="qtyChange">
+                        <% for (i=1;i<=5;i++){ %>
+                          <option value="<%=i%>">
+                            <%=i%>
+                          </option>
+                          <% } %>
+                      </select>
+                      <small class="text-muted">Color: <%=data.color%></small>
+
+                      <small class="text-muted">Size: <%=data.size%></small>
+
+                      <span class="text-muted ms-4">$ <%=data.id.oldprice%></span>
+                    </div>
+                  </li>
+                  <% }) %>
+              </ul>
+
+            </div>
+
+            <div class="d-flex justify-content-between">
+            <h6 class="mb-3" id="summary">Summary</h6>
+            <h6 class="mb-3" id="camount"></h6>
+
+          </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Price:</p>
+              <p class="mb-2" id="Amount">
+                <%=Amount%>
+              </p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Discount:</p>
+              <p class="mb-2 text-danger" id="discount">-₹ <%=discount%>
+              </p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2" style="display: none;" id="co">Coupon Code:</p>
+              <p class="mb-2 text-success" id="couponDis"></p>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <p id="coupon" style="color: red;"></p>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Total price:</p>
+              <p class="mb-2 fw-bold"><span>₹</span><span id="updatedPrice">
+                  <%=totalPrice%>
+                </span>
+              </p>
+            </div>
+
+            <div class="input-group mt-3 mb-4 ">
+              <form id="promo-code-form" class="d-flex" style="gap: 2rem;">
+                <p class="couponError" style="color: red; text-align: center;"></p>
+                <div>
+                  <input type="number" hidden id="price1" value="" name="totalsum">
+
+                  <input type="text" class="form-control border" name="coupongot" id="coupon-input"
+                    placeholder="Promo code" />
+                  <ul class="mt-2" style="list-style: none; ">
+                    <% coupons.forEach((data)=>{ %>
+                      <% if (data.availability=="All users" && data.minimumpurchaseamount <=Amount) { %>
+                        <li style="background-color: #f5f5f7 !important;">
+                          <input type="radio" name="couponcode" value="<%=data.couponcode%>" id="couponradio" class="couponInput" onclick="couponSelect(event)">
+                          <label for="" class="couponCode">
+                            <%=data.couponcode%>
+                          </label>
+
+                        </li>
+                        <% } %>
+                          <% }) %>
+                  </ul>
+                </div>
+                <div class="mt-1"> <button type="button" class="btn btn-light text-primary border" id="applyBtn"
+                    onclick="applyPromoCode(event)">Apply</button></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+  <div class="modal fade" id="changeAddressModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-white eachAdd border-0">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Address
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <% addressdetails.forEach((data)=> { %>
+            <div class="chooseAdd existingAddress p-3 w-100 mb-3 position-relative d-flex">
+              <input type="text" value="<%=data.housename%>" class="addressSelect_id hs" id="housename">
+              <input type="text" class="addressSelect_id_i" style="visibility: hidden;">
+              <p style="font-family: poppins; font-size: 1rem !important;"><span class="address">
+                </span> ,<span class="house_no" id="house_no">
+                  <%=data.housenumber%>
+                </span>,<span class="city" id="city">
+                  <%=data.city%>
+                </span>,<span class="pincode" id="pincode">
+                  <%=data.pincode%>
+                </span></p>
+              <input name="adId" class="position-absolute radio" type="radio" value="<%=data._id%>"
+                data-address-id="<%=data._id%>"
+                onclick="addressChanged(event,'<%=data._id%>','<%=data.housename%>','<%=data.housenumber%>','<%=data.city%>','<%=data.pincode%>')">
+              <p class="phone-altr" style="font-family: poppins; font-size: 1rem !important;"></p>
+            </div>
+            <% }) %>
+
+              <p class="m-0"><a href="/user/profile" id="submitBtn" class="button p-3"
+                  style="background-color: black; color: white;">Add Address</a></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary bg-danger text-white" data-bs-dismiss="modal">
+            Close
+          </button>
+          <!-- Add additional buttons or actions as needed -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <script>
+
+    function addressChanged(event, id, HousName, houseNo, City, pincode) {
+      console.log(HousName, houseNo, City, pincode);
+      document.querySelector('.housename').value = HousName
+
+      document.querySelector('.city').value = City
+
+      document.querySelector('.houseno').value = houseNo
+
+      document.querySelector('.pin').value = pincode
+    }
+  </script>
+
+
+<script>
+async function applyPromoCode(event) {
+  const couponvalue= document.getElementById('coupon-input').value
+
+  const response = await axios.post(`/user/setcoupon?couponcode=${couponvalue}`)
+          const result = response.data
+
+          if(result.success) {
+document.getElementById('summary').textContent = 'Coupon'
+document.getElementById('camount').textContent = result.discount
+const oldAmount = document.getElementById('Amount').textContent.trim()
+
+document.getElementById('Amount').textContent = Number(oldAmount)-Number(result.discount)
+ }
+
+}
+</script>
+
+<script>
+  function couponSelect(event) {
+    const data = event.target.value
+    document.getElementById('coupon-input').value = data
+  }
+</script>
+</body>
+
+</html>

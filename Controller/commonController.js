@@ -94,6 +94,7 @@ exports.postLogin = async (req, res) => {
             if (passwordMatch) {
 
                 req.session.user= userDatas._id
+                req.session.email = userDatas.email
                 res.redirect('/user/home')
             } else {
                 req.flash('error', "you have entered a wrong password")
@@ -126,7 +127,7 @@ exports.postForgotPassword = (req, res) => {
             user: 'althafvellanchola46@gmail.com',
             pass: 'ppjf wyqm lzbm gtri'
         }
-    });
+    })
 
 
 

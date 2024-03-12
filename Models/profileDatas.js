@@ -28,6 +28,11 @@ const schema = {
         required: [true, 'city is required']
     },
 
+    pincode: {
+        type: String,
+        required: [true, 'city is required']
+    },
+
     district: {
         type: String,
         required: [true, 'district is required']

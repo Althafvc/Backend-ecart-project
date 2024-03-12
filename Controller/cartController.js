@@ -6,6 +6,8 @@ const flash = require('connect-flash')
 const cartModel = require('../Models/cartDatas')
 const { default: mongoose } = require('mongoose')
 
+
+
 exports.getAddToCart = async (req,res)=> {
     const product = new mongoose.Types.ObjectId(req.query.id)
     const userId = new mongoose.Types.ObjectId(req.session.user)
@@ -18,12 +20,16 @@ exports.getAddToCart = async (req,res)=> {
         const existingUser = await cartModel.findOne({userId:userId})
         const cartObj ={
             id:product,
-            quantity: 1
+            quantity: 1,
+            color:req.query.color,
+            size:req.query.size
         }
+
 
         if(existingUser){
             const exist = await cartModel.findOne({userId:userId,"productId.id":product})
             if(exist){
+              
                 return res.status(200).json({success: true, exist: true})
             }else{
                 await cartModel.updateOne({userId}, {$push :{productId:cartObj}})
@@ -48,7 +54,6 @@ exports.getAddToCart = async (req,res)=> {
     
 exports.getCartPage = async (req,res)=> {
 
-           
     if(!req.session.user){
         req.flash('error','please try to login first')
         return res.redirect('/login')
@@ -76,10 +81,11 @@ const totalAmount = Math.round((cartTotal+gst)-discount)
 }
 
 exports.deleteFromCart = async (req,res)=> {
-    const id =(req.query.id)
+    const id =(req.query.id);
     const session_id = req.session.user
 
     if(!session_id) {
+        req.flash("error", "Your session has expired")
            res.redirect('/login')
     } else {
 
@@ -113,7 +119,6 @@ exports.addQuantity = async (req, res) => {
         id: id,
         quantity: quantity,
     };
-    console.log(id,quantity);
    
     const cartDocument = await cartModel.findOne({ userId: userId });
 

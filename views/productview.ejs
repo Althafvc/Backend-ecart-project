@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product View</title>
     <link rel="stylesheet" href="/productview.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
    
 </head>
@@ -14,7 +15,7 @@
    
                     
     
-    <form action="" style="width: 100%;">
+    <form action="/user/buynow?productid=<%= productDatas._id %>&discount=<%=productDatas.oldprice%>&size=<%=productDatas.size%>&color=<%= productDatas.color %>" style="width: 100%;" method="post">
         <div class="content productopen_content">
             <div class="main_frame" style="background-color: #4485ed; box-shadow: 2px 2px 5px 2px rgb(86, 85, 85);">
                     <div class="product_frame">
@@ -58,7 +59,7 @@
                                 </p>
                             </li>
 
-                            <!-- ========================================== -->
+                            <!-- ======================================================== -->
                     
                             <li style="display: flex; gap: .7rem; align-items: center; height: 2rem;">
                                 <div style="display: flex; align-items: center; font-family: 'sans-serif'; ">Return
@@ -67,7 +68,7 @@
                                 </div>
                             </li>
 
-                            <!-- ===================================== -->
+                            <!-- ========================================================= -->
 
                             <div class="top_rating">
                                 <span style="font-size: 1.3rem;">5</span>
@@ -87,16 +88,15 @@
                                 </p>
                                 <% productDatas.size.forEach((size)=> { %>
 
-
-                                    <span class="label_spans">
-                                        <input  id="" name="color" value="" type="radio" >
-                                        <label for="" ><%= size %></label>
+                                    <span class="label_spans label_size">
+                                        <input  id="<%= size %>" name="sizes" value="<%=size%>" onclick="selectSize(event,'<%=size%>')" type="radio" style="overflow: hidden;">
+                                        <label for="<%= size %>" ><%= size %></label>
                                     </span>
     
-                                    <% }) %>
+                                <% }) %>
                             </li>
 
-                            <!-- ======================================== -->
+                            <!-- =============================================================== -->
 
                             <li class="color_li">
                                 <p style="font-family: 'Poppins',sans-serif; font-weight: 600; color: rgba(255, 255, 255, 0.947);">
@@ -105,10 +105,10 @@
 
                                 <% productDatas.color.forEach((color)=> { %>
 
+                                <span style="background-color:<%= color%>;" class="label_span_color">
+                                    <input  id="<%= color %>" name="color" value="<%= color%>" type="radio" onclick="selectColor(event,'<%=color%>')">
+                                    <label for="<%= color %>"></label>
 
-                                <span style="background-color:white;" class="label_span_color">
-                                    <input  id="" name="color" value="" type="radio" >
-                                    <label for="" ><%= color %></label>
                                 </span>
 
                                 <% }) %>
@@ -126,7 +126,6 @@
                                         <option value="4">Qty:4</option>
                                         <option value="5">Qty:5</option>
                                     </select>
-                                    <!-- <div class="stock_left">Hurry only a few LEFT</div> -->
                                     <div class="wish_btn_div">
                                         <button class="wish_btn">
                                             <i class="bi wish_white wish_icon bi-heart;"></i>
@@ -144,6 +143,8 @@
                                 </div>
                             </li>
 
+                            <div class="error" style="color: black; font-size: 24px; width: 100%; display: flex; justify-content: center; margin-top: 20px; font-weight: bold;"><%=error%></div>
+
                             <li class="btn_li" style="display: flex; height: 3rem; justify-content: space-between; width: 90%; margin-top: 4rem;">
                                
                                 <button type="button" id="cartBtn" onclick="addToCart(event,'<%=productDatas._id%>')" class="addto_cart_btn addto_cart_btn" data-product-id="<%=productDatas._id%>" style="background-color: #ff9f00;">
@@ -154,11 +155,9 @@
                                         return exist ? 'GO TO CART' : 'ADD TO CART'
                                     })() %>
                                 </button>
-                                <button type="button" style="background-color: #fb641b;">BUY NOW</button>
+                                <button type="submit" style="background-color: #fb641b;">BUY NOW</button>
                             </li>
-                        
                         </ul>
-
                     </div>
                 </form>
             </div>                  
@@ -188,8 +187,7 @@
                     </div>
                     <div class="bottom">
                         <button class="addto_cart_btn addto_cart_btn">
-                            ADD TO CART 
-                            <i class="bi bi-plus-lg"></i>
+                            BUY NOW
                         </button>
                     </div>
                 </div>
@@ -252,6 +250,7 @@ function minImg (imageArray) {
     }
 }
 </script>
+let s= 
 
 <script src="/addToCart-axios.js"></script>
 

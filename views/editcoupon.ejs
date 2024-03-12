@@ -657,7 +657,7 @@ tbody tr td {
                                     </div>
 
                                     <div class="label-area">
-                                        <label for="product_name">Discount percentage</label>
+                                        <label for="product_name">Discount price</label>
                                         <input type="number" name="discountpercentage" id="productname" value="<%=couponDatas.discountpercentage%>"
                                             style="width: 340px;">
                                     </div>
@@ -672,6 +672,25 @@ tbody tr td {
                                     <div class="label-area">
                                         <label for="product_name">Expiry date</label>
                                         <input type="date" name="expirydate"  value="<%=couponDatas.expirydate.toISOString().substring(0,10) %>" id="productname" style="width: 340px;">
+                                    </div>
+
+                                    <div class="label-area">
+                                        <!-- <input type="text" name="availability" id="productname" -->
+                                        <!-- style="width: 340px;" class="availability"> -->
+                                        
+                                        <label for="product_name">Availability</label>
+                                        <select name="availability" id="" style="height: 2.5rem;
+                                            width: 21rem;
+                                            outline: none;
+                                            padding-left: 1rem;
+                                            padding-bottom: 0;
+                                            margin-bottom: 0;">
+
+                                            <option value="Limited" selected disabled>Select type</option>
+                                            <option value="Limited" >Limited</option>
+                                            <option value="All users">All users</option>
+                                        </select>
+
                                     </div>
 
 

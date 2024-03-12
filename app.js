@@ -1,12 +1,14 @@
 const express = require('express')
-const app = express()
 const mongoose = require('mongoose')
 const dotenv=require('dotenv').config()
-const port = process.env.PORT || 3000;
 const bcrypt = require('bcrypt')
 const session = require('express-session')
-const commonRouter = require ('./Router/common')
 const flash = require('connect-flash')
+
+const app = express()
+const port = process.env.PORT || 3000;
+
+const commonRouter = require ('./Router/common')
 const userRouter = require ('./Router/user')
 const { defaultRoute } = require('./Router/common')
 const adminRouter = require('./Router/admin')
