@@ -49,4 +49,9 @@ router.get('/checkout/quantitychange',userController.getChangeQuantity)
 
 router.post('/setCoupon',userController.setCoupon)
 
+router.post('/checkout',userController.postCheckout)
+
+router.get('/orderconfirmotp',userController.orderConfirmOTPget)
+router.post('/orderconfirmotp',userController.orderConfirmOTPpost)
+
 module.exports = router

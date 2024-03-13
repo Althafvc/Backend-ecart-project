@@ -14,6 +14,11 @@ const couponsModel = require("../Models/couponDatas")
 const { AddressConfigurationInstance } = require('twilio/lib/rest/conversations/v1/addressConfiguration')
 const { json } = require('express')
 const { TrustProductsEntityAssignmentsInstance } = require('twilio/lib/rest/trusthub/v1/trustProducts/trustProductsEntityAssignments')
+const orderDataModel = require('../Models/orderDetails')
+const confirmOtp = require('../middlewares/confirmorderotp')
+
+let otp = parseInt(Math.random()*10000)
+
 
 
 const oneWeekAgo = new Date();
@@ -441,6 +446,69 @@ exports.setCoupon = async (req,res)=> {
 }
 
 
+
+exports.postCheckout = async (req,res)=> {
+const userId = req.session.user
+const email = req.session.email
+const order = req.body.orderObj
+req.session.order = order
+if(!userId){
+    req.flash('error', 'Your session has expired')
+    res.redirect('/login')
+}else {
+
+    if(order.paymentMeth=='COD'){
+
+       confirmOtp(email,otp)
+       return res.status(200).json({success:true, COD:true, email})
+   
+    }
+
+    }
+   
+}
+
+exports.orderConfirmOTPget = (req,res)=> {
+    const email = req.query.email
+    res.render('orderconfirmotp',{email})
+}
+
+exports.orderConfirmOTPpost = async (req,res)=> {
+
+    const {digit1, digit2, digit3, digit4} = req.body
+
+    const recievedotp = Number(digit1+digit2+digit3+digit4)
+
+    const order = req.session.order
+
+    if(recievedotp==otp) {
+
+
+        const userId = req.session.user
+         
+     const existingOrder = await orderDataModel.findOne({userId:userId})
+
+        if(existingOrder) {
+            let newOrder = order.orders.forEach(async (order) => {
+    const orderPush= await orderDataModel.updateOne({userId:userId}, {$push:{orders:order}})
+
+
+
+            }) 
+        } else {
+            const newOrderObj = {
+                userId:userId,
+                orders:req.body.orderObj.orders 
+            }
+                await orderDataModel.create(newOrderObj)
+        }  
+
+        res.redirect('/user/home')
+
+    }
+}
+
+     
 
 
 

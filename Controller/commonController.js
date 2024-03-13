@@ -124,8 +124,8 @@ exports.postForgotPassword = (req, res) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'althafvellanchola46@gmail.com',
-            pass: 'ppjf wyqm lzbm gtri'
+            user: process.env.myemail,
+            pass: process.env.mypass
         }
     })
 
@@ -133,7 +133,7 @@ exports.postForgotPassword = (req, res) => {
 
 
     var mailOptions = {
-        from: 'althafvellanchola46@gmai.com',
+        from: process.env.myemail,
         to: email,
         subject: 'Sending Email using Node.js',
         text: ` The OTP for you is ${mailOTP.otp} `

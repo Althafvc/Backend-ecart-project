@@ -156,7 +156,6 @@ exports.postPaswordChange = async (req, res) => {
     try {
         console.log('here');
         if (newpassword != confirmpassword) {
-            console.log('there');
             req.flash('error', 'new and confirm password fields does not match')
             res.status(404).redirect(`/admin/passwordchange/${email}`)
         } else {
@@ -333,7 +332,6 @@ exports.postAddCategory = async (req, res) => {
 
             return res.status(200).json({ success: true })
 
-            console.log('subcategory added succefully');
 
         }
 

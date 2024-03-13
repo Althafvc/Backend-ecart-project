@@ -85,7 +85,7 @@
             <div class="p-4" style="background-color:#f5f5f7;">
               <h5 class="card-title mb-3">checkout</h5>
               <div class="row">
-                <form id="checkout-form" action="/checkout" method="post">
+                <form id="checkout-form">
                   <p class="error-msg"></p>
                   <div class="col-6">
                     <p class="mb-0">Full name</p>
@@ -151,7 +151,7 @@
 
 
               <div class=" mb-3">
-
+<div class="addresserror" style="color: red; font-size: 14px;"></div>
                 <p class="text-dark  mb-5 h">
 
                   <a href="#" data-bs-toggle="modal" data-bs-target="#changeAddressModal"
@@ -171,17 +171,17 @@
 
               <div class="mb-3">
                 <h5>Select Payment Method</h5>
-
+                 <div class="paymenterror" style="color: red; font-size: 14px;"></div>
                 <!-- Credit Card Payment -->
                 <div class="form-check mb-3">
-                  <input class="form-check-input " type="radio" name="payment" id="creditCardPayment"
-                    value="Online_Payment">
+                  <input class="form-check-input payment" type="radio" name="payment" id="creditCardPayment"
+                    value="onlinepayment">
                   <label class="form-check-label d-flex align-items-center" for="creditCardPayment">
                     Online Payment
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="payment" id="payment2" value="COD">
+                  <input class="form-check-input payment" type="radio" name="payment" id="COD" value="COD">
                   <label class="form-check-label d-flex align-items-center" for="payment2">
                     Cash On Delivery (COD)
                   </label>
@@ -194,8 +194,10 @@
 
 
                     <input type="text" id="totalsum" hidden name="totalsum" value="">
-                    <button type="submit" class="btn shadow-0 border"
-                      style="color: antiquewhite; background-color: #232F3E;" id="continueBtn">Continue</button>
+                    <button type="button" class="btn shadow-0 border"
+
+                      style="color: antiquewhite; background-color: #232F3E;" id="continueBtn" products='<%= JSON.stringify(cartedOnes) %>'>Continue</button>
+                    
                   </div>
                 </div>
                 </form>
@@ -298,6 +300,7 @@
                           <% }) %>
                   </ul>
                 </div>
+                <div style="display: none;" id="productDetails"><%- JSON.stringify(singleProductDetails) %></div>
                 <div class="mt-1"> <button type="button" class="btn btn-light text-primary border" id="applyBtn"
                     onclick="applyPromoCode(event)">Apply</button></div>
               </form>
@@ -318,21 +321,11 @@
         <div class="modal-body">
 
           <% addressdetails.forEach((data)=> { %>
-            <div class="chooseAdd existingAddress p-3 w-100 mb-3 position-relative d-flex">
-              <input type="text" value="<%=data.housename%>" class="addressSelect_id hs" id="housename">
-              <input type="text" class="addressSelect_id_i" style="visibility: hidden;">
-              <p style="font-family: poppins; font-size: 1rem !important;"><span class="address">
-                </span> ,<span class="house_no" id="house_no">
-                  <%=data.housenumber%>
-                </span>,<span class="city" id="city">
-                  <%=data.city%>
-                </span>,<span class="pincode" id="pincode">
-                  <%=data.pincode%>
-                </span></p>
-              <input name="adId" class="position-absolute radio" type="radio" value="<%=data._id%>"
-                data-address-id="<%=data._id%>"
-                onclick="addressChanged(event,'<%=data._id%>','<%=data.housename%>','<%=data.housenumber%>','<%=data.city%>','<%=data.pincode%>')">
-              <p class="phone-altr" style="font-family: poppins; font-size: 1rem !important;"></p>
+            <div class="chooseAdd existingAddress p-3 w-100 mb-3 position-relative d-flex" style="display: flex;justify-content: space-between;">
+                <label for=""><%=data.housename %></label>
+                <input name="housename" type="radio" value="<%=data %>" class="addressSelect_id hs" id="<%=data%>" onclick="addressChanged(event,'<%=data._id%>','<%=data.housename%>','<%=data.housenumber%>','<%=data.city%>','<%=data.pincode%>')">
+                <!-- <input type="text" class="addressSelect_id_i" style="visibility: hidden;"> -->
+
             </div>
             <% }) %>
 
@@ -354,45 +347,81 @@
     crossorigin="anonymous"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+
   <script>
 
-    function addressChanged(event, id, HousName, houseNo, City, pincode) {
-      console.log(HousName, houseNo, City, pincode);
-      document.querySelector('.housename').value = HousName
+            const orderObj = {
+                totalAmount:null,
+                paymentMeth:null,
+                orders:[]
+              }
 
-      document.querySelector('.city').value = City
+            const submitBtn = document.getElementById('continueBtn')
+             submitBtn.addEventListener('click',async (event)=> {
+            event.preventDefault()
 
-      document.querySelector('.houseno').value = houseNo
+            let paymentMethod
+            document.querySelectorAll('.form-check-input').forEach(input =>{
+                if(input.checked){
+                    paymentMethod = input.id 
+                }
+            })
 
-      document.querySelector('.pin').value = pincode
-    }
+            if(!paymentMethod) {
+                document.querySelector('.paymenterror').innerHTML = 'Please select a payment method'
+            } else {
+              let addressData
+            document.querySelectorAll('.addressSelect_id').forEach(input=> {
+                if(input.checked) {
+                    addressData = input.id
+                }
+            })
+           
+            if(!addressData) {
+              document.querySelector('.addresserror').innerHTML = 'Please select your shipping address'
+
+            }else {
+              
+              const totalprice = document.getElementById('updatedPrice').textContent
+
+              const products = JSON.parse(submitBtn.getAttribute('products'));
+
+              const productDatas = JSON.parse(document.getElementById('productDetails').innerHTML)
+
+              const {size, quantity, color} = productDatas
+
+              orderObj.totalAmount=totalprice
+              orderObj.paymentMeth=paymentMethod
+
+              products.forEach((product) => {
+
+                const singleOrderObj = {
+                productId:product.id._id,
+                size:product.size || size || null,
+                color:product.color || color || null,
+                quantity:product.quantity || quantity || 1,
+                deliveryDate:new Date(),
+                orderDate:new Date(),
+                address:addressData,
+                paymentMeth:paymentMethod
+              }
+              orderObj.orders.push(singleOrderObj)
+              })
+              const response  = await axios.post(`/user/checkout`,{orderObj})
+
+              const result = response.data
+
+              if(result.COD) {
+                window.location.href = `/user/orderconfirmotp?email=${result.email}`
+              }
+              
+            }
+           
+          }
+        })
   </script>
+<script src="/postCheckout-Axios.js"></script>
 
-
-<script>
-async function applyPromoCode(event) {
-  const couponvalue= document.getElementById('coupon-input').value
-
-  const response = await axios.post(`/user/setcoupon?couponcode=${couponvalue}`)
-          const result = response.data
-
-          if(result.success) {
-document.getElementById('summary').textContent = 'Coupon'
-document.getElementById('camount').textContent = result.discount
-const oldAmount = document.getElementById('Amount').textContent.trim()
-
-document.getElementById('Amount').textContent = Number(oldAmount)-Number(result.discount)
- }
-
-}
-</script>
-
-<script>
-  function couponSelect(event) {
-    const data = event.target.value
-    document.getElementById('coupon-input').value = data
-  }
-</script>
 </body>
 
 </html>

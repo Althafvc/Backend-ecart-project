@@ -23,6 +23,7 @@ app.use(session({
 app.use(flash())
 
 app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 app.use(express.static('public'))
 app.use('/',commonRouter)
 app.use('/user',userRouter)
