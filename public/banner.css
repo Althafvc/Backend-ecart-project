@@ -1,0 +1,69 @@
+.banner{
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+    height: 26em;
+    margin-top: 2rem;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.258);
+   }
+   .banner button{
+    position: absolute;
+    font-size: 3rem;
+    top: 30%;
+    z-index: 2;
+    color: rgba(0, 0, 0, 0.491);
+    background: none;
+    border: none;
+    transition: all .4s;
+    cursor: pointer;
+    margin-top: 4rem;
+   }
+   .next_banner{
+     right: 0rem;
+   }
+   .banner button:active{
+    transform: scale(.95);
+   }
+   .banner_sub_div{
+    background-image: url('/images/k.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100% !important;
+    height: 26em;
+    flex-shrink: 0;
+    position: relative;
+    transition: all 2s;
+   }
+  .banner_text_frame{
+    top: 20%;
+    right: 6rem;
+  }
+  .banner_text_frame{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+    width: auto;
+    height: auto;
+  }
+  .banner_text_frame h2{
+   font-size: 3rem;
+   font-family: 'Poppins',sans-serif;
+   color: rgb(255, 0, 0);
+}
+.banner_text_frame h4{
+    font-size: 1.4rem;
+    font-family: 'Poppins',sans-serif;
+    color: rgba(0, 0, 0, 0.803);
+  }
+  .banner_text_frame h5{
+    font-size: 1.3rem;
+   font-family: 'Poppins',sans-serif;
+   color: green;
+  }

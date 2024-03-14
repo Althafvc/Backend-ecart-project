@@ -4,6 +4,7 @@ const router = express.Router()
 const userController = require('../Controller/userController')
 const cartController = require('../Controller/cartController')
 const wishlistController = require('../Controller/wishlistController')
+const ordercontroller = require('../Controller/ordercontroller')
 
 router.get('/otp/:num',userController.getOTP)
 router.post('/otp/:num',userController.postOTP)
@@ -43,15 +44,19 @@ router.get('/updatepassword',userController.getuserPasswordChange)
 router.post('/updatepassword',userController.postuserPasswordChange)
 
 router.post('/buynow',userController.postBuyNow)
-router.get('/checkout',userController.getCheckout)
+router.get('/checkout',ordercontroller.getCheckout)
 
-router.get('/checkout/quantitychange',userController.getChangeQuantity)
+router.get('/checkout/quantitychange',ordercontroller.getChangeQuantity)
 
-router.post('/setCoupon',userController.setCoupon)
+router.post('/setCoupon',ordercontroller.setCoupon)
 
-router.post('/checkout',userController.postCheckout)
+router.post('/checkout',ordercontroller.postCheckout)
 
-router.get('/orderconfirmotp',userController.orderConfirmOTPget)
-router.post('/orderconfirmotp',userController.orderConfirmOTPpost)
+router.get('/orderconfirmotp',ordercontroller.orderConfirmOTPget)
+router.post('/orderconfirmotp',ordercontroller.orderConfirmOTPpost)
+
+router.get('/onlineorderconfirmed',ordercontroller.getonlinePayment)
+
+router.get('/orders',ordercontroller.getUserOrders)
 
 module.exports = router

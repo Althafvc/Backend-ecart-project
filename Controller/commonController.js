@@ -129,9 +129,6 @@ exports.postForgotPassword = (req, res) => {
         }
     })
 
-
-
-
     var mailOptions = {
         from: process.env.myemail,
         to: email,

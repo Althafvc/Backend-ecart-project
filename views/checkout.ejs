@@ -155,19 +155,11 @@
                 <p class="text-dark  mb-5 h">
 
                   <a href="#" data-bs-toggle="modal" data-bs-target="#changeAddressModal"
-                    style="color: #232F3E;text-decoration: underline;">Change Address</a>
+                    style="color: #232F3E;text-decoration: underline;">Select Address</a>
 
                 </p>
 
               </div>
-
-
-              <!-- <div class="address-area">
-                <p class="errorAddress" style="color: red; text-align: center;">Please add address</p>
-                <p class="mt-4 mb-4"><a href="/user/profile" class="button p-3"
-                    style="background-color: black; color: white;">Add Address</a></p>
-                    
-                  </div> -->
 
               <div class="mb-3">
                 <h5>Select Payment Method</h5>
@@ -347,6 +339,7 @@
     crossorigin="anonymous"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+  <script src="/postCheckout-Axios.js"></script>
 
   <script>
 
@@ -386,9 +379,13 @@
 
               const products = JSON.parse(submitBtn.getAttribute('products'));
 
-              const productDatas = JSON.parse(document.getElementById('productDetails').innerHTML)
+              const datas = document.getElementById('productDetails').innerHTML
 
-              const {size, quantity, color} = productDatas
+              const productDatas = datas ? JSON.parse(datas) : null
+
+              const size = productDatas ? productDatas.size : null
+              const color = productDatas ? productDatas.color : null
+              const quantity = productDatas ? productDatas.quantity : null
 
               orderObj.totalAmount=totalprice
               orderObj.paymentMeth=paymentMethod
@@ -398,21 +395,53 @@
                 const singleOrderObj = {
                 productId:product.id._id,
                 size:product.size || size || null,
-                color:product.color || color || null,
+                color:product.color ||  color || null,
                 quantity:product.quantity || quantity || 1,
                 deliveryDate:new Date(),
                 orderDate:new Date(),
                 address:addressData,
-                paymentMeth:paymentMethod
+                paymentMeth:paymentMethod,
+                status:'pending'
               }
               orderObj.orders.push(singleOrderObj)
               })
               const response  = await axios.post(`/user/checkout`,{orderObj})
 
               const result = response.data
-
               if(result.COD) {
                 window.location.href = `/user/orderconfirmotp?email=${result.email}`
+              }else {
+                var options = {
+    "key": result.key, // Enter the Key ID generated from the Dashboard
+    "amount": result.totalAmount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Stylesphere",
+    "description": "Test Transaction",
+    "order_id": result.ordered._id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+        window.location.href = '/user/onlineorderconfirmed'
+    },
+   
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+
+    rzp1.open();
+
               }
               
             }
@@ -420,7 +449,6 @@
           }
         })
   </script>
-<script src="/postCheckout-Axios.js"></script>
 
 </body>
 

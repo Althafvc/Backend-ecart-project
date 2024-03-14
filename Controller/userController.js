@@ -16,8 +16,7 @@ const { json } = require('express')
 const { TrustProductsEntityAssignmentsInstance } = require('twilio/lib/rest/trusthub/v1/trustProducts/trustProductsEntityAssignments')
 const orderDataModel = require('../Models/orderDetails')
 const confirmOtp = require('../middlewares/confirmorderotp')
-
-let otp = parseInt(Math.random()*10000)
+const bannersModel = require('../Models/bannerDatas')
 
 
 
@@ -147,12 +146,13 @@ exports.postChangePassword = async (req, res) => {
 
 exports.getUserHome = async (req, res) => {
     try {
+        const bannerDatas = await bannersModel.find()
         const categoryDatas = await categoryModel.find().lean();
         const productDatas = await productsModel
             .find({ createdAt: { $gte: oneWeekAgo } })
             .sort({ createdAt: -1 })
             .limit(8);
-        res.render('user-home', { productDatas, categoryDatas });
+        res.render('user-home', { productDatas, categoryDatas, bannerDatas });
     } catch (err) {
         console.log('Cannot render userhome properly', err);
     }
@@ -160,11 +160,22 @@ exports.getUserHome = async (req, res) => {
 
 exports.getAllProducts = async (req, res) => {
     try {
-        const productDatas = await productsModel.find()
-        const categoryDatas = await categoryModel.find()
-        const wishlistDatasMain = await wishlistModel.findOne({ userId: req.session.user })
-        const wishlistDatas = wishlistDatasMain ? wishlistDatasMain.productId : []
-        res.render('allproducts', { productDatas, categoryDatas, wishlistDatas })
+    let productDatas;
+    const categoryDatas = await categoryModel.find()
+    const wishlistDatasMain = await wishlistModel.findOne({ userId: req.session.user })
+    const wishlistDatas = wishlistDatasMain ? wishlistDatasMain.productId : []
+
+    if (req.query.search) {
+        const search = req.query.search
+        productDatas = await productsModel.find({
+            productname:
+                { $regex: search,$options: 'i' }
+        })
+    } else {
+            productDatas = await productsModel.find()
+
+    }
+         res.render('allproducts', { productDatas, categoryDatas, wishlistDatas })
     } catch (err) {
         console.log('cannot find productDatas properly', err);
     }
@@ -182,8 +193,8 @@ exports.getProductView = async (req, res) => {
         const relatedProducts = await productsModel.find({ category: productDatas.category })
 
         const cart = await cartModel.findOne({ userId: req.session.user })
-const error = req.flash('error', "")
-        res.render('productview', { productDatas, relatedProducts, cart, error})
+        const error = req.flash('error', "")
+        res.render('productview', { productDatas, relatedProducts, cart, error })
 
     } catch (err) {
         console.log('cannot render product viewpage properly', err);
@@ -311,7 +322,7 @@ exports.postBuyNow = async (req, res) => {
     const id = req.query.productid
 
     const { sizes, color, quantity } = req.body
-    if(!sizes || !color) {
+    if (!sizes || !color) {
         req.flash('error', 'please select the size  and color you needed')
         return res.redirect(`/user/productview/${id}`)
 
@@ -320,195 +331,31 @@ exports.postBuyNow = async (req, res) => {
         const user = req.session.user
         if (!product) {
             console.log('product not found');
-    
+
         } else {
-    
+
             if (!req.session.user) {
                 req.flash('error', 'your session has expired')
                 return res.redirect('/login')
             } else {
-                
+
                 const quantity = req.body.quantity
                 const productId = req.query.productid
                 const color = req.body?.color || ''
                 const size = req.body?.sizes || ''
-              return  res.redirect(`/user/checkout?productId=${productId}&quantity=${quantity}&size=${size}&color=${color}`)
+                return res.redirect(`/user/checkout?productId=${productId}&quantity=${quantity}&size=${size}&color=${color}`)
             }
         }
     }
-   
-}
-
-
-exports.getCheckout = async (req, res) => {
-
-    const userId = req.session.user ? req.session.user : null;
-    const useremail = req.session.email
-    
-    if (!userId || !useremail) {
-        req.flash('error', 'your session has expired')
-        return res.redirect('/login')
-    } else {
-
-        try {
-let singleProduct;
-let singleProductDetails
-let singleArray=[]
-            let total = 0;
-            let order = 0;
-            let Amount=0
-            let discount = 0
-            let totalPrice = 0
-            let carted = false;
-            let cartedOnes;
-            const cart = await cartModel.findOne({ userId: userId }).populate('productId.id')
-            if (req.query.total) {
-                carted=true
-                 Amount = parseInt( req.query.Amount)
-                 discount = parseInt(Amount* 5 / 100)
-                totalPrice = Math.round(Amount-discount)
-                total = parseInt(req.query.total || null);
-                let order = cart.productId;
-                req.session.preorder = order;
-
-            } else {
-                 singleProductDetails = req.query
-                 singleProduct = await productsModel.findOne({_id:singleProductDetails.productId})
-                 let newObj = {id:singleProduct}
-                 Amount =singleProduct.oldprice
-                 discount = parseInt(Amount* 5 / 100)
-                 totalPrice = Math.round(Amount-discount)
-                 singleArray.push(newObj)
-                
-                const productId = req.query.productId
-                const size = req.query.size
-                const color = req.query.color
-                const qty = req.query.quantity
-                quantity = qty;
-                const productid = await productsModel.findOne({ _id: productId })
-                order = [{ productid, quantity: qty, size:size, color: color}]
-                total = parseInt(productid.oldprice * qty)
-                req.session.preorder = order;
-                quantity = req.query.quantity;
-            }
-            const user = await userModel.findOne({ email: useremail })
-            const address = await profileModel.findOne({ email: useremail })
-            const addressdetails = await profileModel.find({ email: useremail })
-
-            if(carted) {
-                 cartedOnes = cart.productId 
-            }else {
-                cartedOnes= singleArray
-            }
-            const coupons = await couponsModel.find()
-            res.render('checkout', { order, total, user, coupons, address, addressdetails, cartedOnes, Amount, discount, totalPrice, total, carted, singleProduct, singleProductDetails})
-
-        } catch (err) { console.log('cannot render checkout properly', err); }
-
-    }
-}
-
-
-
-exports.getChangeQuantity = async  (req,res)=> {
-
-    const {qty, id, Amount, discount, total}= req.query
-
-    const newAmount = parseInt(Amount*qty)
-
-    const newdiscount = parseInt(Amount*5/100)
-    const newtotal = parseInt(Amount-discount)
-
-        const product = await cartModel.findOneAndUpdate({_id:id}, {$set:{quantity:qty}})
-
-            return res.status(200).json({success:true,newAmount,newdiscount,newtotal})
-   
-}
-
-exports.setCoupon = async (req,res)=> {
-    const {couponcode} = req.query
-
-    try {
-        const aptCoupon = await couponsModel.findOne({couponcode:req.query.couponcode})
-
-       if(aptCoupon) {
-        const discount = aptCoupon.discountprice
-
-        res.status(200).json({success:true,discount})
-
-       }else {
-        res.status(278).json({success:false})
-
-       }
-    }catch (err) {console.log('error in finding the coupon'),err}
-
 
 }
 
 
 
-exports.postCheckout = async (req,res)=> {
-const userId = req.session.user
-const email = req.session.email
-const order = req.body.orderObj
-req.session.order = order
-if(!userId){
-    req.flash('error', 'Your session has expired')
-    res.redirect('/login')
-}else {
-
-    if(order.paymentMeth=='COD'){
-
-       confirmOtp(email,otp)
-       return res.status(200).json({success:true, COD:true, email})
-   
-    }
-
-    }
-   
-}
-
-exports.orderConfirmOTPget = (req,res)=> {
-    const email = req.query.email
-    res.render('orderconfirmotp',{email})
-}
-
-exports.orderConfirmOTPpost = async (req,res)=> {
-
-    const {digit1, digit2, digit3, digit4} = req.body
-
-    const recievedotp = Number(digit1+digit2+digit3+digit4)
-
-    const order = req.session.order
-
-    if(recievedotp==otp) {
-
-
-        const userId = req.session.user
-         
-     const existingOrder = await orderDataModel.findOne({userId:userId})
-
-        if(existingOrder) {
-            let newOrder = order.orders.forEach(async (order) => {
-    const orderPush= await orderDataModel.updateOne({userId:userId}, {$push:{orders:order}})
 
 
 
-            }) 
-        } else {
-            const newOrderObj = {
-                userId:userId,
-                orders:req.body.orderObj.orders 
-            }
-                await orderDataModel.create(newOrderObj)
-        }  
 
-        res.redirect('/user/home')
-
-    }
-}
-
-     
 
 
 

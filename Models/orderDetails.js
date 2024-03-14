@@ -2,9 +2,8 @@ const mongoose = require('mongoose')
 
 const orderObj = {
     productId:{
-        type:String,
-        required:true
-    },
+        type:  { type: mongoose.Schema.Types.ObjectId, ref: 'products' },
+        },
     size:{
         type:String,
         required:true
@@ -32,9 +31,14 @@ const orderObj = {
     paymentMeth:{
         type:String,
         required:true
-    }
-  }
+    },
 
+    status:{
+        type:String,
+        required:true
+    },
+
+  }
 
 const schema = {
     userId: {
@@ -45,6 +49,6 @@ const schema = {
 
 }
 
-const orderDataSchema = new mongoose.Schema(schema)
+const orderDataSchema = new mongoose.Schema(schema,{ strictPopulate: false })
 const orderDataModel = new mongoose.model('orderDatas', orderDataSchema)
 module.exports = orderDataModel

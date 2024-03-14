@@ -11,6 +11,8 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
   <!-- MDB -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"> 
+ <link rel="stylesheet" href="/banner.css">
   
 </head>
 
@@ -34,7 +36,8 @@
             <div class="d-flex float-end">
               <a href="/signup" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-user-alt m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">Sign in</p> </a>
               <a href="/user/wishlist" class="me-1 ms-4 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i class="fas fa-heart m-1 me-md-2 "></i><p class="d-none d-md-block mb-0 text-white">Wishlist</p> </a>
-              <a href="/user/cart" class="border ms-4 rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-shopping-cart m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">My cart</p> </a>
+              <a href="/user/cart" class="border ms-4 me-2 rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-shopping-cart m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">My cart</p> </a>
+              <a href="/user/profile" class="border ms-2.5 rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fa-solid fa-user m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">Profile</p> </a>
             </div>
           </div>
           <!-- Center elements -->
@@ -120,7 +123,7 @@
     </nav>
     <!-- Navbar -->
     <!-- Jumbotron -->
-    <div class="bg-primary text-white py-5">
+    <!-- <div class="bg-primary text-white py-5">
       <div class="container py-5">
         <h1>
           Best products & <br />
@@ -136,7 +139,30 @@
           <span class="pt-1">Purchase now</span>
         </button>
       </div>
+    </div> -->
+
+    <div class="banner">
+
+      <% bannerDatas.forEach((data) =>{ %>
+    
+      <button class="prev_banner"><i class="bi banner_chevron bi-chevron-left"></i></button>
+       
+
+      <div class="banner_sub_div">
+      <img src="/uploads/banners/<%=data.image%>"  style="width: 45%; ">
+      <div class="banner_text_frame">
+         <h2><%=data.heading%></h2>
+         <h4><%=data.bannername%></h4>
+         <h5><i class="bi bi-currency-rupee"></i><%=data.offerprice%></h5>
+      </div>
+      </div>
+
+            
+       <button class="next_banner"><i class="bi banner_chevron bi-chevron-right"></i></button>
+       <% }) %>
     </div>
+
+
     <!-- Jumbotron -->
   </header>
   <!-- Products -->
@@ -185,6 +211,8 @@
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js">
   </script>
+
+<script src="/bannerscript.js"></script>
 
 </body>
 
