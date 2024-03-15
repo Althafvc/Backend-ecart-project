@@ -311,15 +311,20 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-
-          <% addressdetails.forEach((data)=> { %>
-            <div class="chooseAdd existingAddress p-3 w-100 mb-3 position-relative d-flex" style="display: flex;justify-content: space-between;">
-                <label for=""><%=data.housename %></label>
-                <input name="housename" type="radio" value="<%=data %>" class="addressSelect_id hs" id="<%=data%>" onclick="addressChanged(event,'<%=data._id%>','<%=data.housename%>','<%=data.housenumber%>','<%=data.city%>','<%=data.pincode%>')">
-                <!-- <input type="text" class="addressSelect_id_i" style="visibility: hidden;"> -->
-
-            </div>
-            <% }) %>
+          <% if(addressdetails&&addressdetails.length>0){ %>
+            <% console.log(addressdetails) %>
+            <% addressdetails.forEach((data)=> { %>
+              <div class="chooseAdd existingAddress p-3 w-100 mb-3 position-relative d-flex" style="display: flex;justify-content: space-between;">
+                <label for=""><%=data.housename?data.housename:null%></label>
+                  <input name="housename" type="radio" value="<%=data %>" class="addressSelect_id hs" id="<%=data%>" onclick="addressChanged(event,'<%=data._id%>','<%=data.housename%>','<%=data.housenumber%>','<%=data.city%>','<%=data.pincode%>')">
+                  <!-- <input type="text" class="addressSelect_id_i" style="visibility: hidden;"> -->
+  
+              </div>
+              <% }) %>
+         <% }else{ %>
+          <p>error</p>
+        <% } %>
+         
 
               <p class="m-0"><a href="/user/profile" id="submitBtn" class="button p-3"
                   style="background-color: black; color: white;">Add Address</a></p>
@@ -401,7 +406,7 @@
                 orderDate:new Date(),
                 address:addressData,
                 paymentMeth:paymentMethod,
-                status:'pending'
+                status:'confirmed'
               }
               orderObj.orders.push(singleOrderObj)
               })

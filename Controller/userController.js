@@ -319,7 +319,7 @@ exports.postuserPasswordChange = async (req, res) => {
 
 exports.postBuyNow = async (req, res) => {
 
-    const id = req.query.productid
+    const id = req.query.productid 
 
     const { sizes, color, quantity } = req.body
     if (!sizes || !color) {

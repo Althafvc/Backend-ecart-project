@@ -59,4 +59,6 @@ router.get('/onlineorderconfirmed',ordercontroller.getonlinePayment)
 
 router.get('/orders',ordercontroller.getUserOrders)
 
+router.get('/ordercancellation',ordercontroller.getOrderCancelled)
+
 module.exports = router

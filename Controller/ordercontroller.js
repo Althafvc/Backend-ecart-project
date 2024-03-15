@@ -8,6 +8,7 @@ const userModel = require('../Models/signupDatas')
 const bannersModel = require('../Models/bannerDatas')
 const confirmOtp = require('../middlewares/confirmorderotp')
 const razorpay = require('razorpay')
+const {ObjectId} = require('mongodb')
 
 var instance = new razorpay({
     key_id: process.env.mykey_id,
@@ -19,6 +20,7 @@ var instance = new razorpay({
 
 
 const orderDataModel = require('../Models/orderDetails')
+const { default: mongoose } = require('mongoose')
 let otp = parseInt(Math.random()*10000)
 
 
@@ -27,70 +29,81 @@ let otp = parseInt(Math.random()*10000)
 exports.getCheckout = async (req, res) => {
 
     const userId = req.session.user ? req.session.user : null;
-    const useremail = req.session.email
+        const useremail = req.session.email
+
+    const user = await userModel.findOne({ email: useremail })
+    const address = await profileModel.findOne({ email: useremail })
+    const addressdetails = await profileModel.find({ email: useremail })
+   // if(addressdetails.length>0) {
+        
+    //     req.flash('error', 'Please complete your profile first')
+    //     res.redirect('/user/profile')
+    // }else {
+        
+        if (!userId || !useremail) {
+            req.flash('error', 'your session has expired')
+            return res.redirect('/login')
+        } else if(addressdetails.length==0){
+            req.flash('error', 'Please complete your profile first')
+            return res.redirect('/user/profile')
+        } else {    
     
-    if (!userId || !useremail) {
-        req.flash('error', 'your session has expired')
-        return res.redirect('/login')
-    } else {
-
-        try {
-let singleProduct;
-let singleProductDetails
-let singleArray=[]
-            let total = 0;
-            let order = 0;
-            let Amount=0
-            let discount = 0
-            let totalPrice = 0
-            let carted = false;
-            let cartedOnes;
-            const cart = await cartModel.findOne({ userId: userId }).populate('productId.id')
-            if (req.query.total) {
-                carted=true
-                 Amount = parseInt( req.query.Amount)
-                 discount = parseInt(Amount* 5 / 100)
-                totalPrice = Math.round(Amount-discount)
-                total = parseInt(req.query.total || null);
-                let order = cart.productId;
-                req.session.preorder = order;
-
-            } else {
-                 singleProductDetails = req.query
-                 singleProduct = await productsModel.findOne({_id:singleProductDetails.productId})
-                 let newObj = {id:singleProduct}
-                 Amount =singleProduct.oldprice
-                 discount = parseInt(Amount* 5 / 100)
-                 totalPrice = Math.round(Amount-discount)
-                 singleArray.push(newObj)
-                
-                const productId = req.query.productId
-                const size = req.query.size
-                const color = req.query.color
-                const qty = req.query.quantity
-                quantity = qty;
-                const productid = await productsModel.findOne({ _id: productId })
-                order = [{ productid, quantity: qty, size:size, color: color}]
-                total = parseInt(productid.oldprice * qty)
-                req.session.preorder = order;
-                quantity = req.query.quantity;
-            }
-            const user = await userModel.findOne({ email: useremail })
-            const address = await profileModel.findOne({ email: useremail })
-            const addressdetails = await profileModel.find({ email: useremail })
-
-            if(carted) {
-                 cartedOnes = cart.productId 
-            }else {
-                cartedOnes= singleArray
-            }
-            const coupons = await couponsModel.find()
-            res.render('checkout', { order, total, user, coupons, address, addressdetails, cartedOnes, Amount, discount, totalPrice, total, carted, singleProduct, singleProductDetails})
-
-        } catch (err) { console.log('cannot render checkout properly', err); }
-
+            try {
+    let singleProduct;
+    let singleProductDetails
+    let singleArray=[]
+                let total = 0;
+                let order = 0;
+                let Amount=0
+                let discount = 0
+                let totalPrice = 0
+                let carted = false;
+                let cartedOnes;
+                const cart = await cartModel.findOne({ userId: userId }).populate('productId.id')
+                if (req.query.total) {
+                    carted=true
+                     Amount = parseInt( req.query.Amount)
+                     discount = parseInt(Amount* 5 / 100)
+                    totalPrice = Math.round(Amount-discount)
+                    total = parseInt(req.query.total || null);
+                    let order = cart.productId;
+                    req.session.preorder = order;
+    
+                } else {
+                     singleProductDetails = req.query
+                     singleProduct = await productsModel.findOne({_id:singleProductDetails.productId})
+                     let newObj = {id:singleProduct}
+                     Amount =singleProduct.oldprice
+                     discount = parseInt(Amount* 5 / 100)
+                     totalPrice = Math.round(Amount-discount)
+                     singleArray.push(newObj)
+                    
+                    const productId = req.query.productId
+                    const size = req.query.size
+                    const color = req.query.color
+                    const qty = req.query.quantity
+                    quantity = qty;
+                    const productid = await productsModel.findOne({ _id: productId })
+                    order = [{ productid, quantity: qty, size:size, color: color}]
+                    total = parseInt(productid.oldprice * qty)
+                    req.session.preorder = order;
+                    quantity = req.query.quantity;
+                }
+    
+    
+                if(carted) {
+                     cartedOnes = cart.productId 
+                }else {
+                    cartedOnes= singleArray
+                }
+                const coupons = await couponsModel.find()
+                res.render('checkout', { order, total, user, coupons, address, addressdetails, cartedOnes, Amount, discount, totalPrice, total, carted, singleProduct, singleProductDetails})
+    
+            } catch (err) { console.log('cannot render checkout properly', err); }
+    
+        }
     }
-}
+
 
 
 
@@ -134,8 +147,14 @@ exports.setCoupon = async (req,res)=> {
 exports.postCheckout = async (req,res)=> {
 const userId = req.session.user
 const email = req.session.email
-const order = req.body.orderObj
-req.session.order = order
+
+ req.body.orderObj.orders.forEach((id)=> {
+    id.productId = new ObjectId( id.productId)
+})
+
+req.session.order = req.body.orderObj
+const order = req.session.order
+
 if(!userId){
     req.flash('error', 'Your session has expired')
     res.redirect('/login')
@@ -158,8 +177,7 @@ const key = process.env.mykey_id
           const ordered = await instance.orders.create(orderOptions);
           res.status(200).json({sucess:true, ordered, key, totalAmount})
     }
-    }
-   
+    } 
 }
 
 
@@ -199,11 +217,9 @@ exports.orderConfirmOTPpost = async (req, res) => {
         } else {
             const userId=req.session.user
             const order = req.session.order
-            console.log(order, 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd');
-            console.log(userId,'fgsg');
             const newOrderObj = {
                 userId: userId,
-                orders: [order]
+                orders: order.orders
             }
 
             await orderDataModel.create(newOrderObj)
@@ -225,10 +241,7 @@ exports.orderConfirmOTPpost = async (req, res) => {
             // }))
 
         }
-
-
         res.redirect('/user/home')
-
     }
 }
 
@@ -237,7 +250,6 @@ exports.getonlinePayment= async (req,res)=> {
     const userId = req.session.user
 
     const order = req.session.order
-    console.log(order);
 
         const existingOrder = await orderDataModel.findOne({ userId: userId })
         if (existingOrder) {
@@ -245,25 +257,25 @@ exports.getonlinePayment= async (req,res)=> {
                 const orderPush = await orderDataModel.updateOne({ userId: userId }, { $push: { orders: ordersProduct } });
                 
         
-                const orderStatus = await orderDataModel.updateOne(
-                    { userId: userId, 'orders.productId': ordersProduct.productId },
-                    { $set: { 'orders.$.status': 'confirmed' } }
-                );
+                // const orderStatus = await orderDataModel.updateOne(
+                //     { userId: userId, 'orders.productId': ordersProduct.productId },
+                //     { $set: { 'orders.$.status': 'confirmed' } }
+                // );
         
             }
         }else {
             const newOrderObj = {
                 userId: userId,
-                orders: [order]
+                orders: order.orders
             }
             const neworder = await orderDataModel.create(newOrderObj)
 
-            if(neworder.modifiedCount > 0){
-                await orderDataModel.updateOne(
-                    {userId:userId , 'orders.productId':ordersProduct.productId},
-                    {$set:{'orders.$.status':'confirmed'}}
-                )
-                }
+            // if(neworder.modifiedCount > 0){
+            //     await orderDataModel.updateOne(
+            //         {userId:userId , 'orders.productId':ordersProduct.productId},
+            //         {$set:{'orders.$.status':'confirmed'}}
+            //     )
+            //     }
         }
         res.redirect('/user/home')
     }
@@ -277,25 +289,29 @@ exports.getonlinePayment= async (req,res)=> {
             res.redirect('/login')
         }else {
             try {
-                const orderDatas  =  await orderDataModel.aggregate([
-    
-                    {$match:{userId:userId}},
-                    {$lookup:{
-                        from: 'products',
-                     localField: 'productId',
-                     foreignField:'_id',
-                     as: "pdtDetails"
-                    }
-                  }
-                
-                ])
+                const orderDatas  =  await orderDataModel.findOne({userId:userId}).populate("orders.productId")
 
-                console.log(orderDatas);
                 res.render('userorderslist',{orderDatas})    
 
             }catch(err) {console.log('cannot render userorders properly', err)}
 
         }
+
+}
+
+exports.getOrderCancelled = async (req,res)=> {
+    const id = req.query.id
+    console.log(req.query.id);
+
+    try {
+        const aptOrder = await orderDataModel.findOneAndUpdate(
+            { "orders._id": id },
+            { $set: { "orders.$.status": "cancelled" } }); 
+            
+            res.status(200).json({success:true})
+
+
+         }catch(err){console.log('error in cancelling the product',err)}
 
 }
 

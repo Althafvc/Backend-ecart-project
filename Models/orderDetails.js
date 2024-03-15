@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 const orderObj = {
-    productId:{
-        type:  { type: mongoose.Schema.Types.ObjectId, ref: 'products' },
-        },
+    productId:
+    { type: mongoose.Schema.Types.ObjectId, ref: 'products' }
+        ,
     size:{
         type:String,
         required:true
