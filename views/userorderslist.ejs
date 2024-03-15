@@ -175,13 +175,9 @@
     const response = await axios.get(`/user/ordercancellation?id=${orderId}`)
 
     const result = response.data
-    console.log(result);
-
-    // if(result.success) {
-    //   deleteButton.innerHTML= 'Cancelled'
-    //   deleteButton.style.backgroundColor = 'red'
-
-    // }
+    if(result.success) {
+     window.location.reload()
+    }
   }else {
     window.location.href='/user/orders'
   }

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/adminOrdersList.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+
+</head>
+
+<body>
+    <section id="menu">
+        <div class="logo">
+            <img src="" alt="">
+            <h2>StyleSphere</h2>
+        </div>
+        <div class="items">
+            <li><i class="fa-solid fa-chart-line"></i> <a href="/admin/home">Analysis</a></li>
+            <li><i class="fa-solid fa-gift"></i><a href="/admin/products">Products</a></li>
+            <li> <i class="fa-solid fa-user"></i> <a href="/admin/users">Users</li>
+            <li> <i class="fa-regular fa-pen-to-square"></i> <a href="/admin/categories">Category</a></li>
+            <li><i class="fa-solid fa-truck"></i> <a href="#">Orders</a></li>
+            <li><i class="fa-solid fa-credit-card"></i> <a href="/admin/coupons">Coupons</a></li>
+            <li><i class="fa-regular fa-file"></i> <a href="/admin/banners">Banners</a></li>
+            <li><i class="fa-solid fa-arrow-right-from-bracket"></i> <a href="">logout</a></li>
+
+        </div>
+
+    </section>
+
+
+    <section id="interface">
+        <div class="navigation">
+            <div class="n1">
+                <div>
+                    <i id="menu-btn" class="fa-solid fa-bars"></i>
+                </div>
+                <div class="search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+
+            <div class="profile">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+        </div>
+
+        <div
+            style="width: 100%; height: 4rem; margin-top: 4.6rem;  display:  flex;  align-items: center; justify-content: space-between;  padding: 0 1rem;">
+            <h3 class="i-name" style="margin-bottom: 1.9rem;">Orders List</h3>
+        </div>
+
+
+
+        <div class="board">
+            <table width="100%">
+                <thead>
+                    <tr>
+                        <td>Order Id</td>
+                        <td>user Id</td>
+                        <td>product name</td>
+                        <td>product quantity</td>
+                        <td>product price</td>
+
+
+                        <td>status</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% orderDatas.forEach((orderData)=>{ %>
+                        <% orderData.orders.forEach((data)=>{ %>
+                        <tr class="tr">
+                            <td class="people">
+                                <div class="people-de">
+                                    <h5 style="margin-top: 15px;">
+                                       <%=data._id%>
+                                    </h5>
+                                </div>
+                            </td>
+                            <td class="">
+                                <h5>
+                                    <%=orderData.userId%>
+                                </h5>
+                            </td>
+
+                            <td class="role">
+                                <h5>
+                                    <%=data.productId.productname%>
+
+                                </h5>
+                            </td>
+                            <td class="role">
+                                <h5>
+                                    <%=data.quantity%>
+                                </h5>
+                            </td>
+
+                            <td class="role">
+                                <h5>
+                                    <%=data.productId.oldprice%>
+
+                                </h5>
+                            </td>
+
+
+                            <td class="edit">
+
+                                <% if(data.status=='delivered') { %>
+
+
+                                <select name="gender" class="statusSelect" style="width: 100px; border-radius: 4px; height: 24px; visibility: hidden;"  onchange="changed(event,'<%=data._id%>')">
+                                    <option value="<%=data.status%>" ><%=data.status%></option>
+                                    <option value="confirmed" >confirmed</option>
+                                    <option value="shipped">shipped</option>
+                                    <option value="delivered">delivered</option>
+                                    <option value="cancelled">cancelled</option>
+                                  </select>
+
+                                  <%}else {%>
+                                    <select name="gender" class="statusSelect" style="width: 100px; border-radius: 4px; height: 24px;"  onchange="changed(event,'<%=data._id%>')">
+                                        <option value="<%=data.status%>" ><%=data.status%></option>
+                                        <option value="confirmed" >confirmed</option>
+                                        <option value="shipped">shipped</option>
+                                        <option value="delivered">delivered</option>
+                                        <option value="cancelled">cancelled</option>
+                                      </select>
+                                <%}%>
+                            </td>
+                        </tr>
+                        <% }) %>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script>
+
+        function changed(event,orderId) {
+           const id = orderId
+            const value = event.target.value
+            window.location.href = `/admin/orderstatuschange?value=${value}&id=${id}`
+        }
+      
+        
+    </script> 
+</body>
+
+</html>

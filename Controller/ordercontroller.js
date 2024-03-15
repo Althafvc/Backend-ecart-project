@@ -301,7 +301,6 @@ exports.getonlinePayment= async (req,res)=> {
 
 exports.getOrderCancelled = async (req,res)=> {
     const id = req.query.id
-    console.log(req.query.id);
 
     try {
         const aptOrder = await orderDataModel.findOneAndUpdate(

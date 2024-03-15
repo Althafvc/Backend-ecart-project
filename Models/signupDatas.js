@@ -30,8 +30,11 @@ const schema = {
     isBlocked: {
         type: String
     }
-}
 
-const dataSchema = new mongoose.Schema(schema)
+}
+const dataSchema = new mongoose.Schema(schema,{
+    timestamps:true
+}
+)
 const dataModel = new mongoose.model('signupDatas', dataSchema)
 module.exports = dataModel

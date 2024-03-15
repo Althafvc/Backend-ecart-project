@@ -10,6 +10,7 @@ const path = require('path')
 const fs = require('fs')
 const { log } = require('console')
 const bannersModel = require('../Models/bannerDatas')
+const orderDataModel = require('../Models/orderDetails')
 
 
 
@@ -731,6 +732,111 @@ exports.getDeleteBanner = async (req, res) => {
     } catch (err) { console.log('error occured while deleting the banner ') }
 
 }
+
+exports.getChartAnalysis = (req,res)=> {
+    res.render('graphanalysis')
+}
+
+exports.getOrderslist = async (req,res)=> {
+
+try {
+    const orderDatas = await orderDataModel.find().populate("orders.productId")
+    console.log(orderDatas);
+    res.render('adminOrdersList',{orderDatas})
+}catch(err) {console.log('cannot render orderpage properly', err)}
+    }
+
+
+exports.setOrderStatus =async (req,res)=> {
+    const value = req.query.value
+    const id = req.query.id
+
+    try {
+        const aptOrder = await orderDataModel.findOneAndUpdate(
+            { "orders._id": id },
+            { $set: { "orders.$.status": value } }); 
+            res.redirect('/admin/orders')
+
+         }catch(err){console.log('error in cancelling the product',err)}    
+}
+
+
+exports.firstChartdats = async (req, res) => {
+
+    const userCount = await userModel.find();
+
+    // Create an object to store user counts per month
+    const userCountsPerMonth = {};
+
+    // Iterate over each user object
+    userCount.forEach(user => {
+        // Extract createdAt date from the user object
+        const createdAtDate = new Date(user.createdAt);
+
+        // Get the month name
+        const month = createdAtDate.toLocaleString('default', { month: 'long' });
+
+        // If the month doesn't exist in the userCountsPerMonth object, initialize it to 1, otherwise increment the count
+        userCountsPerMonth[month] = (userCountsPerMonth[month] || 0) + 1;
+        
+    });
+
+
+    const categoryCounts = await productsModel.aggregate([
+        {
+            $group: {
+                _id: '$category', // Group by category
+                count: { $sum: 1 } // Count the number of documents in each group
+            }
+        },
+        {
+            $project: {
+                category: '$_id', // Rename _id field to category
+                count: 1, // Keep count field
+                _id: 0 // Exclude _id field
+            }
+        }
+    ]);
+    
+    // Transforming the array of objects into an object with category names as keys and counts as values
+    const formattedCategoryCounts = {};
+    categoryCounts.forEach(category => {
+        formattedCategoryCounts[category.category] = category.count;
+    });
+
+
+    const orders = await orderDataModel.aggregate([
+        {
+          $unwind: "$orders" // Deconstruct the orders array
+        },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m", date: "$orders.orderDate" } }, // Extract month from orderDate
+            totalOrders: { $sum: 1 } // Count the orders for each month
+          }
+        },
+        {
+          $sort: {
+            "_id": 1 // Sort by month in ascending order
+          }
+        }
+      ]);
+      
+      // Transform the data into an array of objects where each object represents a month and its count of orders
+      const ordersDataForGraph = orders.reduce((acc, order) => {
+        const monthYear = order._id.split('-');
+        const monthIndex = parseInt(monthYear[1]) - 1; // Month index starts from 0
+        const monthName = new Date(Date.UTC(monthYear[0], monthIndex, 1)).toLocaleString('default', { month: 'long' });
+    
+        acc[monthName] = order.totalOrders;
+    
+        return acc;
+    }, {});
+        
+    console.log(ordersDataForGraph);
+
+    res.status(200).json({success:true, datas:userCountsPerMonth, products:formattedCategoryCounts, lastData:ordersDataForGraph})
+};
 
 
 

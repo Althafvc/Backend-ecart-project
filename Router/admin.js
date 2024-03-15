@@ -67,4 +67,10 @@ router.post('/addbanner',multer.setUploadType('banners'),multer.upload.single('b
 router.get('/editbanner/:id',adminController.getEditBanner)
 router.post('/editbanner/:id',multer.setUploadType('banners'),multer.upload.single('bannerImg'),adminController.postEditBanner)
 router.delete('/deletebanner/:id',adminController.getDeleteBanner)
+
+router.get('/analysis',adminController.getChartAnalysis)
+router.get('/orders',adminController.getOrderslist)
+router.get('/orderstatuschange',adminController.setOrderStatus)
+
+router.get('/firstchartdatas',adminController.firstChartdats)
 module.exports = router

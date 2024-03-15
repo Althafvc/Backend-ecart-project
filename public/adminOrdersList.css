@@ -6,7 +6,7 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-    
+
 body {
     width: 100%;
     background: #E5E7EB;
@@ -96,6 +96,7 @@ position: relative;
     position: fixed;
     width: calc(100%-300px);
 }
+
 
 #interface .navigation .search{
     display: flex;
@@ -204,7 +205,7 @@ background: #74daec;
     width: 94%;
     margin: 30px 0 30px 30px;
     overflow: auto;
-    background-color: #E5E7EB;
+    background-color: #fff;
     border-radius: 8px;
 }
 
@@ -255,7 +256,7 @@ tbody tr td {
     padding: 10px 15px;
 }
 
-.activep{
+.active p {
     background: #d7fada;
     padding: 2px 10px;
     display: inline-block;
@@ -284,11 +285,6 @@ tbody tr td {
     margin-right: 20px;
 }
 
-.red {
-    background-color: red;
-    color: black;
-}
-
 
 .product_add_btn{
     border: none;
@@ -303,35 +299,6 @@ tbody tr td {
 }
 .product_add_btn:active{
     transform: scale(.95);
-}
-
-.graph1 {
-    width: 500px;
-    height: 300px;
-    border: 2px solid rebeccapurple;
-
-}
-
-.graph2 {
-    width: 500px;
-    height: 300px;
-    border: 2px solid rebeccapurple;
-
-}
-
-.graph3 {
-    width: 500px;
-    height: 300px;
-    border: 2px solid rebeccapurple;
-
-}
-
-.board2 {
-    width: 100%;
-    height: auto;
-    display: flex;
-justify-content: center;
-background: #E5E7EB;
 }
 
 @media (max-width:769px) {

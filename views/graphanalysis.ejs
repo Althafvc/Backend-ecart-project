@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+   <link rel="stylesheet" href="/graphanalysis.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+    <section id="menu">
+        <div class="logo">
+            <img src="/images/logo.png" alt="">
+            <h2>StyleSphere</h2>
+        </div>
+        <div class="items">
+            <li><i class="fa-solid fa-chart-line"></i> <a href="/admin/home">Analysis</a></li>
+            <li><i class="fa-solid fa-gift"></i><a href="/admin/products">Products</a></li>
+            <li> <i class="fa-solid fa-user"></i> <a href="/admin/users">Users</li>
+            <li> <i class="fa-regular fa-pen-to-square"></i> <a href="/admin/categories">Category</a></li>
+            <li><i class="fa-solid fa-truck"></i> <a href="#">Orders</a></li>
+            <li><i class="fa-solid fa-credit-card"></i> <a href="/admin/coupons">Coupons</a></li>
+            <li><i class="fa-regular fa-file"></i> <a href="/admin/banners">Banners</a></li>
+            <li><i class="fa-solid fa-arrow-right-from-bracket"></i> <a href="">logout</a></li>
+
+        </div>
+
+    </section>
+
+
+<section id="interface">
+    <div class="navigation">
+        <div class="n1">
+            <div>
+                <i id="menu-btn" class="fa-solid fa-bars"></i>
+            </div>
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search">
+            </div>
+        </div>
+        <div class="profile">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+    </div>
+
+
+    <div style="width: 100%; display: flex; justify-content: center; align-items: end;">
+        <h3 class="i-name">Graphical Representation of Datas</h3>    
+    </div>
+    <div class="board" style="display: flex; width: 1100px; justify-content: space-between;" >
+       
+       <div> <canvas id="chart1"></canvas></div>
+       <div> <canvas id="chart2"></canvas></div>
+    </div>
+    <div class="board2">
+      <div> <canvas id="chart3"></canvas></div>
+
+    </div>
+
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded",async function() {
+    const response = await axios.get('/admin/firstchartdatas')
+
+    const result= response.data
+    if(result.success) {
+        const values = result.datas
+
+    const ctx = document.getElementById('chart1');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels:Object.keys(values),
+        datasets: [{
+          label: 'users',
+          data: Object.values(values),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+}
+
+
+
+const response2 = await axios.get('/admin/firstchartdatas')
+
+const result2= response.data
+if(result2.success) {
+    const values = result2.products
+
+const ctx = document.getElementById('chart2');
+
+new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels:Object.keys(values),
+    datasets: [{
+      label: 'products',
+      data: Object.values(values),
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+}
+
+
+
+
+
+const response3 = await axios.get('/admin/firstchartdatas')
+
+const result3= response.data
+if(result3.success) {
+    const values = result3.lastData
+    console.log(values);
+
+const ctx = document.getElementById('chart3');
+
+new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels:Object.keys(values),
+    datasets: [{
+      label: 'orders',
+      data: Object.values(values),
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+}
+});
+</script>
+</body>
+</html>
