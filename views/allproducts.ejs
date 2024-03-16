@@ -20,9 +20,7 @@ rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
 rel="stylesheet"
 />
-<style>
-  
-</style>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <!--Main Navigation-->
@@ -125,6 +123,25 @@ rel="stylesheet"
              <% }) %>
               </ul>
             </li>
+
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                Sort
+              </a>
+              <!-- Dropdown menu -->
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li>
+                  <a class="dropdown-item sort1"  href="">High to Low</a>
+                </li>
+
+                <li>
+                  <a class="dropdown-item sort2"  href="">Low to High</a>
+                </li>
+             
+              </ul>
+            </li>
           </ul>
           <!-- Left links -->
         </div>
@@ -188,12 +205,30 @@ rel="stylesheet"
 <script src="/addToWishlist-axios.js"></script>
 <script>
   function searchApplied() {
-    console.log(1);
     const searchvalue = document.getElementById('Search_form1').value
-    console.log(searchvalue);
 
     window.location.href = (`/user/allproducts?search=${searchvalue}`)
   }
 </script>
+
+<script>
+ const sort1Btn = document.querySelector('.sort1').addEventListener('click', async (event) => {
+    event.preventDefault();
+    const criteria = event.target.textContent; // Retrieve the text content of the clicked element
+    window.location.href = `/user/sort?criteria=${criteria}`
+});
+</script>
+
+<script>
+  const sort2Btn = document.querySelector('.sort2').addEventListener('click', async (event) => {
+     event.preventDefault();
+     const criteria = event.target.textContent; 
+     window.location.href = `/user/sort?criteria=${criteria}`
+ });
+ </script>
+
+
+
+
 </body>
 </html>

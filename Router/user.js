@@ -61,5 +61,7 @@ router.get('/orders',ordercontroller.getUserOrders)
 
 router.get('/ordercancellation',ordercontroller.getOrderCancelled)
 
+router.get('/sort',userController.getUserSort)
+
 
 module.exports = router

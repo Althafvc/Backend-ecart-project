@@ -38,6 +38,7 @@
               <a href="/user/wishlist" class="me-1 ms-4 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i class="fas fa-heart m-1 me-md-2 "></i><p class="d-none d-md-block mb-0 text-white">Wishlist</p> </a>
               <a href="/user/cart" class="border ms-4 me-2 rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-shopping-cart m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">My cart</p> </a>
               <a href="/user/profile" class="border ms-2.5 rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fa-solid fa-user m-1 me-md-2"></i><p class="d-none d-md-block mb-0 text-white">Profile</p> </a>
+
             </div>
           </div>
           <!-- Center elements -->
@@ -46,10 +47,10 @@
           <div class="col-lg-5 col-md-12 col-12">
             <div class="input-group float-center">
               <div class="form-outline">
-                <input type="search" id="form1" class="form-control" />
+                <input type="search" id="Search_form1" class="form-control">
                 <label class="form-label" for="form1">Search</label>
               </div>
-              <button type="button" class="btn btn-primary shadow-0">
+              <button  class="btn btn-primary shadow-0" onclick='searchApplied()'>
                 <i class="fas fa-search"></i>
               </button>
             </div>
@@ -98,21 +99,35 @@
             </li>
             <!-- Navbar dropdown -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button"
-                data-mdb-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
                 Categories
               </a>
               <!-- Dropdown menu -->
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <% categoryDatas.forEach((data)=> { %>
+                <li>
+                  <a class="dropdown-item"  href="/user/categories?element=<%=data.category%>"><%=data.category%></a>
+                </li>
+             <% }) %>
+              </ul>
+            </li>
 
-                  <li>
-                    <a class="dropdown-item" href="/user/categories?element=<%=data.category%>">
-                      <%=data.category%>
-                    </a>
-                  </li>
 
-                  <% }) %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                Sort
+              </a>
+              <!-- Dropdown menu -->
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li>
+                  <a class="dropdown-item sort1"  href="">High to Low</a>
+                </li>
+
+                <li>
+                  <a class="dropdown-item sort2"  href="">Low to High</a>
+                </li>
+             
               </ul>
             </li>
           </ul>

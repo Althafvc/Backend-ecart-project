@@ -350,6 +350,43 @@ exports.postBuyNow = async (req, res) => {
 
 }
 
+exports.getUserSort = async (req,res)=> {
+
+        try {
+            let productDatas;
+            const categoryDatas = await categoryModel.find()
+            const wishlistDatasMain = await wishlistModel.findOne({ userId: req.session.user })
+            const wishlistDatas = wishlistDatasMain ? wishlistDatasMain.productId : []
+        
+            if (req.query.search) {
+                const search = req.query.search
+                productDatas = await productsModel.find({
+                    productname:
+                        { $regex: search,$options: 'i' }
+                })
+            } else if(req.query.criteria){
+                const criteria = req.query.criteria;
+console.log(criteria);
+                if(criteria=='High to Low'){
+console.log(1);
+                productDatas= await productsModel.find().sort({ oldprice: -1 });
+
+                }else if(criteria=='Low to High'){
+                    console.log(2);
+
+                    productDatas= await productsModel.find().sort({ oldprice: 1 });
+                }
+            }else{
+
+                    productDatas = await productsModel.find()
+            }
+                 res.render('allproducts', { productDatas, categoryDatas, wishlistDatas })
+            } catch (err) {
+                console.log('cannot find productDatas properly', err);
+            }
+        }
+
+
 
 
 
