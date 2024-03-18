@@ -71,6 +71,8 @@ exports.postAdminLogin = async (req, res) => {
             const passwordMatch = await bcrypt.compare(password, adminDatas.password);
 
             if (passwordMatch) {
+                req.session.admin= adminDatas._id
+
                 res.status(200).redirect('/admin/home')
             } else {
 
@@ -152,10 +154,8 @@ exports.getPAsswordChange = (req, res) => {
 exports.postPaswordChange = async (req, res) => {
     const email = req.params.mail
     const { newpassword, confirmpassword } = req.body
-    console.log(req.body);
 
     try {
-        console.log('here');
         if (newpassword != confirmpassword) {
             req.flash('error', 'new and confirm password fields does not match')
             res.status(404).redirect(`/admin/passwordchange/${email}`)
@@ -167,16 +167,11 @@ exports.postPaswordChange = async (req, res) => {
             await adminModel.findOneAndUpdate({ email: email }, { $set: { password: newpassword } })
 
             res.status(200).redirect('/admin/login')
-
-
         }
 
     } catch (err) {
         console.log('error occured while updating the password', err);
     }
-
-
-
 }
 
 
@@ -220,22 +215,46 @@ exports.postAdminForgotareaKey = async (req, res) => {
 
 
 exports.getAdminhome = (req, res) => {
+    const amdinId = req.session.admin
 
+    if(!amdinId) {
+        req.flash('error','Your session has expired')
+        res.redirect('/admin/login')
+    }else {
+        try {
+            res.render('graphanalysis')
 
-
-    res.render('adminhome')
+        }catch(err){console.log('cannot render adminhome properly', err)}
+    }
 }
 
 
 
 exports.getUsersList = async (req, res) => {
-    let datas = await userModel.find()
-    res.render('userList', { datas })
 
+    const amdinId = req.session.admin
+
+    if(!amdinId) {
+        req.flash('error','Your session has expired')
+        res.redirect('/admin/login')
+    }else {
+        try {
+            let datas = await userModel.find()
+            res.render('userList', { datas })
+        }catch(err){console.log('cannot render userList properly', err)}
+    
+    }
 }
 
 
 exports.DeleteUser = async (req, res) => {
+
+    const amdinId = req.session.admin
+
+    if(!amdinId) {
+        req.flash('error','Your session has expired')
+        res.redirect('/admin/login')
+    }else {
     const email = req.params.mail
 
     try {
@@ -256,120 +275,178 @@ exports.DeleteUser = async (req, res) => {
 
 }
 
+}
+
 
 
 exports.getaddProduct = async (req, res) => {
-    try {
-        let categoryDatas = await categoryModel.find()
-        res.render('addproduct', { categoryDatas })
-    } catch (err) { console.log('cannot find categoryDatas', err); }
+
+    const adminId = req.session.admin 
+
+    if(!adminId){
+        req.flash('error', 'Your session has expired')
+        res.redirect('/admin/login')
+    }else {
+        try {
+            let categoryDatas = await categoryModel.find()
+            res.render('addproduct', { categoryDatas })
+        } catch (err) { console.log('cannot find categoryDatas', err); }
+    }
+    
 
 }
 
 exports.postaddProduct = async (req, res) => {
-    const product_img = req.files.map(file => file.filename);
 
-    const { productname, oldprice, size, color, subcategory, stock, description, category } = req.body
+    const adminId = req.session.admin
 
-    const productExists = await productsModel.findOne({ productname: req.body.productname })
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+    }else {
+        const product_img = req.files.map(file => file.filename);
 
-    if (productExists) {
-        console.log('product already exists');
-        return res.status(298).json(({ success: false }))
-    } else {
-        try {
-
-            if (!req.files) {
-
-                return res.status(298).json(({ success: false }))
-
-            } else {
-                const products = new productsModel({ productname, oldprice, size, color, subcategory, stock, category, description, product_img })
-                await products.save()
-                return res.status(200).json({ success: true })
-
+        const { productname, oldprice, size, color, subcategory, stock, description, category } = req.body
+    
+        const productExists = await productsModel.findOne({ productname: req.body.productname })
+    
+        if (productExists) {
+            console.log('product already exists');
+            return res.status(298).json(({ success: false }))
+        } else {
+            try {
+    
+                if (!req.files) {
+    
+                    return res.status(298).json(({ success: false }))
+    
+                } else {
+                    const products = new productsModel({ productname, oldprice, size, color, subcategory, stock, category, description, product_img })
+                    await products.save()
+                    return res.status(200).json({ success: true })
+    
+                }
+    
+            } catch (err) {
+                console.log('file not found', err);
             }
-
-        } catch (err) {
-            console.log('file not found', err);
+    
         }
-
     }
+
+    
 
 }
 
 exports.getAdminProductsList = async (req, res) => {
-    try {
-        let productDatas = await (productsModel.find())
-        res.render('productsList', { productDatas })
-    } catch (err) { console.log('cannot find productDatas', err) }
+
+    const adminId = req.session.admin
+
+    if(!adminId){
+req.flash('error','Your session has expired')
+    }else {
+        try {
+            let productDatas = await (productsModel.find())
+            res.render('productsList', { productDatas })
+        } catch (err) { console.log('cannot find productDatas', err) }
+    }
+   
 
 }
 
 exports.getAddCategory = (req, res) => {
-    res.status(200).render('addcategory')
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error', 'Your session has expired')
+        res.redirect('/admin/login')
+    }else {
+        try {
+           
+            res.status(200).render('addcategory')
+        }catch(err) {console.log('cannot render addcategory properly', err);}
+    }
 }
 
 exports.postAddCategory = async (req, res) => {
-    try {
-        
-        if (!req.file) {
-            console.log('image file is compulsory');
-            return res.status(298).json({ success: false })
-        }
-        
-        
-            const { subcategory, category } = req.body
-            const subcat = JSON.parse(subcategory)
-            console.log(subcat);
 
-        const sameCategory = await categoryModel.findOne({category:JSON.parse(category)})
-        console.log(sameCategory);
-         if (sameCategory) {
+    const adminId = req.session.admin
 
-                const updation = await categoryModel.findOneAndUpdate({category:JSON.parse(category)},{$push:{subcategory:{$each:subcat
-                  }}}) 
+    if(!adminId) {
+        req.flash('error', 'Your session has expired')
+        res.redirect('/admin/login')
+    }else {
+        try { 
+        
+            if (!req.file) {
+                console.log('image file is compulsory');
+                return res.status(298).json({ success: false})
+            }
             
+            
+                const { subcategory, category } = req.body 
+                console.log(subcategory);
+                const subcat = JSON.parse(subcategory)
+    
+            const sameCategory = await categoryModel.findOne({category:JSON.parse(category)})
+             if (sameCategory) {
+    
+                    const updation = await categoryModel.findOneAndUpdate({category:JSON.parse(category)},{$push:{subcategory:{$each:subcat
+                      }}
 
-            return res.status(200).json({ success: true })
-
-
+                    }) 
+                
+                return res.status(200).json({ success: true})
+    
+    
+            }
+    
+            else {
+    
+                const category_img = req.file.filename
+    
+                const categories = new categoryModel(
+                    {
+                      category_img,
+                      category:JSON.parse(category),
+                      subcategory:JSON.parse(subcategory),
+                    })
+    
+                await categories.save()
+    
+                return res.status(200).json({ success: true })
+            }
+    
+        } catch (err) {
+            console.log('error occured in postAddCategory ', err);
         }
-
-        else {
-
-            const category_img = req.file.filename
-
-            const categories = new categoryModel(
-                {
-                  category_img,
-                  category:JSON.parse(category),
-                  subcategory:JSON.parse(subcategory),
-                })
-
-            await categories.save()
-
-            return res.status(200).json({ success: true })
-        }
-
-    } catch (err) {
-        console.log('catch is working', err);
     }
+    
 
 }
 
 exports.getCategoriesList = async (req, res) => {
 
-    try {
-        const categoryDatas = await categoryModel.find()
-        res.render('categorylist', { categoryDatas })
-
-    } catch (err) {
-        console.log('cannot find categoryDatas properly', err);
-    }
+    const adminId = req.session.admin 
+        if(!adminId) {
+            req.flash('error', 'Your session has expired')
+        }else {
+            try {
+                const categoryDatas = await categoryModel.find()
+                res.render('categorylist', { categoryDatas })
+        
+            } catch (err) {
+                console.log('cannot find categoryDatas properly', err);
+            }
+        }
+    
 }
 
 exports.DeleteCategory = async (req, res) => {
+
+    const adminId = req.session.admin 
+        if(!adminId) {
+            req.flash('error', 'Your session has expired')
+        }else {
     const id = req.params.id;
 
     try {
@@ -388,27 +465,17 @@ exports.DeleteCategory = async (req, res) => {
 
         }
     } catch (err) { console.log('error occured while deleting the category ') }
-
+        
+}
 }
 
+exports.getEditcategory = async(req,res)=> {         
 
-exports.getEditCategory = async (req, res) => {
-    const id = req.params.id
-
-    try {
-        const categoryDatas = await categoryModel.findOne({ _id: id })
-        console.log(categoryDatas);
-        res.render('editcategory', { categoryDatas, id })
-
-    } catch (err) { console.log('cannot find your category properly'), err }
+    const categoryId = req.query.categoryId
+    const categoryFind = await categoryModel.findById(categoryId)
+    res.render('editcategory',{categoryFind})
 }
 
-
-exports.postEditCategory = (req, res) => {
-    console.log(req.params.id);
-    console.log(req.body);
-    console.log(req.file);
-}
 exports.getEditProduct = async (req, res) => {
     const id = req.params.id
     try {
@@ -417,7 +484,7 @@ exports.getEditProduct = async (req, res) => {
         res.render('editproduct', { categoryDatas, productDatas, id })
     } catch (error) { console.log('cannot find categoryDatas properly', error) };
 }
-
+   
 
 
 exports.postEditProduct = async (req, res) => {

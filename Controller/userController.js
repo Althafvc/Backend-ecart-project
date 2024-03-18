@@ -71,7 +71,6 @@ exports.postOTP = async (req, res) => {
 exports.resendOTP = async (req, res) => {
     const phone = (req.params.phone);
     const twiliophone = phone
-    console.log(twiliophone);
 
 
     try {
@@ -88,10 +87,6 @@ exports.resendOTP = async (req, res) => {
     }
 
 }
-
-
-
-
 
 exports.getforgotareaotp = (req, res) => {
     const mail = req.params.mail
@@ -121,8 +116,6 @@ exports.getChangePassword = (req, res) => {
     const mail = req.params.mail
     res.render('passwordchange', { mail })
 }
-
-
 
 exports.postChangePassword = async (req, res) => {
     const mail = req.params.mail
@@ -366,13 +359,10 @@ exports.getUserSort = async (req,res)=> {
                 })
             } else if(req.query.criteria){
                 const criteria = req.query.criteria;
-console.log(criteria);
                 if(criteria=='High to Low'){
-console.log(1);
                 productDatas= await productsModel.find().sort({ oldprice: -1 });
 
                 }else if(criteria=='Low to High'){
-                    console.log(2);
 
                     productDatas= await productsModel.find().sort({ oldprice: 1 });
                 }

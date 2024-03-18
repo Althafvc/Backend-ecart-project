@@ -385,7 +385,7 @@ tbody tr td {
 
 .form_frame {
     width: 40rem;
-    height: 18rem;
+    height: auto;
     box-sizing: content-box;
     padding: 1rem;
     border-radius: .2rem;
@@ -444,7 +444,8 @@ tbody tr td {
 
 .choose_file {
     padding: .5rem .9rem;
-        color: white;
+    /* border-radius: .2rem; */
+    color: white;
     font-size: .9rem;
     cursor: pointer;
     background-color: #04173e;

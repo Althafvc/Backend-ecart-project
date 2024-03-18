@@ -42,11 +42,9 @@ router.post('/addcategory', multer.setUploadType('categories'),multer.upload.sin
 router.get('/categories',adminController.getCategoriesList)
 router.delete('/deletecategory/:id',adminController.DeleteCategory)
 
-router.get('/editcategory/:id',adminController.getEditCategory)
-router.post('/editcategory/:id',adminController.postEditCategory)
+router.get('/editcategory',adminController.getEditcategory)
 
 router.get('/editproduct/:id',adminController.getEditProduct)
-
 router.post('/editproduct/:id',multer.setUploadType('products'),multer.upload.array('product_img',999),adminController.postEditProduct)
 router.delete('/products/delete/:id',adminController.DeleteProduct)
 router.get('/blockedusers',adminController.getBlockedUsers)
@@ -57,8 +55,6 @@ router.post('/addcoupons',adminController.postAddCoupons)
 router.delete('/deletecoupons/:id',adminController.deleteCoupons)
 router.get('/editcoupons/:id',adminController.getEditCoupons)
 router.post('/editcoupons/:id',adminController.postEditCoupons)
-
-
 
 router.get('/banners',adminController.getBannersList)
 router.get('/addbanner',adminController.getAddBanner)

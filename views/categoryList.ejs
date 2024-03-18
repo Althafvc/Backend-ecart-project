@@ -74,7 +74,6 @@
                 </thead>
                 <tbody>
                     <% categoryDatas.forEach((data)=>{ %>
-
                         <tr class="tr">
                             <td class="people">
 
@@ -100,8 +99,11 @@
 
                             <td class="edit"> <a href="" category-id="<%=data._id%>" id="deleteBtn" class="delete_category_button"><i class="fa-solid fa-trash"></i></a>
 
-                                <a href="/admin/editcategory/<%=data._id%>"><i class="fa-solid fa-pen-to-square"
-                                        style="margin-left: 20px;"></i></a>
+                                <!-- <a href="/admin/editcategory?categoryId=hiiiiiii"> -->
+                                    <button style="background: none; border: none;" onclick="editCategory('<%=data._id%>')">
+                                        <i class="fa-solid fa-pen-to-square" style="margin-left: 20px;"></i>
+                                    </button>
+                                <!-- </a> -->
             
                             </td>
                         </tr>
@@ -143,6 +145,11 @@
 });
 });
 });
+
+
+function editCategory(categoryId){
+    window.location.href = `/admin/editcategory?categoryId=${categoryId}`
+}
         
     </script> 
 </body>

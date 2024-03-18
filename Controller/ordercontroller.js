@@ -34,12 +34,8 @@ exports.getCheckout = async (req, res) => {
     const user = await userModel.findOne({ email: useremail })
     const address = await profileModel.findOne({ email: useremail })
     const addressdetails = await profileModel.find({ email: useremail })
-   // if(addressdetails.length>0) {
-        
-    //     req.flash('error', 'Please complete your profile first')
-    //     res.redirect('/user/profile')
-    // }else {
-        
+   
+    
         if (!userId || !useremail) {
             req.flash('error', 'your session has expired')
             return res.redirect('/login')
@@ -167,15 +163,15 @@ if(!userId){
    
     }else {
         const totalAmount = parseInt(order.totalAmount)*100
-const key = process.env.mykey_id
+        const key = process.env.mykey_id
         const orderOptions = {
             amount: totalAmount,
             currency: 'INR',
             receipt: 'receipt_order_1',
             payment_capture: 1
-          };
-          const ordered = await instance.orders.create(orderOptions);
-          res.status(200).json({sucess:true, ordered, key, totalAmount})
+        };
+        const ordered = await instance.orders.create(orderOptions);
+        res.status(200).json({sucess:true, ordered, key, totalAmount})
     }
     } 
 }
@@ -206,13 +202,6 @@ exports.orderConfirmOTPpost = async (req, res) => {
            order.orders.forEach(async (ordersProduct) => {
                 const orderPush = await orderDataModel.updateOne({ userId: userId }, { $push: { orders: ordersProduct } })
 
-                // if(orderPush.modifiedCount > 0){
-                // await orderDataModel.updateOne(
-                //     {userId:userId , 'orders.productId':ordersProduct.productId},
-                //     {$set:{'orders.$.status':'confirmed'}}
-                // )
-                // }
-
             })
         } else {
             const userId=req.session.user
@@ -223,23 +212,6 @@ exports.orderConfirmOTPpost = async (req, res) => {
             }
 
             await orderDataModel.create(newOrderObj)
-
-            // const neworder = newOrderObj.orders
-            // const updated = await Promise.all(req.body.orderObj.orders.map(async(product)=> 
-            // {
-            //    const neworder= await orderDataModel.updateOne(
-            //         {userId:req.session.user , 'orders.productId':product.productId},
-            //         {$set:{'orders.$.status':'confirmed'}}
-            //     )
-
-            //     if(neworder.modifiedCount > 0){
-            //         await orderDataModel.updateOne(
-            //             {userId:userId , 'orders.productId':ordersProduct.productId},
-            //             {$set:{'orders.$.status':'confirmed'}}
-            //         )
-            //         }
-            // }))
-
         }
         res.redirect('/user/home')
     }
@@ -255,13 +227,6 @@ exports.getonlinePayment= async (req,res)=> {
         if (existingOrder) {
             for (const ordersProduct of order.orders) {
                 const orderPush = await orderDataModel.updateOne({ userId: userId }, { $push: { orders: ordersProduct } });
-                
-        
-                // const orderStatus = await orderDataModel.updateOne(
-                //     { userId: userId, 'orders.productId': ordersProduct.productId },
-                //     { $set: { 'orders.$.status': 'confirmed' } }
-                // );
-        
             }
         }else {
             const newOrderObj = {
@@ -270,12 +235,6 @@ exports.getonlinePayment= async (req,res)=> {
             }
             const neworder = await orderDataModel.create(newOrderObj)
 
-            // if(neworder.modifiedCount > 0){
-            //     await orderDataModel.updateOne(
-            //         {userId:userId , 'orders.productId':ordersProduct.productId},
-            //         {$set:{'orders.$.status':'confirmed'}}
-            //     )
-            //     }
         }
         res.redirect('/user/home')
     }

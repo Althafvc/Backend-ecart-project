@@ -28,7 +28,10 @@ submitbutton.addEventListener('click', async (event) => {
             }
         })
         const result = response.data
+
         if (!result.success) {
+
+            document.querySelector('.error').innerHTML = 'Please provide a valid image file'
 
             console.log('image not found')
 
