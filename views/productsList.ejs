@@ -26,11 +26,10 @@
             <li><i class="fa-solid fa-gift"></i><a href="/admin/products">Products</a></li>
             <li> <i class="fa-solid fa-user"></i> <a href="/admin/users">Users</li>
             <li> <i class="fa-regular fa-pen-to-square"></i> <a href="/admin/categories">Category</a></li>
-            <li><i class="fa-solid fa-truck"></i> <a href="#">Orders</a></li>
+            <li><i class="fa-solid fa-truck"></i> <a href="/admin/orders">Orders</a></li>
             <li><i class="fa-solid fa-credit-card"></i> <a href="/admin/coupons">Coupons</a></li>
             <li><i class="fa-regular fa-file"></i> <a href="/admin/banners">Banners</a></li>
             <li><i class="fa-solid fa-arrow-right-from-bracket"></i> <a href="">logout</a></li>
-
         </div>
 
     </section>
@@ -56,8 +55,14 @@
         <div
             style="width: 100%; height: 4rem; margin-top: 4.6rem;  display:  flex;  align-items: center; justify-content: space-between;  padding: 0 1rem;">
             <h3 class="i-name" style="margin-bottom: 1.9rem;">Produts List</h3>
+            <div style="margin-left: 50%;">
+                <button class="product_add_btn" style="width: 3rem;height: 1.9rem;" onclick="prevButtn('<%= pageNumber %>')"> < </button>
+                <button class="product_add_btn" style="width: 3rem;height: 1.9rem;"><%= pageNumber %></button>
+                <button class="product_add_btn" style="width: 3rem;height: 1.9rem;" onclick="nextButtn('<%= pageNumber %>')"> > </button>
+            </div>
             <button class="product_add_btn" style="width: 7rem; height:2.4rem;"
-                onclick="window.location.href='/admin/addproduct'">ADD PRODUCT</button>
+            onclick="window.location.href='/admin/addproduct'">ADD PRODUCT
+            </button>
         </div>
 
 
@@ -84,7 +89,7 @@
                             <td class="people">
 
                                 <div class="people-de">
-                                    <h5 style="margin-top: 15px;">
+                                    <h5 style="margin-top: 15px;" class="trial">
                                         <%=data.productname%>
                                     </h5>
                                 </div>
@@ -133,6 +138,43 @@
             </table>
         </div>
     </section>
+
+    <script>
+       function nextButtn(page){
+    pageNumber = parseInt(page)
+
+    const trials = document.querySelectorAll('.trial');
+
+    trials.forEach((trial)=> {
+        console.log(trial.innerHTML);
+    });
+
+    if(!trials.length) {
+        console.log('array length reached');
+    }else {
+ pageNumber++
+            window.location.href=`/admin/products?pageNumber=${pageNumber}`
+    }
+}
+
+        function prevButtn(page){
+            pageNumber = parseInt(page)
+
+            if(pageNumber<=1){
+                console.log('first page reached');
+            }else {
+                pageNumber--
+            window.location.href=`/admin/products?pageNumber=${pageNumber}`
+            }
+            
+
+        }
+
+       
+
+
+    </script>
+
     <script>
         document.querySelectorAll('.delete_product_button').forEach(deleteButton =>{
             deleteButton.addEventListener('click', async (event)=> {

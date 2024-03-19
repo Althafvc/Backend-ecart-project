@@ -88,7 +88,7 @@ exports.getCheckout = async (req, res) => {
     
     
                 if(carted) {
-                     cartedOnes = cart.productId 
+                     cartedOnes = cart.productId
                 }else {
                     cartedOnes= singleArray
                 }
@@ -99,24 +99,6 @@ exports.getCheckout = async (req, res) => {
     
         }
     }
-
-
-
-
-exports.getChangeQuantity = async  (req,res)=> {
-
-    const {qty, id, Amount, discount, total}= req.query
-
-    const newAmount = parseInt(Amount*qty)
-
-    const newdiscount = parseInt(Amount*5/100)
-    const newtotal = parseInt(Amount-discount)
-
-        const product = await cartModel.findOneAndUpdate({_id:id}, {$set:{quantity:qty}})
-
-            return res.status(200).json({success:true,newAmount,newdiscount,newtotal})
-   
-}
 
 exports.setCoupon = async (req,res)=> {
     const {couponcode} = req.query
@@ -135,9 +117,7 @@ exports.setCoupon = async (req,res)=> {
        }
     }catch (err) {console.log('error in finding the coupon'),err}
 
-
 }
-
 
 
 exports.postCheckout = async (req,res)=> {

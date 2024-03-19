@@ -46,7 +46,6 @@ router.post('/updatepassword',userController.postuserPasswordChange)
 router.post('/buynow',userController.postBuyNow)
 router.get('/checkout',ordercontroller.getCheckout)
 
-router.get('/checkout/quantitychange',ordercontroller.getChangeQuantity)
 
 router.post('/setCoupon',ordercontroller.setCoupon)
 

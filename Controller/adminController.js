@@ -219,7 +219,7 @@ exports.getAdminhome = (req, res) => {
 
     if(!amdinId) {
         req.flash('error','Your session has expired')
-        res.redirect('/admin/login')
+        return res.redirect('/admin/login')
     }else {
         try {
             res.render('graphanalysis')
@@ -236,7 +236,7 @@ exports.getUsersList = async (req, res) => {
 
     if(!amdinId) {
         req.flash('error','Your session has expired')
-        res.redirect('/admin/login')
+       return  res.redirect('/admin/login')
     }else {
         try {
             let datas = await userModel.find()
@@ -253,7 +253,7 @@ exports.DeleteUser = async (req, res) => {
 
     if(!amdinId) {
         req.flash('error','Your session has expired')
-        res.redirect('/admin/login')
+        return res.redirect('/admin/login')
     }else {
     const email = req.params.mail
 
@@ -285,7 +285,7 @@ exports.getaddProduct = async (req, res) => {
 
     if(!adminId){
         req.flash('error', 'Your session has expired')
-        res.redirect('/admin/login')
+       return res.redirect('/admin/login')
     }else {
         try {
             let categoryDatas = await categoryModel.find()
@@ -302,6 +302,7 @@ exports.postaddProduct = async (req, res) => {
 
     if(!adminId) {
         req.flash('error','Your session has expired')
+
     }else {
         const product_img = req.files.map(file => file.filename);
 
@@ -343,13 +344,42 @@ exports.getAdminProductsList = async (req, res) => {
 
     if(!adminId){
 req.flash('error','Your session has expired')
+return res.redirect('/admin/login')
     }else {
         try {
-            let productDatas = await (productsModel.find())
-            res.render('productsList', { productDatas })
+            let pageNumber = req.query.pageNumber  || 1
+            let pageLimit = 0 
+            let productDatas = []
+            if(pageNumber > 1){
+                pageLimit = (pageNumber - 1) * 7
+            }
+            if(req.query.pageNumber){
+                productDatas = await productsModel.aggregate([
+                    {
+                        $skip : pageLimit
+                    },
+                    {
+                        $limit : 7
+                    }
+                ])
+            }else{
+                productDatas = await productsModel.aggregate([
+                    {
+                        $skip : pageLimit
+                    },
+                    {
+                        $limit : 7
+                    }
+                ])
+            }
+            res.render('productsList', { productDatas, pageNumber})
+            
+                    
+                
+
+           
         } catch (err) { console.log('cannot find productDatas', err) }
-    }
-   
+    }  
 
 }
 
@@ -358,7 +388,7 @@ exports.getAddCategory = (req, res) => {
 
     if(!adminId) {
         req.flash('error', 'Your session has expired')
-        res.redirect('/admin/login')
+        return res.redirect('/admin/login')
     }else {
         try {
            
@@ -373,7 +403,7 @@ exports.postAddCategory = async (req, res) => {
 
     if(!adminId) {
         req.flash('error', 'Your session has expired')
-        res.redirect('/admin/login')
+       return  res.redirect('/admin/login')
     }else {
         try { 
         
@@ -429,6 +459,7 @@ exports.getCategoriesList = async (req, res) => {
     const adminId = req.session.admin 
         if(!adminId) {
             req.flash('error', 'Your session has expired')
+            return res.redirect('/admin/login')
         }else {
             try {
                 const categoryDatas = await categoryModel.find()
@@ -446,6 +477,7 @@ exports.DeleteCategory = async (req, res) => {
     const adminId = req.session.admin 
         if(!adminId) {
             req.flash('error', 'Your session has expired')
+            return(res.redirect('/admin/login'))
         }else {
     const id = req.params.id;
 
@@ -469,14 +501,30 @@ exports.DeleteCategory = async (req, res) => {
 }
 }
 
-exports.getEditcategory = async(req,res)=> {         
+exports.getEditcategory = async(req,res)=> {    
+    
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+       return res.redirect('/admin/login')
+    }else {
 
     const categoryId = req.query.categoryId
     const categoryFind = await categoryModel.findById(categoryId)
     res.render('editcategory',{categoryFind})
 }
 
+}
+
 exports.getEditProduct = async (req, res) => {
+
+    const adminId = req.session.admin
+    if(!adminId) {
+         req.flash('error', 'Your session has expired')
+         return res.redirect('/admin/login')
+
+    }else {
     const id = req.params.id
     try {
         let categoryDatas = await categoryModel.find()
@@ -484,10 +532,20 @@ exports.getEditProduct = async (req, res) => {
         res.render('editproduct', { categoryDatas, productDatas, id })
     } catch (error) { console.log('cannot find categoryDatas properly', error) };
 }
+
+}
    
 
 
 exports.postEditProduct = async (req, res) => {
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error', 'Your session has expired')
+        return res.redirect('/admin/login')
+
+    }else {
+
     const id = req.params.id
     const { productname, oldprice, size, color, subcategory, stock, description, category } = req.body
 
@@ -533,10 +591,18 @@ exports.postEditProduct = async (req, res) => {
 
 }
 
+}
+
 exports.DeleteProduct = async (req, res) => {
-    const id = req.params.id
 
+    const adminId = req.session.admin
 
+if(!adminId) {
+    req.flash('eerror','Your session has expired')
+    return res.redirect('/admin/login')
+}else {
+
+const id = req.params.id
 
     try {
         const deletedProduct = await productsModel.findByIdAndDelete(id);
@@ -555,29 +621,55 @@ exports.DeleteProduct = async (req, res) => {
 
 }
 
+}
+
 
 exports.getBlockedUsers = async (req, res) => {
 
-    const userDatas = await userModel.find({ isBlocked: 'Blocked' })
+    const adminId = req.session.admin
 
-    res.render('blockedusers', { userDatas })
+    if(!adminId) {
+        req.flash('error', 'Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
+
+        try {
+            const userDatas = await userModel.find({ isBlocked: 'Blocked' })
+            res.render('blockedusers', { userDatas })
+
+        }catch(err) {console.log('cannot render blocked users list properly', err)}
+}
 }
 
 
 exports.getAddCoupons = (req, res) => {
-    const error = req.flash('error')
-    res.render('addcoupons', { error })
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
+    try {
+        const error = req.flash('error')
+        res.render('addcoupons', { error })
+    }catch(err){console.log('cannot render addcoupons properly', err)}
+    
+}
+
 }
 
 exports.postAddCoupons = async (req, res) => {
+    const adminId = req.session.admin
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
 
     const { couponcode, minimumpurchaseamount, discountprice, beginningdate, expirydate, availability} = req.body
 
     const duplicateCoupon = await couponsModel.findOne({ couponcode: req.body.couponcode })
 
     if (!couponcode || !minimumpurchaseamount || !discountprice || !beginningdate || !expirydate || !availability) {
-
-
         req.flash('error', 'All fields are mandatory')
         res.status(404).redirect('/admin/addcoupons')
     }
@@ -608,19 +700,37 @@ exports.postAddCoupons = async (req, res) => {
     }
 }
 
+}
+
 
 
 exports.getCouponsList = async (req, res) => {
 
-    const couponDatas = await couponsModel.find()
+    const adminId = req.session.admin
 
-    res.render('couponsList', { couponDatas })
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
+
+        try {
+            const couponDatas = await couponsModel.find()
+            res.render('couponsList', { couponDatas })
+        }catch(err){console.log('Cannot render couponlist properly',err)}
+}
+
 }
 
 
 exports.deleteCoupons = async (req, res) => {
-    const id = req.params.id
+    const adminId = req.session.admin
 
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
+
+    const id = req.params.id
     try {
         const deletedCoupon = await couponsModel.findByIdAndDelete({ _id: id });
 
@@ -635,10 +745,19 @@ exports.deleteCoupons = async (req, res) => {
 
 }
 
+}
+
 
 
 
 exports.getEditCoupons = async (req, res) => {
+
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
     const id = req.params.id;
 
     try {
@@ -648,8 +767,17 @@ exports.getEditCoupons = async (req, res) => {
 
 }
 
+}
+
 
 exports.postEditCoupons = async (req, res) => {
+
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
     const id = req.params.id
 
     const { couponcode, minimumpurchaseamount, discountpercentage, beginningdate, expirydate, availability} = req.body
@@ -671,13 +799,35 @@ exports.postEditCoupons = async (req, res) => {
 
 }
 
-
-exports.getAddBanner = (req, res) => {
-    const error = req.flash('error')
-    res.render('addbanner', { error })
 }
 
+
+exports.getAddBanner = (req, res) => {
+
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        res.redirect('/admin/login')
+    }else {
+        try {
+            const error = req.flash('error')
+            res.render('addbanner', { error })
+        } catch (err) {
+            console.log('cannot render addbanner properly',err);
+        }
+}
+}
+
+
 exports.postAddBanner = async (req, res) => {
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
+    
     const { bannername, heading, offerprice, startingdate, endingdate } = req.body
     const file = req.file ? req.file.filename : false
     const duplicatebanner = await bannersModel.findOne({ bannername: req.body.bannername })
@@ -694,9 +844,7 @@ exports.postAddBanner = async (req, res) => {
 
     }
     else if (!file) {
-
         console.log('image not found');
-
     }
 
     else {
@@ -722,7 +870,16 @@ exports.postAddBanner = async (req, res) => {
     }
 }
 
+}
+
 exports.getBannersList = async (req, res) => {
+
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
 
     try {
         const bannerDatas = await bannersModel.find()
@@ -733,8 +890,16 @@ exports.getBannersList = async (req, res) => {
 
 }
 
+}
 
 exports.getEditBanner = async (req, res) => {
+
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
 
     try {
         const error = req.flash('error')
@@ -747,7 +912,14 @@ exports.getEditBanner = async (req, res) => {
 
 }
 
-exports.postEditBanner = async (req, res) => {
+}
+
+exports.postEditBanner = async (req, res) => {const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
     const id = req.params.id;
     const { bannername, heading, offerprice, startingdate, endingdate } = req.body
 
@@ -781,7 +953,16 @@ exports.postEditBanner = async (req, res) => {
     } catch (err) { console.log('error in editing the banner', err) }
 }
 
+}
+
 exports.getDeleteBanner = async (req, res) => {
+
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
     const id = req.params.id;
 
     try {
@@ -800,21 +981,50 @@ exports.getDeleteBanner = async (req, res) => {
 
 }
 
+}
+
 exports.getChartAnalysis = (req,res)=> {
-    res.render('graphanalysis')
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
+
+        try {
+            res.render('graphanalysis')
+
+        }catch(err) {console.log('cannot render graphanalysis properly',err)}
+}
+
 }
 
 exports.getOrderslist = async (req,res)=> {
 
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
+    
+
 try {
     const orderDatas = await orderDataModel.find().populate("orders.productId")
-    console.log(orderDatas);
     res.render('adminOrdersList',{orderDatas})
-}catch(err) {console.log('cannot render orderpage properly', err)}
-    }
+}catch(err) {console.log('cannot render orderpage properly', err)}}
+
+}
 
 
 exports.setOrderStatus =async (req,res)=> {
+
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
     const value = req.query.value
     const id = req.query.id
 
@@ -827,8 +1037,15 @@ exports.setOrderStatus =async (req,res)=> {
          }catch(err){console.log('error in cancelling the product',err)}    
 }
 
-
+}
 exports.firstChartdats = async (req, res) => {
+
+    const adminId = req.session.admin
+
+    if(!adminId) {
+        req.flash('error','Your session has expired')
+        return res.redirect('/admin/login')
+    }else {
 
     const userCount = await userModel.find();
 
@@ -847,7 +1064,6 @@ exports.firstChartdats = async (req, res) => {
         userCountsPerMonth[month] = (userCountsPerMonth[month] || 0) + 1;
         
     });
-
 
     const categoryCounts = await productsModel.aggregate([
         {
@@ -894,16 +1110,13 @@ exports.firstChartdats = async (req, res) => {
         const monthYear = order._id.split('-');
         const monthIndex = parseInt(monthYear[1]) - 1; // Month index starts from 0
         const monthName = new Date(Date.UTC(monthYear[0], monthIndex, 1)).toLocaleString('default', { month: 'long' });
-    
         acc[monthName] = order.totalOrders;
-    
         return acc;
     }, {});
         
-    console.log(ordersDataForGraph);
 
     res.status(200).json({success:true, datas:userCountsPerMonth, products:formattedCategoryCounts, lastData:ordersDataForGraph})
-};
+}};
 
 
 

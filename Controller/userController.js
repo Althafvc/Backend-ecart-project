@@ -83,7 +83,7 @@ exports.resendOTP = async (req, res) => {
         }
 
     } catch (err) {
-        console.log(err);
+        console.log('cannot complete verification properly',err);
     }
 
 }
@@ -331,7 +331,6 @@ exports.postBuyNow = async (req, res) => {
                 req.flash('error', 'your session has expired')
                 return res.redirect('/login')
             } else {
-
                 const quantity = req.body.quantity
                 const productId = req.query.productid
                 const color = req.body?.color || ''

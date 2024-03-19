@@ -36,7 +36,7 @@ app.set('views', 'views')
 
 app.listen(port, console.log(`server is listening @ port ${port}` ))
 
-mongoose.connect('mongodb://127.0.0.1:27017/stylesphere')
+mongoose.connect(process.env.MONGODB_URI)
 .then(()=> console.log('Database connected'))
 .catch((err)=> console.log('connection failed',err))
 

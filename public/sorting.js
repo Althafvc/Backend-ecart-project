@@ -10,3 +10,4 @@ const sort2Btn = document.querySelector('.sort2').addEventListener('click', asyn
     const criteria = event.target.textContent; 
     window.location.href = `/user/sort?criteria=${criteria}`
 });
+
