@@ -10,7 +10,6 @@ const port = process.env.PORT || 3000;
 
 const commonRouter = require ('./Router/common')
 const userRouter = require ('./Router/user')
-const { defaultRoute } = require('./Router/common')
 const adminRouter = require('./Router/admin')
 
 
@@ -35,8 +34,12 @@ app.set('views', 'views')
 
 
 app.listen(port, console.log(`server is listening @ port ${port}` ))
-
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000 // 30 seconds
+})
 .then(()=> console.log('Database connected'))
 .catch((err)=> console.log('connection failed',err))
+
 

@@ -13,7 +13,6 @@
 
 
 async function applyPromoCode(event) {
-  console.log(1);
   if(document.getElementById("applyBtnCoupon").textContent == 'Apply'){
     const couponvalue= document.getElementById('coupon-input').value
     const response = await axios.post(`/user/setcoupon?couponcode=${couponvalue}`)
