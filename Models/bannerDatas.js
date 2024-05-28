@@ -15,15 +15,12 @@ const bannerDatas = new mongoose.Schema({
     type: String,
     required: true
   },
-
-  
   offerprice: {
     type: Number,
   },
   startingdate: {
     type: Date
   },
-
   endingdate: {
     type: Date
   }
